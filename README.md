@@ -11,12 +11,6 @@ import CombineExt // https://github.com/CombineCommunity/CombineExt.git
 import CoreBluetooth
 import Foundation
 
-let group = DispatchGroup()
-group.enter()
-group.notify(queue: DispatchQueue.main) {
-    exit(EXIT_SUCCESS)
-}
-
 enum AppError: Error {
     case bluetoothRadioTimeoout
     case bluetoothScanTimeout
@@ -64,16 +58,14 @@ let cancellable = Publishers
             case let .failure(.bluetoothError(error)):
                 print("Oops, bluetooth error: \(error)")
             case .finished:
-                print("App finished")
+                print("Scan cancelled")
             }
-            group.leave()
         },
         receiveValue: { adv in
             print("Found devices: \(adv.map { "(name: \($0.peripheral.name ?? ""), rssi: \($0.rssi))" }.joined(separator: ", "))")
         }
     )
 
-dispatchMain()
 ```
 
 ## Installation

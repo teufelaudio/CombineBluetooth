@@ -153,7 +153,7 @@ product (CombineBluetoothMocks or CombineBluetoothMocksDynamic) with Sourcery's 
 also use your own Sourcery templates if you want, or write mocks manually, it's up to you.
 
 For example, a `CentralManager` protocol requires a class or struct having, among other members, the following method:
-````
+```swift
 func scanForPeripherals() -> AnyPublisher<AdvertisingPeripheral, BluetoothError>
 ```
 

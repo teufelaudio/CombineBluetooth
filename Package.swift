@@ -8,9 +8,11 @@ let package = Package(
     ],
     products: [
         .library(name: "CombineBluetooth", targets: ["CombineBluetooth"]),
-        .library(name: "CombineBluetoothDynamic", type: .dynamic, targets: ["CombineBluetooth"])
+        .library(name: "CombineBluetoothDynamic", type: .dynamic, targets: ["CombineBluetooth"]),
+        .library(name: "CombineBluetoothMocks", targets: ["CombineBluetoothMocks"])
     ],
     targets: [
-        .target(name: "CombineBluetooth")
+        .target(name: "CombineBluetooth"),
+        .target(name: "CombineBluetoothMocks", dependencies: ["CombineBluetooth"])
     ]
 )

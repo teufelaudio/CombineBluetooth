@@ -1,5 +1,6 @@
 import CoreBluetooth
 
+// sourcery: AutoMockable
 public protocol L2CAPChannel {
     var peer: BluetoothPeer { get }
     var inputStream: InputStream { get }

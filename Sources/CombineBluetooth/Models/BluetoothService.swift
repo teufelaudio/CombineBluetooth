@@ -1,5 +1,6 @@
 import CoreBluetooth
 
+// sourcery: AutoMockable
 public protocol BluetoothService {
     var id: CBUUID { get }
     var peripheral: BluetoothPeripheral { get }

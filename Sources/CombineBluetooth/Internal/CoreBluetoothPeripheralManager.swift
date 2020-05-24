@@ -81,7 +81,7 @@ extension CoreBluetoothPeripheralManager: PeripheralManager {
     func startAdvertising() -> AnyPublisher<Void, BluetoothError> {
         _startAdvertising(nil)
     }
-    func startAdvertising(_ advertisementData: [String : Any]) -> AnyPublisher<Void, BluetoothError> {
+    func startAdvertising(advertisementData: [String : Any]) -> AnyPublisher<Void, BluetoothError> {
         _startAdvertising(advertisementData)
     }
     private func _startAdvertising(_ advertisementData: [String : Any]?) -> AnyPublisher<Void, BluetoothError> {

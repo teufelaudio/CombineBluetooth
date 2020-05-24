@@ -161,7 +161,7 @@ extension CoreBluetoothPeripheral: BluetoothPeripheral {
             .asDeferredFuture()
     }
 
-    func readValue(for characteristic: BluetoothCharacteristic) -> Deferred<Future<BluetoothCharacteristic, BluetoothError>> {
+    func readCharacteristicValue(_ characteristic: BluetoothCharacteristic) -> Deferred<Future<BluetoothCharacteristic, BluetoothError>> {
         guard let coreBluetoothCharacteristic = characteristic as? CoreBluetoothCharacteristic else { return .failure(.unknownWrapperType) }
         let peripheral = self.peripheral
         return readValueForCharacteristic
@@ -280,7 +280,7 @@ extension CoreBluetoothPeripheral: BluetoothPeripheral {
             .asDeferredFuture()
     }
 
-    func readValue(for descriptor: BluetoothDescriptor) -> Deferred<Future<BluetoothDescriptor, BluetoothError>> {
+    func readDescriptorValue(_ descriptor: BluetoothDescriptor) -> Deferred<Future<BluetoothDescriptor, BluetoothError>> {
         guard let coreBluetoothDescriptor = descriptor as? CoreBluetoothDescriptor else { return .failure(.unknownWrapperType) }
         let peripheral = self.peripheral
         return readValueForDescriptor

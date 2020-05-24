@@ -1,5 +1,6 @@
 import Foundation
 
+// sourcery: AutoMockable
 public protocol AdvertisingPeripheral {
     var advertisementData: [String: Any] { get }
     var rssi: NSNumber { get }

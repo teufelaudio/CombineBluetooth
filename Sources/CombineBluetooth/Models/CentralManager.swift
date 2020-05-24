@@ -1,6 +1,7 @@
 import Combine
 import CoreBluetooth
 
+// sourcery: AutoMockable
 public protocol CentralManager: BluetoothManager {
     var isScanning: AnyPublisher<Bool, Never> { get }
     var peripheralConnection: AnyPublisher<PeripheralConnectionEvent, Never> { get }

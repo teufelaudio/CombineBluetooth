@@ -1,0 +1,10 @@
+sources:
+  include:
+    - Sources/CombineBluetooth
+templates:
+  - Tools/Sourcery/Templates
+output:
+  Sources/CombineBluetoothMocks
+args:
+  imports: ["Combine", "CombineBluetooth", "CoreBluetooth"]
+  testable-imports: []

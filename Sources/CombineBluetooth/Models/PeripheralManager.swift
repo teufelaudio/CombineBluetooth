@@ -1,11 +1,12 @@
 import Combine
 import CoreBluetooth
 
+// sourcery: AutoMockable
 public protocol PeripheralManager: BluetoothManager {
     var isAdvertising: AnyPublisher<Bool, Never> { get }
     var isReadyAgainForWriteWithoutResponse: AnyPublisher<Void, Never> { get }
     func startAdvertising() -> AnyPublisher<Void, BluetoothError>
-    func startAdvertising(_ advertisementData: [String: Any]) -> AnyPublisher<Void, BluetoothError>
+    func startAdvertising(advertisementData: [String: Any]) -> AnyPublisher<Void, BluetoothError>
     func setDesiredConnectionLatency(_ latency: CBPeripheralManagerConnectionLatency, for central: BluetoothCentral) -> Result<Void, BluetoothError>
     func add(_ service: BluetoothService) -> Deferred<Future<BluetoothService, BluetoothError>>
     func remove(_ service: BluetoothService) -> Result<BluetoothService, BluetoothError>

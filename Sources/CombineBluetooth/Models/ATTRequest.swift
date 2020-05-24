@@ -1,5 +1,6 @@
 import Foundation
 
+// sourcery: AutoMockable
 public protocol ATTRequest {
     var central: BluetoothCentral { get }
     var characteristic: BluetoothCharacteristic { get }

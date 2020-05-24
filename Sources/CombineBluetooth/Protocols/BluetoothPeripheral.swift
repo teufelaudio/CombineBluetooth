@@ -3,6 +3,7 @@ import Foundation
 import CoreBluetooth
 
 public protocol BluetoothPeripheral {
+    var id: UUID { get }
     var name: String? { get }
     var state: CBPeripheralState { get }
     var services: [BluetoothService]? { get }

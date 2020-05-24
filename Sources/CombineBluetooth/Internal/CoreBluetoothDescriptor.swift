@@ -1,7 +1,8 @@
 import Combine
 import CoreBluetooth
 
-struct CoreBluetoothDescriptor {
+struct CoreBluetoothDescriptor: Identifiable {
+    var id: CBUUID { descriptor.id }
     let descriptor: CBDescriptor
 
     init(descriptor: CBDescriptor) {

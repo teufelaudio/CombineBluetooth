@@ -1,7 +1,8 @@
 import Combine
 import CoreBluetooth
 
-struct CoreBluetoothCharacteristic {
+struct CoreBluetoothCharacteristic: Identifiable {
+    var id: CBUUID { characteristic.id }
     let characteristic: CBCharacteristic
 
     init(characteristic: CBCharacteristic) {

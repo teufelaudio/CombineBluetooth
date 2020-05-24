@@ -5,3 +5,7 @@ public protocol AdvertisingPeripheral {
     var rssi: NSNumber { get }
     var peripheral: BluetoothPeripheral { get }
 }
+
+extension AdvertisingPeripheral {
+    var id: UUID { peripheral.id }
+}

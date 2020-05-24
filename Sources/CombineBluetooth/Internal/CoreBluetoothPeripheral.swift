@@ -1,7 +1,8 @@
 import Combine
 import CoreBluetooth
 
-class CoreBluetoothPeripheral: NSObject {
+class CoreBluetoothPeripheral: NSObject, Identifiable {
+    var id: UUID { peripheral.id }
     let peripheral: CBPeripheral
     private let didReadRSSI = PassthroughSubject<Result<NSNumber, Error>, Never>()
     private let didDiscoverServices = PassthroughSubject<Result<[CBService], Error>, Never>()

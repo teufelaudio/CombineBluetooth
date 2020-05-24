@@ -15,4 +15,6 @@ public enum BluetoothError: Error {
     case onReadValueForDescriptor(descriptor: BluetoothDescriptor, details: Error)
     case onWriteValueForDescriptor(descriptor: BluetoothDescriptor, details: Error)
     case onOpenChannel(peripheral: BluetoothPeripheral, PSM: CBL2CAPPSM, details: Error)
+    case onAddService(service: BluetoothService, details: Error)
+    case failOnStartAdvertising(error: Error?)
 }

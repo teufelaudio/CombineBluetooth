@@ -1,6 +1,7 @@
 import Foundation
 
-struct CoreBluetoothAdvertisingPeripheral {
+struct CoreBluetoothAdvertisingPeripheral: Identifiable {
+    var id: UUID { peripheral.id }
     let advertisementData: [String: Any]
     let rssi: NSNumber
     let peripheral: BluetoothPeripheral

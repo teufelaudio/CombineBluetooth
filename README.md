@@ -143,3 +143,45 @@ let package = Package(
   ]
 )
 ```
+
+## Tests and Mocks
+
+CombineBluetooth is written as a Protocol-Oriented library and all its models are protocols or simple enums/structs. Internally,
+this is resolved to CoreBluetooth entities, but if, instead of spreading CoreBluetooth entities all over your app you go for the
+protocols this library offer, then testing your app will be much easier. We even offer a mock library as a Swift Package Manager
+product (CombineBluetoothMocks or CombineBluetoothMocksDynamic) with Sourcery's auto-mockable ready-to-be-used classes. You can
+also use your own Sourcery templates if you want, or write mocks manually, it's up to you.
+
+For example, a `CentralManager` protocol requires a class or struct having, among other members, the following method:
+````
+func scanForPeripherals() -> AnyPublisher<AdvertisingPeripheral, BluetoothError>
+```
+
+Because `AdvertisingPeripheral` is another protocol, it should be easy for you to pretend your scanning for peripherals is
+returning data that would otherwise be impossible during tests. This also opens up possibilities such as "demo mode" for apps
+using CoreBluetooth.
+
+For using the AutoMockable entities you have several options, for example, pretending a function returns some values:
+```swift
+let centralManager = CentralManagerMock()
+centralManager.scanForPeripheralsReturnValue = [dev1, dev2, dev3].publisher.mapError { $0 }.eraseToAnyPublisher()
+sut.runScan(centralManager: centralManager)
+```
+
+```swift
+let centralManager = CentralManagerMock()
+centralManager.scanForPeripheralsClosure = {
+    // with closure option you can assert that the function was called
+    expectation.fulfil()
+    return [dev1, dev2, dev3].publisher.mapError { $0 }.eraseToAnyPublisher()
+}
+sut.runScan(centralManager: centralManager)
+```
+
+For properties you can set `mock.underlyingProperty` before a function that uses it is called. You can also assert
+that certain function was called, or even how many times it was called. When a function is called and it receives
+parameters, these parameters are stored in an array that can be asserted later. These arrays are not type-safe but
+for tests this is probably the behaviour you want, so you control the race conditions in your tests and avoid them
+in runtime.
+
+For more information, please check the auto-generated mocks file source code.

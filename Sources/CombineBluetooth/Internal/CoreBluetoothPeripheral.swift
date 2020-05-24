@@ -11,10 +11,11 @@ class CoreBluetoothPeripheral: NSObject, Identifiable {
     private let readValueForCharacteristic = PassthroughSubject<Result<CBCharacteristic, Error>, Never>()
     private let didWriteValueForCharacteristic = PassthroughSubject<Result<CBCharacteristic, Error>, Never>()
     private let didUpdateNotificationStateForCharacteristic = PassthroughSubject<Result<CBCharacteristic, Error>, Never>()
-    private let didOpenChannel = PassthroughSubject<Result<CBL2CAPChannel, Error>, Never>()
+    private let didOpenChannel = PassthroughSubject<Result<L2CAPChannel, Error>, Never>()
     private let didDiscoverDescriptors = PassthroughSubject<Result<(characteristic: CBCharacteristic, descriptors: [CBDescriptor]), Error>, Never>()
     private let readValueForDescriptor = PassthroughSubject<Result<CBDescriptor, Error>, Never>()
     private let didWriteValueForDescriptor = PassthroughSubject<Result<CBDescriptor, Error>, Never>()
+    private let becameReadyForWriteWithoutResponse = PassthroughSubject<Void, Never>()
 
     init(peripheral: CBPeripheral) {
         self.peripheral = peripheral
@@ -56,11 +57,13 @@ extension CoreBluetoothPeripheral: CBPeripheralDelegate {
     func peripheral(_ peripheral: CBPeripheral, didWriteValueFor descriptor: CBDescriptor, error: Error?) {
         didWriteValueForDescriptor.send(error.map(Result.failure) ?? .success(descriptor))
     }
-    func peripheralIsReady(toSendWriteWithoutResponse peripheral: CBPeripheral) { }
+    func peripheralIsReady(toSendWriteWithoutResponse peripheral: CBPeripheral) {
+        becameReadyForWriteWithoutResponse.send(())
+    }
     func peripheral(_ peripheral: CBPeripheral, didOpen channel: CBL2CAPChannel?, error: Error?) {
         didOpenChannel.send(
             error.map(Result.failure)
-                ?? channel.map(Result.success)
+                ?? channel.map(CoreBluetoothL2CAPChannel.init).map(Result.success)
                 ?? Result.failure(NSError(
                     domain: "peripheral(_ peripheral: CBPeripheral, didOpen channel: CBL2CAPChannel?, error: Error?) with both nil",
                     code: -1,
@@ -75,7 +78,10 @@ extension CoreBluetoothPeripheral: BluetoothPeripheral {
     var state: CBPeripheralState { peripheral.state }
     var services: [BluetoothService]? { peripheral.services?.map(CoreBluetoothService.init) }
     var canSendWriteWithoutResponse: Bool { peripheral.canSendWriteWithoutResponse }
-    
+    var isReadyAgainForWriteWithoutResponse: AnyPublisher<Void, Never> {
+        return becameReadyForWriteWithoutResponse.eraseToAnyPublisher()
+    }
+
     func readRSSI() -> Deferred<Future<NSNumber, BluetoothError>> {
         let peripheral = self.peripheral
         return didReadRSSI
@@ -113,21 +119,22 @@ extension CoreBluetoothPeripheral: BluetoothPeripheral {
             .asDeferredFuture()
     }
 
-    func discoverIncludedServices(_ includedServiceUUIDs: [CBUUID]?, for service: CBService) -> Deferred<Future<[BluetoothService], BluetoothError>> {
+    func discoverIncludedServices(_ includedServiceUUIDs: [CBUUID]?, for service: BluetoothService) -> Deferred<Future<[BluetoothService], BluetoothError>> {
+        guard let coreBluetoothService = service as? CoreBluetoothService else { return .failure(.unknownWrapperType) }
         let peripheral = self.peripheral
         return didDiscoverIncludedServices
             .tryMap { try $0.get() }
-            .filter { $0.parent == service }
+            .filter { $0.parent == coreBluetoothService.service }
             .map { $0.included.map(CoreBluetoothService.init) }
             .mapError {
                 BluetoothError.onDiscoverIncludedServices(
-                    service: CoreBluetoothService(service: service),
+                    service: service,
                     details: $0
                 )
             }
             .handleEvents(receiveRequest: { demand in
                 guard demand > .none else { return }
-                peripheral.discoverIncludedServices(includedServiceUUIDs, for: service)
+                peripheral.discoverIncludedServices(includedServiceUUIDs, for: coreBluetoothService.service)
             })
             .first()
             .asDeferredFuture()
@@ -315,7 +322,7 @@ extension CoreBluetoothPeripheral: BluetoothPeripheral {
             .asDeferredFuture()
     }
 
-    func openL2CAPChannel(PSM: CBL2CAPPSM) -> Deferred<Future<CBL2CAPChannel, BluetoothError>> {
+    func openL2CAPChannel(PSM: CBL2CAPPSM) -> Deferred<Future<L2CAPChannel, BluetoothError>> {
         let peripheral = self.peripheral
         return didOpenChannel
             .tryMap { try $0.get() }

@@ -5,6 +5,8 @@ public protocol BluetoothCharacteristic {
     var service: BluetoothService { get }
     var properties: CBCharacteristicProperties { get }
     var value: Data? { get }
-    var descriptors: [CBDescriptor]? { get }
+    var descriptors: [BluetoothDescriptor]? { get }
     var isNotifying: Bool { get }
+    var permissions: CBAttributePermissions? { get }
+    var subscribedCentrals: [BluetoothCentral]? { get }
 }

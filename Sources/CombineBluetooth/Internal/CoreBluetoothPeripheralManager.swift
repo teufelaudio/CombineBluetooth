@@ -16,6 +16,14 @@ class CoreBluetoothPeripheralManager: NSObject {
     private var _advertisementPublisher: PassthroughSubject<Void, BluetoothError> = .init()
 
     private var _didAddService: PassthroughSubject<(service: CBService, result: Result<Void, Error>), Never> = .init()
+    private var _didSubscribeToCharacteristic: PassthroughSubject<(central: CBCentral, characteristic: CBCharacteristic), Never> = .init()
+    private var _didUnsubscribeFromCharacteristic: PassthroughSubject<(central: CBCentral, characteristic: CBCharacteristic), Never> = .init()
+    private var _didReceiveReadRequest: PassthroughSubject<CBATTRequest, Never> = .init()
+    private var _didReceiveWriteRequests: PassthroughSubject<[CBATTRequest], Never> = .init()
+    private var _becameReadyForWriteWithoutResponse: PassthroughSubject<Void, Never> = .init()
+    private let _didOpenChannel = PassthroughSubject<Result<L2CAPChannel, Error>, Never>()
+    private var _didPublishL2CAPChannel = PassthroughSubject<(PSM: CBL2CAPPSM, result: Result<Void, Error>), Never>()
+    private var _didUnpublishL2CAPChannel = PassthroughSubject<(PSM: CBL2CAPPSM, result: Result<Void, Error>), Never>()
 
     func restoreDelegation() {
         _state = .init(peripheralManager.state)
@@ -42,8 +50,34 @@ extension CoreBluetoothPeripheralManager: PeripheralManager {
             .removeDuplicates()
             .eraseToAnyPublisher()
     }
+    var isReadyAgainForWriteWithoutResponse: AnyPublisher<Void, Never> {
+        return _becameReadyForWriteWithoutResponse.eraseToAnyPublisher()
+    }
     var state: AnyPublisher<CBManagerState, BluetoothError> { _state.eraseToAnyPublisher() }
     var stateRestoration: AnyPublisher<StateRestorationEvent, BluetoothError> { _stateRestoration.eraseToAnyPublisher() }
+    var characteristicsSubscriptions: AnyPublisher<(subscribed: Bool, central: BluetoothCentral, characteristic: BluetoothCharacteristic), Never> {
+        Publishers.Merge(
+            _didSubscribeToCharacteristic.map {
+                (subscribed: true, central: $0.central, characteristic: CoreBluetoothCharacteristic(characteristic: $0.characteristic))
+            },
+
+            _didUnsubscribeFromCharacteristic.map {
+                (subscribed: false, central: $0.central, characteristic: CoreBluetoothCharacteristic(characteristic: $0.characteristic))
+            }
+        ).eraseToAnyPublisher()
+    }
+    var requests: AnyPublisher<(type: ATTRequestType, requests: [ATTRequest]), Never> {
+        Publishers.Merge(
+            _didReceiveReadRequest.map {
+                (type: .read, requests: [CoreBluetoothATTRequest(attRequest: $0)])
+            },
+
+            _didReceiveWriteRequests.map {
+                (type: .write, requests: $0.map(CoreBluetoothATTRequest.init))
+            }
+        ).eraseToAnyPublisher()
+    }
+
     func startAdvertising() -> AnyPublisher<Void, BluetoothError> {
         _startAdvertising(nil)
     }
@@ -64,15 +98,17 @@ extension CoreBluetoothPeripheralManager: PeripheralManager {
             .eraseToAnyPublisher()
     }
 
-    func setDesiredConnectionLatency(_ latency: CBPeripheralManagerConnectionLatency, for central: CBCentral) {
-        peripheralManager.setDesiredConnectionLatency(latency, for: central)
+    func setDesiredConnectionLatency(_ latency: CBPeripheralManagerConnectionLatency, for central: BluetoothCentral) -> Result<Void, BluetoothError> {
+        guard let coreBluetoothCentral = central as? CBCentral else { return .failure(BluetoothError.unknownWrapperType) }
+        peripheralManager.setDesiredConnectionLatency(latency, for: coreBluetoothCentral)
+        return .success(())
     }
 
     func add(_ service: BluetoothService) -> Deferred<Future<BluetoothService, BluetoothError>> {
-        guard let coreBluetoothService = service as? CoreBluetoothService else { return .failure(BluetoothError.unknownWrapperType) }
-        let mutableService = CBMutableService(type: coreBluetoothService.id, primary: coreBluetoothService.isPrimary)
-        mutableService.characteristics = coreBluetoothService.characteristics?.compactMap { ($0 as? CoreBluetoothCharacteristic)?.characteristic }
-        mutableService.includedServices = coreBluetoothService.includedServices?.compactMap { ($0 as? CoreBluetoothService)?.service }
+        guard let coreBluetoothService = service as? CoreBluetoothService,
+            let mutableService = coreBluetoothService.service as? CBMutableService
+            else { return .failure(BluetoothError.unknownWrapperType) }
+
         let pm = peripheralManager
 
         return _didAddService
@@ -91,10 +127,10 @@ extension CoreBluetoothPeripheralManager: PeripheralManager {
     }
 
     func remove(_ service: BluetoothService) -> Result<BluetoothService, BluetoothError> {
-        guard let coreBluetoothService = service as? CoreBluetoothService else { return .failure(BluetoothError.unknownWrapperType) }
-        let mutableService = CBMutableService(type: coreBluetoothService.id, primary: coreBluetoothService.isPrimary)
-        mutableService.characteristics = coreBluetoothService.characteristics?.compactMap { ($0 as? CoreBluetoothCharacteristic)?.characteristic }
-        mutableService.includedServices = coreBluetoothService.includedServices?.compactMap { ($0 as? CoreBluetoothService)?.service }
+        guard let coreBluetoothService = service as? CoreBluetoothService,
+            let mutableService = coreBluetoothService.service as? CBMutableService
+            else { return .failure(BluetoothError.unknownWrapperType) }
+
         peripheralManager.remove(mutableService)
         return .success(CoreBluetoothService(service: mutableService))
     }
@@ -103,11 +139,70 @@ extension CoreBluetoothPeripheralManager: PeripheralManager {
         peripheralManager.removeAllServices()
     }
 
-    // TODO: WIP
-    // func respond(to request: CBATTRequest, withResult result: CBATTError.Code) { }
-    // func updateValue(_ value: Data, for characteristic: CBMutableCharacteristic, onSubscribedCentrals centrals: [CBCentral]?) -> Bool { }
-    // func publishL2CAPChannel(withEncryption encryptionRequired: Bool) { }
-    // func unpublishL2CAPChannel(_ PSM: CBL2CAPPSM) { }
+    func respond(to request: ATTRequest, withResult result: CBATTError.Code) -> Result<Void, BluetoothError> {
+        guard let coreBluetoothAttRequest = request as? CoreBluetoothATTRequest else { return .failure(.unknownWrapperType) }
+        peripheralManager.respond(to: coreBluetoothAttRequest.attRequest, withResult: result)
+        return .success(())
+    }
+    
+    func updateValue(_ value: Data, for characteristic: BluetoothCharacteristic, onSubscribedCentrals centrals: [BluetoothCentral]?) -> Result<Bool, BluetoothError> {
+        guard let coreBluetoothCharacteristic = characteristic as? CoreBluetoothCharacteristic,
+            let mutableCharacteristic = coreBluetoothCharacteristic.characteristic as? CBMutableCharacteristic else { return .failure(.unknownWrapperType) }
+
+        let coreBluetothCentrals = centrals?.compactMap { $0 as? CBCentral }
+        guard centrals?.count == coreBluetothCentrals?.count else { return .failure(.unknownWrapperType) }
+
+        return .success(peripheralManager.updateValue(value, for: mutableCharacteristic, onSubscribedCentrals: coreBluetothCentrals))
+    }
+
+    func publishL2CAPChannel(withEncryption encryptionRequired: Bool) -> Deferred<Future<CBL2CAPPSM, BluetoothError>> {
+        let pm = peripheralManager
+
+        return _didPublishL2CAPChannel
+            .tryMap {
+                let psm = $0.PSM
+                switch $0.result {
+                case .success:
+                    return psm
+                case let .failure(error):
+                    throw BluetoothError.onPublishChannel(PSM: psm, details: error)
+                }
+            }
+            .mapError { $0 as! BluetoothError }
+            .handleEvents(
+                receiveRequest: { demand in
+                    guard demand > .none else { return }
+                    pm.publishL2CAPChannel(withEncryption: encryptionRequired)
+                }
+            )
+            .first()
+            .asDeferredFuture()
+    }
+
+    func unpublishL2CAPChannel(_ PSM: CBL2CAPPSM)  -> Deferred<Future<CBL2CAPPSM, BluetoothError>> {
+        let pm = peripheralManager
+
+        return _didUnpublishL2CAPChannel
+            .filter { $0.PSM == PSM }
+            .tryMap {
+                let psm = $0.PSM
+                switch $0.result {
+                case .success:
+                    return psm
+                case let .failure(error):
+                    throw BluetoothError.onPublishChannel(PSM: psm, details: error)
+                }
+            }
+            .mapError { $0 as! BluetoothError }
+            .handleEvents(
+                receiveRequest: { demand in
+                    guard demand > .none else { return }
+                    pm.unpublishL2CAPChannel(PSM)
+                }
+            )
+            .first()
+            .asDeferredFuture()
+    }
 }
 
 extension CoreBluetoothPeripheralManager: CBPeripheralManagerDelegate {
@@ -133,13 +228,43 @@ extension CoreBluetoothPeripheralManager: CBPeripheralManagerDelegate {
         )
     }
 
-    // TODO: WIP
-    // func peripheralManager(_ peripheral: CBPeripheralManager, central: CBCentral, didSubscribeTo characteristic: CBCharacteristic) { }
-    // func peripheralManager(_ peripheral: CBPeripheralManager, central: CBCentral, didUnsubscribeFrom characteristic: CBCharacteristic) { }
-    // func peripheralManager(_ peripheral: CBPeripheralManager, didReceiveRead request: CBATTRequest) { }
-    // func peripheralManager(_ peripheral: CBPeripheralManager, didReceiveWrite requests: [CBATTRequest]) { }
-    // func peripheralManagerIsReady(toUpdateSubscribers peripheral: CBPeripheralManager) { }
-    // func peripheralManager(_ peripheral: CBPeripheralManager, didPublishL2CAPChannel PSM: CBL2CAPPSM, error: Error?) { }
-    // func peripheralManager(_ peripheral: CBPeripheralManager, didUnpublishL2CAPChannel PSM: CBL2CAPPSM, error: Error?) { }
-    // func peripheralManager(_ peripheral: CBPeripheralManager, didOpen channel: CBL2CAPChannel?, error: Error?) { }
+    func peripheralManager(_ peripheral: CBPeripheralManager, central: CBCentral, didSubscribeTo characteristic: CBCharacteristic) {
+        _didSubscribeToCharacteristic.send((central: central, characteristic: characteristic))
+    }
+
+    func peripheralManager(_ peripheral: CBPeripheralManager, central: CBCentral, didUnsubscribeFrom characteristic: CBCharacteristic) {
+        _didUnsubscribeFromCharacteristic.send((central: central, characteristic: characteristic))
+    }
+
+    func peripheralManager(_ peripheral: CBPeripheralManager, didReceiveRead request: CBATTRequest) {
+        _didReceiveReadRequest.send(request)
+    }
+
+    func peripheralManager(_ peripheral: CBPeripheralManager, didReceiveWrite requests: [CBATTRequest]) {
+        _didReceiveWriteRequests.send(requests)
+    }
+
+    func peripheralManagerIsReady(toUpdateSubscribers peripheral: CBPeripheralManager) {
+        _becameReadyForWriteWithoutResponse.send(())
+    }
+
+    func peripheralManager(_ peripheral: CBPeripheralManager, didOpen channel: CBL2CAPChannel?, error: Error?) {
+        _didOpenChannel.send(
+            error.map(Result.failure)
+                ?? channel.map(CoreBluetoothL2CAPChannel.init).map(Result.success)
+                ?? Result.failure(NSError(
+                    domain: "peripheral(_ peripheral: CBPeripheral, didOpen channel: CBL2CAPChannel?, error: Error?) with both nil",
+                    code: -1,
+                    userInfo: nil
+                ))
+        )
+    }
+
+    func peripheralManager(_ peripheral: CBPeripheralManager, didPublishL2CAPChannel PSM: CBL2CAPPSM, error: Error?) {
+        _didPublishL2CAPChannel.send((PSM: PSM, result: error.map(Result.failure) ?? .success(())))
+    }
+
+    func peripheralManager(_ peripheral: CBPeripheralManager, didUnpublishL2CAPChannel PSM: CBL2CAPPSM, error: Error?) {
+        _didUnpublishL2CAPChannel.send((PSM: PSM, result: error.map(Result.failure) ?? .success(())))
+    }
 }

@@ -127,12 +127,12 @@ extension CoreBluetoothCentralManager: CentralManager {
         .eraseToAnyPublisher()
     }
 
-    func retrievePeripherals(withIdentifiers identifiers: [UUID]) -> [CBPeripheral] {
-        centralManager.retrievePeripherals(withIdentifiers: identifiers)
+    func retrievePeripherals(withIdentifiers identifiers: [UUID]) -> [BluetoothPeripheral] {
+        centralManager.retrievePeripherals(withIdentifiers: identifiers).map(CoreBluetoothPeripheral.init)
     }
 
-    func retrieveConnectedPeripherals(withServices serviceUUIDs: [CBUUID]) -> [CBPeripheral] {
-        centralManager.retrieveConnectedPeripherals(withServices: serviceUUIDs)
+    func retrieveConnectedPeripherals(withServices serviceUUIDs: [CBUUID]) -> [BluetoothPeripheral] {
+        centralManager.retrieveConnectedPeripherals(withServices: serviceUUIDs).map(CoreBluetoothPeripheral.init)
     }
 }
 

@@ -1,4 +1,5 @@
 import CoreBluetooth
+
 public protocol BluetoothService {
     var id: CBUUID { get }
     var peripheral: BluetoothPeripheral { get }

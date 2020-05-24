@@ -14,6 +14,8 @@ extension CoreBluetoothCharacteristic: BluetoothCharacteristic {
     var service: BluetoothService { CoreBluetoothService(service: characteristic.service) }
     var properties: CBCharacteristicProperties { characteristic.properties }
     var value: Data? { characteristic.value }
-    var descriptors: [CBDescriptor]? { characteristic.descriptors }
+    var descriptors: [BluetoothDescriptor]? { characteristic.descriptors?.map(CoreBluetoothDescriptor.init) }
     var isNotifying: Bool { characteristic.isNotifying }
+    var permissions: CBAttributePermissions? { (characteristic as? CBMutableCharacteristic)?.permissions }
+    var subscribedCentrals: [BluetoothCentral]? { (characteristic as? CBMutableCharacteristic)?.subscribedCentrals }
 }

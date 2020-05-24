@@ -1,16 +1,16 @@
 import Combine
-import Foundation
 import CoreBluetooth
+import Foundation
 
-public protocol BluetoothPeripheral {
-    var id: UUID { get }
+public protocol BluetoothPeripheral: BluetoothPeer {
     var name: String? { get }
     var state: CBPeripheralState { get }
     var services: [BluetoothService]? { get }
     var canSendWriteWithoutResponse: Bool { get }
+    var isReadyAgainForWriteWithoutResponse: AnyPublisher<Void, Never> { get }
     func readRSSI() -> Deferred<Future<NSNumber, BluetoothError>>
     func discoverServices(_ serviceUUIDs: [CBUUID]?) -> Deferred<Future<[BluetoothService], BluetoothError>>
-    func discoverIncludedServices(_ includedServiceUUIDs: [CBUUID]?, for service: CBService) -> Deferred<Future<[BluetoothService], BluetoothError>>
+    func discoverIncludedServices(_ includedServiceUUIDs: [CBUUID]?, for service: BluetoothService) -> Deferred<Future<[BluetoothService], BluetoothError>>
     func discoverCharacteristics(_ characteristicUUIDs: [CBUUID]?, for service: BluetoothService) -> Deferred<Future<[BluetoothCharacteristic], BluetoothError>>
     func readValue(for characteristic: BluetoothCharacteristic) -> Deferred<Future<BluetoothCharacteristic, BluetoothError>>
     func maximumWriteValueLength(for type: CBCharacteristicWriteType) -> Int
@@ -19,5 +19,5 @@ public protocol BluetoothPeripheral {
     func discoverDescriptors(for characteristic: BluetoothCharacteristic) -> Deferred<Future<[BluetoothDescriptor], BluetoothError>>
     func readValue(for descriptor: BluetoothDescriptor) -> Deferred<Future<BluetoothDescriptor, BluetoothError>>
     func writeValue(_ data: Data, for descriptor: BluetoothDescriptor) -> Deferred<Future<BluetoothDescriptor, BluetoothError>>
-    func openL2CAPChannel(PSM: CBL2CAPPSM) -> Deferred<Future<CBL2CAPChannel, BluetoothError>>
+    func openL2CAPChannel(PSM: CBL2CAPPSM) -> Deferred<Future<L2CAPChannel, BluetoothError>>
 }

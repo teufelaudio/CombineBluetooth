@@ -82,129 +82,130 @@ extension CoreBluetoothPeripheral: BluetoothPeripheral {
         return becameReadyForWriteWithoutResponse.eraseToAnyPublisher()
     }
 
-    func readRSSI() -> Deferred<Future<NSNumber, BluetoothError>> {
+    func readRSSI() -> Promise<NSNumber, BluetoothError> {
         let peripheral = self.peripheral
-        return didReadRSSI
-            .tryMap { try $0.get() }
-            .mapError {
-                BluetoothError.onReadRSSI(
-                    peripheral: CoreBluetoothPeripheral(peripheral: peripheral),
-                    details: $0
-                )
-            }
-            .handleEvents(receiveRequest: { demand in
-                guard demand > .none else { return }
-                peripheral.readRSSI()
-            })
-            .first()
-            .asDeferredFuture()
+        return Promise(
+            self.didReadRSSI
+                .tryMap { try $0.get() }
+                .mapError {
+                    BluetoothError.onReadRSSI(
+                        peripheral: CoreBluetoothPeripheral(peripheral: peripheral),
+                        details: $0
+                    )
+                }
+                .handleEvents(receiveRequest: { demand in
+                    guard demand > .none else { return }
+                    peripheral.readRSSI()
+                })
+        )
     }
 
-    func discoverServices(_ serviceUUIDs: [CBUUID]?) -> Deferred<Future<[BluetoothService], BluetoothError>> {
+    func discoverServices(_ serviceUUIDs: [CBUUID]?) -> Promise<[BluetoothService], BluetoothError> {
         let peripheral = self.peripheral
-        return didDiscoverServices
-            .tryMap { try $0.get() }
-            .map { $0.map(CoreBluetoothService.init) }
-            .mapError {
-                BluetoothError.onDiscoverServices(
-                    peripheral: CoreBluetoothPeripheral(peripheral: peripheral),
-                    details: $0
-                )
-            }
-            .handleEvents(receiveRequest: { demand in
-                guard demand > .none else { return }
-                peripheral.discoverServices(serviceUUIDs)
-            })
-            .first()
-            .asDeferredFuture()
+        return Promise(
+            self.didDiscoverServices
+                .tryMap { try $0.get() }
+                .map { $0.map(CoreBluetoothService.init) }
+                .mapError {
+                    BluetoothError.onDiscoverServices(
+                        peripheral: CoreBluetoothPeripheral(peripheral: peripheral),
+                        details: $0
+                    )
+                }
+                .handleEvents(receiveRequest: { demand in
+                    guard demand > .none else { return }
+                    peripheral.discoverServices(serviceUUIDs)
+                })
+        )
     }
 
-    func discoverIncludedServices(_ includedServiceUUIDs: [CBUUID]?, for service: BluetoothService) -> Deferred<Future<[BluetoothService], BluetoothError>> {
-        guard let coreBluetoothService = service as? CoreBluetoothService else { return .failure(.unknownWrapperType) }
+    func discoverIncludedServices(_ includedServiceUUIDs: [CBUUID]?, for service: BluetoothService) -> Promise<[BluetoothService], BluetoothError> {
+        guard let coreBluetoothService = service as? CoreBluetoothService else { return Promise(error: .unknownWrapperType) }
         let peripheral = self.peripheral
-        return didDiscoverIncludedServices
-            .tryMap { try $0.get() }
-            .filter { $0.parent == coreBluetoothService.service }
-            .map { $0.included.map(CoreBluetoothService.init) }
-            .mapError {
-                BluetoothError.onDiscoverIncludedServices(
-                    service: service,
-                    details: $0
-                )
-            }
-            .handleEvents(receiveRequest: { demand in
-                guard demand > .none else { return }
-                peripheral.discoverIncludedServices(includedServiceUUIDs, for: coreBluetoothService.service)
-            })
-            .first()
-            .asDeferredFuture()
+        return Promise(
+            self.didDiscoverIncludedServices
+                .tryMap { try $0.get() }
+                .filter { $0.parent == coreBluetoothService.service }
+                .map { $0.included.map(CoreBluetoothService.init) }
+                .mapError {
+                    BluetoothError.onDiscoverIncludedServices(
+                        service: service,
+                        details: $0
+                    )
+                }
+                .handleEvents(receiveRequest: { demand in
+                    guard demand > .none else { return }
+                    peripheral.discoverIncludedServices(includedServiceUUIDs, for: coreBluetoothService.service)
+                })
+        )
     }
 
-    func discoverCharacteristics(_ characteristicUUIDs: [CBUUID]?, for service: BluetoothService) -> Deferred<Future<[BluetoothCharacteristic], BluetoothError>> {
-        guard let coreBluetoothService = service as? CoreBluetoothService else { return .failure(.unknownWrapperType) }
+    func discoverCharacteristics(_ characteristicUUIDs: [CBUUID]?, for service: BluetoothService) -> Promise<[BluetoothCharacteristic], BluetoothError> {
+        guard let coreBluetoothService = service as? CoreBluetoothService else { return Promise(error: .unknownWrapperType) }
         let peripheral = self.peripheral
-        return didDiscoverCharacteristics
-            .tryMap { try $0.get() }
-            .filter { $0.service == coreBluetoothService.service }
-            .map { $0.characteristics.map(CoreBluetoothCharacteristic.init) }
-            .mapError {
-                BluetoothError.onDiscoverCharacteristics(
-                    service: CoreBluetoothService(service: coreBluetoothService.service),
-                    details: $0
-                )
-            }
-            .handleEvents(receiveRequest: { demand in
-                guard demand > .none else { return }
-                peripheral.discoverCharacteristics(characteristicUUIDs, for: coreBluetoothService.service)
-            })
-            .first()
-            .asDeferredFuture()
+        return
+            Promise(
+                self.didDiscoverCharacteristics
+                    .tryMap { try $0.get() }
+                    .filter { $0.service == coreBluetoothService.service }
+                    .map { $0.characteristics.map(CoreBluetoothCharacteristic.init) }
+                    .mapError {
+                        BluetoothError.onDiscoverCharacteristics(
+                            service: CoreBluetoothService(service: coreBluetoothService.service),
+                            details: $0
+                        )
+                    }
+                    .handleEvents(receiveRequest: { demand in
+                        guard demand > .none else { return }
+                        peripheral.discoverCharacteristics(characteristicUUIDs, for: coreBluetoothService.service)
+                    })
+        )
     }
 
-    func readCharacteristicValue(_ characteristic: BluetoothCharacteristic) -> Deferred<Future<BluetoothCharacteristic, BluetoothError>> {
-        guard let coreBluetoothCharacteristic = characteristic as? CoreBluetoothCharacteristic else { return .failure(.unknownWrapperType) }
+    func readCharacteristicValue(_ characteristic: BluetoothCharacteristic) -> Promise<BluetoothCharacteristic, BluetoothError> {
+        guard let coreBluetoothCharacteristic = characteristic as? CoreBluetoothCharacteristic else { return Promise(error: .unknownWrapperType) }
         let peripheral = self.peripheral
-        return readValueForCharacteristic
-            .tryMap { try $0.get() }
-            .filter { $0 == coreBluetoothCharacteristic.characteristic }
-            .map(CoreBluetoothCharacteristic.init)
-            .mapError {
-                BluetoothError.onReadValueForCharacteristic(
-                    characteristic: characteristic,
-                    details: $0
-                )
-            }
-            .handleEvents(receiveRequest: { demand in
-                guard demand > .none else { return }
-                peripheral.readValue(for: coreBluetoothCharacteristic.characteristic)
-            })
-            .first()
-            .asDeferredFuture()
+        return Promise(
+            self.readValueForCharacteristic
+                .tryMap { try $0.get() }
+                .filter { $0 == coreBluetoothCharacteristic.characteristic }
+                .map(CoreBluetoothCharacteristic.init)
+                .mapError {
+                    BluetoothError.onReadValueForCharacteristic(
+                        characteristic: characteristic,
+                        details: $0
+                    )
+                }
+                .handleEvents(receiveRequest: { demand in
+                    guard demand > .none else { return }
+                    peripheral.readValue(for: coreBluetoothCharacteristic.characteristic)
+                })
+        )
     }
 
     func maximumWriteValueLength(for type: CBCharacteristicWriteType) -> Int {
         peripheral.maximumWriteValueLength(for: type)
     }
 
-    func writeValue(_ data: Data, for characteristic: BluetoothCharacteristic, type: CBCharacteristicWriteType) -> Deferred<Future<BluetoothCharacteristic, BluetoothError>> {
-        guard let coreBluetoothCharacteristic = characteristic as? CoreBluetoothCharacteristic else { return .failure(.unknownWrapperType) }
+    func writeValue(_ data: Data, for characteristic: BluetoothCharacteristic, type: CBCharacteristicWriteType) -> Promise<BluetoothCharacteristic, BluetoothError> {
+        guard let coreBluetoothCharacteristic = characteristic as? CoreBluetoothCharacteristic else { return Promise(error: .unknownWrapperType) }
         let peripheral = self.peripheral
-        return didWriteValueForCharacteristic
-            .tryMap { try $0.get() }
-            .filter { $0 == coreBluetoothCharacteristic.characteristic }
-            .map(CoreBluetoothCharacteristic.init)
-            .mapError {
-                BluetoothError.onWriteValueForCharacteristic(
-                    characteristic: characteristic,
-                    details: $0
-                )
-            }
-            .handleEvents(receiveRequest: { demand in
-                guard demand > .none else { return }
-                peripheral.writeValue(data, for: coreBluetoothCharacteristic.characteristic, type: type)
-            })
-            .first()
-            .asDeferredFuture()
+        return Promise(
+            self.didWriteValueForCharacteristic
+                .tryMap { try $0.get() }
+                .filter { $0 == coreBluetoothCharacteristic.characteristic }
+                .map(CoreBluetoothCharacteristic.init)
+                .mapError {
+                    BluetoothError.onWriteValueForCharacteristic(
+                        characteristic: characteristic,
+                        details: $0
+                    )
+                }
+                .handleEvents(receiveRequest: { demand in
+                    guard demand > .none else { return }
+                    peripheral.writeValue(data, for: coreBluetoothCharacteristic.characteristic, type: type)
+                })
+        )
     }
 
     func notifyValue(for characteristic: BluetoothCharacteristic) -> AnyPublisher<BluetoothCharacteristic, BluetoothError> {
@@ -258,86 +259,86 @@ extension CoreBluetoothPeripheral: BluetoothPeripheral {
             .eraseToAnyPublisher()
     }
 
-    func discoverDescriptors(for characteristic: BluetoothCharacteristic) -> Deferred<Future<[BluetoothDescriptor], BluetoothError>> {
-        guard let coreBluetoothCharacteristic = characteristic as? CoreBluetoothCharacteristic else { return .failure(.unknownWrapperType) }
+    func discoverDescriptors(for characteristic: BluetoothCharacteristic) -> Promise<[BluetoothDescriptor], BluetoothError> {
+        guard let coreBluetoothCharacteristic = characteristic as? CoreBluetoothCharacteristic else { return Promise(error: .unknownWrapperType) }
 
         let peripheral = self.peripheral
-        return didDiscoverDescriptors
-            .tryMap { try $0.get() }
-            .filter { $0.characteristic == coreBluetoothCharacteristic.characteristic }
-            .map { $0.descriptors.map(CoreBluetoothDescriptor.init) }
-            .mapError {
-                BluetoothError.onDiscoverDescriptors(
-                    characteristic: CoreBluetoothCharacteristic(characteristic: coreBluetoothCharacteristic.characteristic),
-                    details: $0
-                )
-            }
-            .handleEvents(receiveRequest: { demand in
-                guard demand > .none else { return }
-                peripheral.discoverDescriptors(for: coreBluetoothCharacteristic.characteristic)
-            })
-            .first()
-            .asDeferredFuture()
+        return Promise(
+            self.didDiscoverDescriptors
+                .tryMap { try $0.get() }
+                .filter { $0.characteristic == coreBluetoothCharacteristic.characteristic }
+                .map { $0.descriptors.map(CoreBluetoothDescriptor.init) }
+                .mapError {
+                    BluetoothError.onDiscoverDescriptors(
+                        characteristic: CoreBluetoothCharacteristic(characteristic: coreBluetoothCharacteristic.characteristic),
+                        details: $0
+                    )
+                }
+                .handleEvents(receiveRequest: { demand in
+                    guard demand > .none else { return }
+                    peripheral.discoverDescriptors(for: coreBluetoothCharacteristic.characteristic)
+                })
+        )
     }
 
-    func readDescriptorValue(_ descriptor: BluetoothDescriptor) -> Deferred<Future<BluetoothDescriptor, BluetoothError>> {
-        guard let coreBluetoothDescriptor = descriptor as? CoreBluetoothDescriptor else { return .failure(.unknownWrapperType) }
+    func readDescriptorValue(_ descriptor: BluetoothDescriptor) -> Promise<BluetoothDescriptor, BluetoothError> {
+        guard let coreBluetoothDescriptor = descriptor as? CoreBluetoothDescriptor else { return Promise(error: .unknownWrapperType) }
         let peripheral = self.peripheral
-        return readValueForDescriptor
-            .tryMap { try $0.get() }
-            .filter { $0 == coreBluetoothDescriptor.descriptor }
-            .map(CoreBluetoothDescriptor.init)
-            .mapError {
-                BluetoothError.onReadValueForDescriptor(
-                    descriptor: descriptor,
-                    details: $0
-                )
-            }
-            .handleEvents(receiveRequest: { demand in
-                guard demand > .none else { return }
-                peripheral.readValue(for: coreBluetoothDescriptor.descriptor)
-            })
-            .first()
-            .asDeferredFuture()
+        return Promise(
+            self.readValueForDescriptor
+                .tryMap { try $0.get() }
+                .filter { $0 == coreBluetoothDescriptor.descriptor }
+                .map(CoreBluetoothDescriptor.init)
+                .mapError {
+                    BluetoothError.onReadValueForDescriptor(
+                        descriptor: descriptor,
+                        details: $0
+                    )
+                }
+                .handleEvents(receiveRequest: { demand in
+                    guard demand > .none else { return }
+                    peripheral.readValue(for: coreBluetoothDescriptor.descriptor)
+                })
+        )
     }
 
-    func writeValue(_ data: Data, for descriptor: BluetoothDescriptor) -> Deferred<Future<BluetoothDescriptor, BluetoothError>> {
-        guard let coreBluetoothDescriptor = descriptor as? CoreBluetoothDescriptor else { return .failure(.unknownWrapperType) }
+    func writeValue(_ data: Data, for descriptor: BluetoothDescriptor) -> Promise<BluetoothDescriptor, BluetoothError> {
+        guard let coreBluetoothDescriptor = descriptor as? CoreBluetoothDescriptor else { return Promise(error: .unknownWrapperType) }
         let peripheral = self.peripheral
-        return didWriteValueForDescriptor
-            .tryMap { try $0.get() }
-            .filter { $0 == coreBluetoothDescriptor.descriptor }
-            .map(CoreBluetoothDescriptor.init)
-            .mapError {
-                BluetoothError.onWriteValueForDescriptor(
-                    descriptor: descriptor,
-                    details: $0
-                )
-            }
-            .handleEvents(receiveRequest: { demand in
-                guard demand > .none else { return }
-                peripheral.writeValue(data, for: coreBluetoothDescriptor.descriptor)
-            })
-            .first()
-            .asDeferredFuture()
+        return Promise(
+            self.didWriteValueForDescriptor
+                .tryMap { try $0.get() }
+                .filter { $0 == coreBluetoothDescriptor.descriptor }
+                .map(CoreBluetoothDescriptor.init)
+                .mapError {
+                    BluetoothError.onWriteValueForDescriptor(
+                        descriptor: descriptor,
+                        details: $0
+                    )
+                }
+                .handleEvents(receiveRequest: { demand in
+                    guard demand > .none else { return }
+                    peripheral.writeValue(data, for: coreBluetoothDescriptor.descriptor)
+                })
+        )
     }
 
-    func openL2CAPChannel(PSM: CBL2CAPPSM) -> Deferred<Future<L2CAPChannel, BluetoothError>> {
+    func openL2CAPChannel(PSM: CBL2CAPPSM) -> Promise<L2CAPChannel, BluetoothError> {
         let peripheral = self.peripheral
-        return didOpenChannel
-            .tryMap { try $0.get() }
-            .mapError {
-                BluetoothError.onOpenChannel(
-                    peripheral: CoreBluetoothPeripheral(peripheral: peripheral),
-                    PSM: PSM,
-                    details: $0
-                )
-            }
-            .handleEvents(receiveRequest: { demand in
-                guard demand > .none else { return }
-                peripheral.openL2CAPChannel(PSM)
-            })
-            .first()
-            .asDeferredFuture()
+        return Promise(
+            self.didOpenChannel
+                .tryMap { try $0.get() }
+                .mapError {
+                    BluetoothError.onOpenChannel(
+                        peripheral: CoreBluetoothPeripheral(peripheral: peripheral),
+                        PSM: PSM,
+                        details: $0
+                    )
+                }
+                .handleEvents(receiveRequest: { demand in
+                    guard demand > .none else { return }
+                    peripheral.openL2CAPChannel(PSM)
+                })
+        )
     }
 }

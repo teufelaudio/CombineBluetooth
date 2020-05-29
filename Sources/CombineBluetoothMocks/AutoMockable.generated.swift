@@ -144,10 +144,10 @@ open class BluetoothPeripheralMock: BluetoothPeripheral {
     open var readRSSICalled: Bool {
         return readRSSICallsCount > 0
     }
-    open var readRSSIReturnValue: Deferred<Future<NSNumber, BluetoothError>>!
-    open var readRSSIClosure: (() -> Deferred<Future<NSNumber, BluetoothError>>)?
+    open var readRSSIReturnValue: Promise<NSNumber, BluetoothError>!
+    open var readRSSIClosure: (() -> Promise<NSNumber, BluetoothError>)?
 
-    open func readRSSI() -> Deferred<Future<NSNumber, BluetoothError>> {
+    open func readRSSI() -> Promise<NSNumber, BluetoothError> {
         readRSSICallsCount += 1
         return readRSSIClosure.map({ $0() }) ?? readRSSIReturnValue
     }
@@ -159,10 +159,10 @@ open class BluetoothPeripheralMock: BluetoothPeripheral {
         return discoverServicesCallsCount > 0
     }
     open var discoverServicesReceivedServiceUUIDs: [CBUUID]?
-    open var discoverServicesReturnValue: Deferred<Future<[BluetoothService], BluetoothError>>!
-    open var discoverServicesClosure: (([CBUUID]?) -> Deferred<Future<[BluetoothService], BluetoothError>>)?
+    open var discoverServicesReturnValue: Promise<[BluetoothService], BluetoothError>!
+    open var discoverServicesClosure: (([CBUUID]?) -> Promise<[BluetoothService], BluetoothError>)?
 
-    open func discoverServices(_ serviceUUIDs: [CBUUID]?) -> Deferred<Future<[BluetoothService], BluetoothError>> {
+    open func discoverServices(_ serviceUUIDs: [CBUUID]?) -> Promise<[BluetoothService], BluetoothError> {
         discoverServicesCallsCount += 1
         discoverServicesReceivedServiceUUIDs = serviceUUIDs
         return discoverServicesClosure.map({ $0(serviceUUIDs) }) ?? discoverServicesReturnValue
@@ -175,10 +175,10 @@ open class BluetoothPeripheralMock: BluetoothPeripheral {
         return discoverIncludedServicesForCallsCount > 0
     }
     open var discoverIncludedServicesForReceivedArguments: (includedServiceUUIDs: [CBUUID]?, service: BluetoothService)?
-    open var discoverIncludedServicesForReturnValue: Deferred<Future<[BluetoothService], BluetoothError>>!
-    open var discoverIncludedServicesForClosure: (([CBUUID]?, BluetoothService) -> Deferred<Future<[BluetoothService], BluetoothError>>)?
+    open var discoverIncludedServicesForReturnValue: Promise<[BluetoothService], BluetoothError>!
+    open var discoverIncludedServicesForClosure: (([CBUUID]?, BluetoothService) -> Promise<[BluetoothService], BluetoothError>)?
 
-    open func discoverIncludedServices(_ includedServiceUUIDs: [CBUUID]?, for service: BluetoothService) -> Deferred<Future<[BluetoothService], BluetoothError>> {
+    open func discoverIncludedServices(_ includedServiceUUIDs: [CBUUID]?, for service: BluetoothService) -> Promise<[BluetoothService], BluetoothError> {
         discoverIncludedServicesForCallsCount += 1
         discoverIncludedServicesForReceivedArguments = (includedServiceUUIDs: includedServiceUUIDs, service: service)
         return discoverIncludedServicesForClosure.map({ $0(includedServiceUUIDs, service) }) ?? discoverIncludedServicesForReturnValue
@@ -191,10 +191,10 @@ open class BluetoothPeripheralMock: BluetoothPeripheral {
         return discoverCharacteristicsForCallsCount > 0
     }
     open var discoverCharacteristicsForReceivedArguments: (characteristicUUIDs: [CBUUID]?, service: BluetoothService)?
-    open var discoverCharacteristicsForReturnValue: Deferred<Future<[BluetoothCharacteristic], BluetoothError>>!
-    open var discoverCharacteristicsForClosure: (([CBUUID]?, BluetoothService) -> Deferred<Future<[BluetoothCharacteristic], BluetoothError>>)?
+    open var discoverCharacteristicsForReturnValue: Promise<[BluetoothCharacteristic], BluetoothError>!
+    open var discoverCharacteristicsForClosure: (([CBUUID]?, BluetoothService) -> Promise<[BluetoothCharacteristic], BluetoothError>)?
 
-    open func discoverCharacteristics(_ characteristicUUIDs: [CBUUID]?, for service: BluetoothService) -> Deferred<Future<[BluetoothCharacteristic], BluetoothError>> {
+    open func discoverCharacteristics(_ characteristicUUIDs: [CBUUID]?, for service: BluetoothService) -> Promise<[BluetoothCharacteristic], BluetoothError> {
         discoverCharacteristicsForCallsCount += 1
         discoverCharacteristicsForReceivedArguments = (characteristicUUIDs: characteristicUUIDs, service: service)
         return discoverCharacteristicsForClosure.map({ $0(characteristicUUIDs, service) }) ?? discoverCharacteristicsForReturnValue
@@ -207,10 +207,10 @@ open class BluetoothPeripheralMock: BluetoothPeripheral {
         return readCharacteristicValueCallsCount > 0
     }
     open var readCharacteristicValueReceivedCharacteristic: BluetoothCharacteristic?
-    open var readCharacteristicValueReturnValue: Deferred<Future<BluetoothCharacteristic, BluetoothError>>!
-    open var readCharacteristicValueClosure: ((BluetoothCharacteristic) -> Deferred<Future<BluetoothCharacteristic, BluetoothError>>)?
+    open var readCharacteristicValueReturnValue: Promise<BluetoothCharacteristic, BluetoothError>!
+    open var readCharacteristicValueClosure: ((BluetoothCharacteristic) -> Promise<BluetoothCharacteristic, BluetoothError>)?
 
-    open func readCharacteristicValue(_ characteristic: BluetoothCharacteristic) -> Deferred<Future<BluetoothCharacteristic, BluetoothError>> {
+    open func readCharacteristicValue(_ characteristic: BluetoothCharacteristic) -> Promise<BluetoothCharacteristic, BluetoothError> {
         readCharacteristicValueCallsCount += 1
         readCharacteristicValueReceivedCharacteristic = characteristic
         return readCharacteristicValueClosure.map({ $0(characteristic) }) ?? readCharacteristicValueReturnValue
@@ -239,10 +239,10 @@ open class BluetoothPeripheralMock: BluetoothPeripheral {
         return writeValueForTypeCallsCount > 0
     }
     open var writeValueForTypeReceivedArguments: (data: Data, characteristic: BluetoothCharacteristic, type: CBCharacteristicWriteType)?
-    open var writeValueForTypeReturnValue: Deferred<Future<BluetoothCharacteristic, BluetoothError>>!
-    open var writeValueForTypeClosure: ((Data, BluetoothCharacteristic, CBCharacteristicWriteType) -> Deferred<Future<BluetoothCharacteristic, BluetoothError>>)?
+    open var writeValueForTypeReturnValue: Promise<BluetoothCharacteristic, BluetoothError>!
+    open var writeValueForTypeClosure: ((Data, BluetoothCharacteristic, CBCharacteristicWriteType) -> Promise<BluetoothCharacteristic, BluetoothError>)?
 
-    open func writeValue(_ data: Data, for characteristic: BluetoothCharacteristic, type: CBCharacteristicWriteType) -> Deferred<Future<BluetoothCharacteristic, BluetoothError>> {
+    open func writeValue(_ data: Data, for characteristic: BluetoothCharacteristic, type: CBCharacteristicWriteType) -> Promise<BluetoothCharacteristic, BluetoothError> {
         writeValueForTypeCallsCount += 1
         writeValueForTypeReceivedArguments = (data: data, characteristic: characteristic, type: type)
         return writeValueForTypeClosure.map({ $0(data, characteristic, type) }) ?? writeValueForTypeReturnValue
@@ -271,10 +271,10 @@ open class BluetoothPeripheralMock: BluetoothPeripheral {
         return discoverDescriptorsForCallsCount > 0
     }
     open var discoverDescriptorsForReceivedCharacteristic: BluetoothCharacteristic?
-    open var discoverDescriptorsForReturnValue: Deferred<Future<[BluetoothDescriptor], BluetoothError>>!
-    open var discoverDescriptorsForClosure: ((BluetoothCharacteristic) -> Deferred<Future<[BluetoothDescriptor], BluetoothError>>)?
+    open var discoverDescriptorsForReturnValue: Promise<[BluetoothDescriptor], BluetoothError>!
+    open var discoverDescriptorsForClosure: ((BluetoothCharacteristic) -> Promise<[BluetoothDescriptor], BluetoothError>)?
 
-    open func discoverDescriptors(for characteristic: BluetoothCharacteristic) -> Deferred<Future<[BluetoothDescriptor], BluetoothError>> {
+    open func discoverDescriptors(for characteristic: BluetoothCharacteristic) -> Promise<[BluetoothDescriptor], BluetoothError> {
         discoverDescriptorsForCallsCount += 1
         discoverDescriptorsForReceivedCharacteristic = characteristic
         return discoverDescriptorsForClosure.map({ $0(characteristic) }) ?? discoverDescriptorsForReturnValue
@@ -287,10 +287,10 @@ open class BluetoothPeripheralMock: BluetoothPeripheral {
         return readDescriptorValueCallsCount > 0
     }
     open var readDescriptorValueReceivedDescriptor: BluetoothDescriptor?
-    open var readDescriptorValueReturnValue: Deferred<Future<BluetoothDescriptor, BluetoothError>>!
-    open var readDescriptorValueClosure: ((BluetoothDescriptor) -> Deferred<Future<BluetoothDescriptor, BluetoothError>>)?
+    open var readDescriptorValueReturnValue: Promise<BluetoothDescriptor, BluetoothError>!
+    open var readDescriptorValueClosure: ((BluetoothDescriptor) -> Promise<BluetoothDescriptor, BluetoothError>)?
 
-    open func readDescriptorValue(_ descriptor: BluetoothDescriptor) -> Deferred<Future<BluetoothDescriptor, BluetoothError>> {
+    open func readDescriptorValue(_ descriptor: BluetoothDescriptor) -> Promise<BluetoothDescriptor, BluetoothError> {
         readDescriptorValueCallsCount += 1
         readDescriptorValueReceivedDescriptor = descriptor
         return readDescriptorValueClosure.map({ $0(descriptor) }) ?? readDescriptorValueReturnValue
@@ -303,10 +303,10 @@ open class BluetoothPeripheralMock: BluetoothPeripheral {
         return writeValueForCallsCount > 0
     }
     open var writeValueForReceivedArguments: (data: Data, descriptor: BluetoothDescriptor)?
-    open var writeValueForReturnValue: Deferred<Future<BluetoothDescriptor, BluetoothError>>!
-    open var writeValueForClosure: ((Data, BluetoothDescriptor) -> Deferred<Future<BluetoothDescriptor, BluetoothError>>)?
+    open var writeValueForReturnValue: Promise<BluetoothDescriptor, BluetoothError>!
+    open var writeValueForClosure: ((Data, BluetoothDescriptor) -> Promise<BluetoothDescriptor, BluetoothError>)?
 
-    open func writeValue(_ data: Data, for descriptor: BluetoothDescriptor) -> Deferred<Future<BluetoothDescriptor, BluetoothError>> {
+    open func writeValue(_ data: Data, for descriptor: BluetoothDescriptor) -> Promise<BluetoothDescriptor, BluetoothError> {
         writeValueForCallsCount += 1
         writeValueForReceivedArguments = (data: data, descriptor: descriptor)
         return writeValueForClosure.map({ $0(data, descriptor) }) ?? writeValueForReturnValue
@@ -319,10 +319,10 @@ open class BluetoothPeripheralMock: BluetoothPeripheral {
         return openL2CAPChannelPSMCallsCount > 0
     }
     open var openL2CAPChannelPSMReceivedPSM: CBL2CAPPSM?
-    open var openL2CAPChannelPSMReturnValue: Deferred<Future<L2CAPChannel, BluetoothError>>!
-    open var openL2CAPChannelPSMClosure: ((CBL2CAPPSM) -> Deferred<Future<L2CAPChannel, BluetoothError>>)?
+    open var openL2CAPChannelPSMReturnValue: Promise<L2CAPChannel, BluetoothError>!
+    open var openL2CAPChannelPSMClosure: ((CBL2CAPPSM) -> Promise<L2CAPChannel, BluetoothError>)?
 
-    open func openL2CAPChannel(PSM: CBL2CAPPSM) -> Deferred<Future<L2CAPChannel, BluetoothError>> {
+    open func openL2CAPChannel(PSM: CBL2CAPPSM) -> Promise<L2CAPChannel, BluetoothError> {
         openL2CAPChannelPSMCallsCount += 1
         openL2CAPChannelPSMReceivedPSM = PSM
         return openL2CAPChannelPSMClosure.map({ $0(PSM) }) ?? openL2CAPChannelPSMReturnValue
@@ -592,10 +592,10 @@ open class PeripheralManagerMock: PeripheralManager {
         return addCallsCount > 0
     }
     open var addReceivedService: BluetoothService?
-    open var addReturnValue: Deferred<Future<BluetoothService, BluetoothError>>!
-    open var addClosure: ((BluetoothService) -> Deferred<Future<BluetoothService, BluetoothError>>)?
+    open var addReturnValue: Promise<BluetoothService, BluetoothError>!
+    open var addClosure: ((BluetoothService) -> Promise<BluetoothService, BluetoothError>)?
 
-    open func add(_ service: BluetoothService) -> Deferred<Future<BluetoothService, BluetoothError>> {
+    open func add(_ service: BluetoothService) -> Promise<BluetoothService, BluetoothError> {
         addCallsCount += 1
         addReceivedService = service
         return addClosure.map({ $0(service) }) ?? addReturnValue
@@ -669,10 +669,10 @@ open class PeripheralManagerMock: PeripheralManager {
         return publishL2CAPChannelWithEncryptionCallsCount > 0
     }
     open var publishL2CAPChannelWithEncryptionReceivedEncryptionRequired: Bool?
-    open var publishL2CAPChannelWithEncryptionReturnValue: Deferred<Future<CBL2CAPPSM, BluetoothError>>!
-    open var publishL2CAPChannelWithEncryptionClosure: ((Bool) -> Deferred<Future<CBL2CAPPSM, BluetoothError>>)?
+    open var publishL2CAPChannelWithEncryptionReturnValue: Promise<CBL2CAPPSM, BluetoothError>!
+    open var publishL2CAPChannelWithEncryptionClosure: ((Bool) -> Promise<CBL2CAPPSM, BluetoothError>)?
 
-    open func publishL2CAPChannel(withEncryption encryptionRequired: Bool) -> Deferred<Future<CBL2CAPPSM, BluetoothError>> {
+    open func publishL2CAPChannel(withEncryption encryptionRequired: Bool) -> Promise<CBL2CAPPSM, BluetoothError> {
         publishL2CAPChannelWithEncryptionCallsCount += 1
         publishL2CAPChannelWithEncryptionReceivedEncryptionRequired = encryptionRequired
         return publishL2CAPChannelWithEncryptionClosure.map({ $0(encryptionRequired) }) ?? publishL2CAPChannelWithEncryptionReturnValue
@@ -685,10 +685,10 @@ open class PeripheralManagerMock: PeripheralManager {
         return unpublishL2CAPChannelCallsCount > 0
     }
     open var unpublishL2CAPChannelReceivedPSM: CBL2CAPPSM?
-    open var unpublishL2CAPChannelReturnValue: Deferred<Future<CBL2CAPPSM, BluetoothError>>!
-    open var unpublishL2CAPChannelClosure: ((CBL2CAPPSM) -> Deferred<Future<CBL2CAPPSM, BluetoothError>>)?
+    open var unpublishL2CAPChannelReturnValue: Promise<CBL2CAPPSM, BluetoothError>!
+    open var unpublishL2CAPChannelClosure: ((CBL2CAPPSM) -> Promise<CBL2CAPPSM, BluetoothError>)?
 
-    open func unpublishL2CAPChannel(_ PSM: CBL2CAPPSM) -> Deferred<Future<CBL2CAPPSM, BluetoothError>> {
+    open func unpublishL2CAPChannel(_ PSM: CBL2CAPPSM) -> Promise<CBL2CAPPSM, BluetoothError> {
         unpublishL2CAPChannelCallsCount += 1
         unpublishL2CAPChannelReceivedPSM = PSM
         return unpublishL2CAPChannelClosure.map({ $0(PSM) }) ?? unpublishL2CAPChannelReturnValue

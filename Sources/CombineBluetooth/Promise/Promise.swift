@@ -88,12 +88,11 @@ extension Promise {
                 .first()
                 .sink(
                     receiveCompletion: { [weak self] completion in
-                        if case let .failure(error) = completion {
-                            self?.downstream.receive(completion: .failure(error))
-                        }
+                        self?.downstream.receive(completion: completion)
                     },
                     receiveValue: { [weak self] value in
                         _ = self?.downstream.receive(value)
+                        self?.downstream.receive(completion: .finished)
                     }
                 )
         }
@@ -123,6 +122,27 @@ extension Promise {
             },
             receiveValue: onSuccess
         )
+    }
+}
+
+@available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+extension Promise where Failure == Never {
+    public func run(onSuccess: @escaping (Output) -> Void) -> AnyCancellable {
+        run(onSuccess: onSuccess, onFailure: { _ in })
+    }
+}
+
+@available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+extension Promise where Success == Void {
+    public func run(onFailure: @escaping (Failure) -> Void) -> AnyCancellable {
+        run(onSuccess: { _ in }, onFailure: onFailure)
+    }
+}
+
+@available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+extension Promise where Success == Void, Failure == Never {
+    public func run() -> AnyCancellable {
+        run(onSuccess: { _ in }, onFailure: { _ in })
     }
 }
 #endif

@@ -99,29 +99,28 @@ extension CoreBluetoothCentralManager: CentralManager {
         let cm = centralManager
         return Publishers.Merge3(
             _didConnectPeripheral
-                .filter { $0 == coreBluetoothPeripheral.peripheral }
+                .filter { $0.identifier == coreBluetoothPeripheral.peripheral.identifier }
                 .map(CoreBluetoothPeripheral.init)
                 .mapError { never -> BluetoothError in },
             _didDisconnectPeripheral
-                .filter { $0.peripheral == coreBluetoothPeripheral.peripheral }
+                .filter { $0.peripheral.identifier == coreBluetoothPeripheral.peripheral.identifier }
                 .tryMap { disconnection -> BluetoothPeripheral in
                     throw BluetoothError.lostConnection(peripheral: CoreBluetoothPeripheral(peripheral: disconnection.peripheral), error: disconnection.error)
                 }
                 .mapError { $0 as! BluetoothError },
             _didFailToConnectPeripheral
-                .filter { $0.peripheral == coreBluetoothPeripheral.peripheral }
+                .filter { $0.peripheral.identifier == coreBluetoothPeripheral.peripheral.identifier }
                 .tryMap { disconnection -> BluetoothPeripheral in
                     throw BluetoothError.failOnConnect(peripheral: CoreBluetoothPeripheral(peripheral: disconnection.peripheral), error: disconnection.error)
                 }
                 .mapError { $0 as! BluetoothError }
         )
         .handleEvents(
+            receiveSubscription: { _ in
+                cm.connect(coreBluetoothPeripheral.peripheral, options: options)
+            },
             receiveCancel: {
                 cm.cancelPeripheralConnection(coreBluetoothPeripheral.peripheral)
-            },
-            receiveRequest: { demand in
-                guard demand > .none else { return }
-                cm.connect(coreBluetoothPeripheral.peripheral, options: options)
             }
         )
         .eraseToAnyPublisher()

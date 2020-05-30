@@ -1,11 +1,3 @@
-//
-//  Publisher+Promise.swift
-//  FoundationExtensions
-//
-//  Created by Luiz Barbosa on 29.05.20.
-//  Copyright © 2020 Lautsprecher Teufel GmbH. All rights reserved.
-//
-
 #if canImport(Combine)
 import Combine
 

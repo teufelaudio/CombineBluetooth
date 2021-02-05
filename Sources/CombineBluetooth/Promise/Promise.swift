@@ -61,7 +61,7 @@ extension Publisher {
 }
 
 extension Promise {
-    public func flatMap<NewOutput, InnerError>(_ transform: @escaping (Output) -> Promise<NewOutput, InnerError>) -> Promise<NewOutput, InnerError>
+    public func flatMapPromise<NewOutput, InnerError>(_ transform: @escaping (Output) -> Promise<NewOutput, InnerError>) -> Promise<NewOutput, InnerError>
     where Failure == PromiseError<InnerError> {
         self.map(transform)
             .switchToLatest()

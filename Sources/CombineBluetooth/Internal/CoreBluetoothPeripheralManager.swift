@@ -107,11 +107,13 @@ extension CoreBluetoothPeripheralManager: PeripheralManager {
     func add(_ service: BluetoothService) -> Promise<BluetoothService, BluetoothError> {
         guard let coreBluetoothService = service as? CoreBluetoothService,
             let mutableService = coreBluetoothService.service as? CBMutableService
-            else { return Promise(error: BluetoothError.unknownWrapperType) }
+        else { return .create(error: .unknownWrapperType) }
 
         let pm = peripheralManager
+        let lock = NSRecursiveLock()
+        var added = false
 
-        return Promise(
+        return Promise<BluetoothService, BluetoothError>.first(of:
             self._didAddService
                 .filter { $0.service.id == coreBluetoothService.id }
                 .tryMap { try $0.result.get() }
@@ -120,6 +122,10 @@ extension CoreBluetoothPeripheralManager: PeripheralManager {
                 .handleEvents(
                     receiveRequest: { demand in
                         guard demand > .none else { return }
+                        lock.lock()
+                        defer { lock.unlock() }
+                        guard !added else { return }
+                        added = true
                         pm.add(mutableService)
                     }
                 )
@@ -158,7 +164,7 @@ extension CoreBluetoothPeripheralManager: PeripheralManager {
     func publishL2CAPChannel(withEncryption encryptionRequired: Bool) -> Promise<CBL2CAPPSM, BluetoothError> {
         let pm = peripheralManager
 
-        return Promise(
+        return Promise<CBL2CAPPSM, BluetoothError>.first(of:
             self._didPublishL2CAPChannel
                 .tryMap {
                     let psm = $0.PSM
@@ -182,7 +188,7 @@ extension CoreBluetoothPeripheralManager: PeripheralManager {
     func unpublishL2CAPChannel(_ PSM: CBL2CAPPSM)  -> Promise<CBL2CAPPSM, BluetoothError> {
         let pm = peripheralManager
 
-        return Promise(
+        return Promise<CBL2CAPPSM, BluetoothError>.first(of:
             self._didUnpublishL2CAPChannel
                 .filter { $0.PSM == PSM }
                 .tryMap {

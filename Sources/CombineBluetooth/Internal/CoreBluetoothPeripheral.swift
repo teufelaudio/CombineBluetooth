@@ -84,7 +84,7 @@ extension CoreBluetoothPeripheral: BluetoothPeripheral {
 
     func readRSSI() -> Promise<NSNumber, BluetoothError> {
         let peripheral = self.peripheral
-        return Promise(
+        return .first(of:
             self.didReadRSSI
                 .tryMap { try $0.get() }
                 .mapError {
@@ -175,9 +175,10 @@ extension CoreBluetoothPeripheral: BluetoothPeripheral {
     }
 
     func readCharacteristicValue(_ characteristic: BluetoothCharacteristic) -> Promise<BluetoothCharacteristic, BluetoothError> {
-        guard let coreBluetoothCharacteristic = characteristic as? CoreBluetoothCharacteristic else { return Promise(error: .unknownWrapperType) }
+        guard let coreBluetoothCharacteristic = characteristic as? CoreBluetoothCharacteristic
+        else { return .create(error: .unknownWrapperType) }
         let peripheral = self.peripheral
-        return Promise(
+        return Promise<BluetoothCharacteristic, BluetoothError>.first(of:
             self.readValueForCharacteristic
                 .tryMap { try $0.get() }
                 .filter { $0.id == coreBluetoothCharacteristic.characteristic.id }
@@ -199,9 +200,9 @@ extension CoreBluetoothPeripheral: BluetoothPeripheral {
     }
 
     func writeValue(_ data: Data, for characteristic: BluetoothCharacteristic, type: CBCharacteristicWriteType) -> Promise<BluetoothCharacteristic, BluetoothError> {
-        guard let coreBluetoothCharacteristic = characteristic as? CoreBluetoothCharacteristic else { return Promise(error: .unknownWrapperType) }
+        guard let coreBluetoothCharacteristic = characteristic as? CoreBluetoothCharacteristic else { return .create(error: .unknownWrapperType) }
         let peripheral = self.peripheral
-        return Promise(
+        return Promise<BluetoothCharacteristic, BluetoothError>.first(of:
             self.didWriteValueForCharacteristic
                 .tryMap { try $0.get() }
                 .filter { $0.id == coreBluetoothCharacteristic.characteristic.id }
@@ -289,9 +290,9 @@ extension CoreBluetoothPeripheral: BluetoothPeripheral {
     }
 
     func readDescriptorValue(_ descriptor: BluetoothDescriptor) -> Promise<BluetoothDescriptor, BluetoothError> {
-        guard let coreBluetoothDescriptor = descriptor as? CoreBluetoothDescriptor else { return Promise(error: .unknownWrapperType) }
+        guard let coreBluetoothDescriptor = descriptor as? CoreBluetoothDescriptor else { return .create(error: .unknownWrapperType) }
         let peripheral = self.peripheral
-        return Promise(
+        return Promise<BluetoothDescriptor, BluetoothError>.first(of:
             self.readValueForDescriptor
                 .tryMap { try $0.get() }
                 .filter { $0.id == coreBluetoothDescriptor.descriptor.id }
@@ -309,9 +310,9 @@ extension CoreBluetoothPeripheral: BluetoothPeripheral {
     }
 
     func writeValue(_ data: Data, for descriptor: BluetoothDescriptor) -> Promise<BluetoothDescriptor, BluetoothError> {
-        guard let coreBluetoothDescriptor = descriptor as? CoreBluetoothDescriptor else { return Promise(error: .unknownWrapperType) }
+        guard let coreBluetoothDescriptor = descriptor as? CoreBluetoothDescriptor else { return .create(error: .unknownWrapperType) }
         let peripheral = self.peripheral
-        return Promise(
+        return Promise<BluetoothDescriptor, BluetoothError>.first(of:
             self.didWriteValueForDescriptor
                 .tryMap { try $0.get() }
                 .filter { $0.id == coreBluetoothDescriptor.descriptor.id }
@@ -330,7 +331,7 @@ extension CoreBluetoothPeripheral: BluetoothPeripheral {
 
     func openL2CAPChannel(PSM: CBL2CAPPSM) -> Promise<L2CAPChannel, BluetoothError> {
         let peripheral = self.peripheral
-        return Promise(
+        return Promise<L2CAPChannel, BluetoothError>.first(of:
             self.didOpenChannel
                 .tryMap { try $0.get() }
                 .mapError {

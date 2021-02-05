@@ -159,10 +159,10 @@ open class BluetoothPeripheralMock: BluetoothPeripheral {
         return discoverServicesCallsCount > 0
     }
     open var discoverServicesReceivedServiceUUIDs: [CBUUID]?
-    open var discoverServicesReturnValue: Promise<[BluetoothService], BluetoothError>!
-    open var discoverServicesClosure: (([CBUUID]?) -> Promise<[BluetoothService], BluetoothError>)?
+    open var discoverServicesReturnValue: AnyPublisher<BluetoothService, BluetoothError>!
+    open var discoverServicesClosure: (([CBUUID]?) -> AnyPublisher<BluetoothService, BluetoothError>)?
 
-    open func discoverServices(_ serviceUUIDs: [CBUUID]?) -> Promise<[BluetoothService], BluetoothError> {
+    open func discoverServices(_ serviceUUIDs: [CBUUID]?) -> AnyPublisher<BluetoothService, BluetoothError> {
         discoverServicesCallsCount += 1
         discoverServicesReceivedServiceUUIDs = serviceUUIDs
         return discoverServicesClosure.map({ $0(serviceUUIDs) }) ?? discoverServicesReturnValue
@@ -175,10 +175,10 @@ open class BluetoothPeripheralMock: BluetoothPeripheral {
         return discoverIncludedServicesForCallsCount > 0
     }
     open var discoverIncludedServicesForReceivedArguments: (includedServiceUUIDs: [CBUUID]?, service: BluetoothService)?
-    open var discoverIncludedServicesForReturnValue: Promise<[BluetoothService], BluetoothError>!
-    open var discoverIncludedServicesForClosure: (([CBUUID]?, BluetoothService) -> Promise<[BluetoothService], BluetoothError>)?
+    open var discoverIncludedServicesForReturnValue: AnyPublisher<BluetoothService, BluetoothError>!
+    open var discoverIncludedServicesForClosure: (([CBUUID]?, BluetoothService) -> AnyPublisher<BluetoothService, BluetoothError>)?
 
-    open func discoverIncludedServices(_ includedServiceUUIDs: [CBUUID]?, for service: BluetoothService) -> Promise<[BluetoothService], BluetoothError> {
+    open func discoverIncludedServices(_ includedServiceUUIDs: [CBUUID]?, for service: BluetoothService) -> AnyPublisher<BluetoothService, BluetoothError> {
         discoverIncludedServicesForCallsCount += 1
         discoverIncludedServicesForReceivedArguments = (includedServiceUUIDs: includedServiceUUIDs, service: service)
         return discoverIncludedServicesForClosure.map({ $0(includedServiceUUIDs, service) }) ?? discoverIncludedServicesForReturnValue
@@ -191,10 +191,10 @@ open class BluetoothPeripheralMock: BluetoothPeripheral {
         return discoverCharacteristicsForCallsCount > 0
     }
     open var discoverCharacteristicsForReceivedArguments: (characteristicUUIDs: [CBUUID]?, service: BluetoothService)?
-    open var discoverCharacteristicsForReturnValue: Promise<[BluetoothCharacteristic], BluetoothError>!
-    open var discoverCharacteristicsForClosure: (([CBUUID]?, BluetoothService) -> Promise<[BluetoothCharacteristic], BluetoothError>)?
+    open var discoverCharacteristicsForReturnValue: AnyPublisher<BluetoothCharacteristic, BluetoothError>!
+    open var discoverCharacteristicsForClosure: (([CBUUID]?, BluetoothService) -> AnyPublisher<BluetoothCharacteristic, BluetoothError>)?
 
-    open func discoverCharacteristics(_ characteristicUUIDs: [CBUUID]?, for service: BluetoothService) -> Promise<[BluetoothCharacteristic], BluetoothError> {
+    open func discoverCharacteristics(_ characteristicUUIDs: [CBUUID]?, for service: BluetoothService) -> AnyPublisher<BluetoothCharacteristic, BluetoothError> {
         discoverCharacteristicsForCallsCount += 1
         discoverCharacteristicsForReceivedArguments = (characteristicUUIDs: characteristicUUIDs, service: service)
         return discoverCharacteristicsForClosure.map({ $0(characteristicUUIDs, service) }) ?? discoverCharacteristicsForReturnValue
@@ -271,10 +271,10 @@ open class BluetoothPeripheralMock: BluetoothPeripheral {
         return discoverDescriptorsForCallsCount > 0
     }
     open var discoverDescriptorsForReceivedCharacteristic: BluetoothCharacteristic?
-    open var discoverDescriptorsForReturnValue: Promise<[BluetoothDescriptor], BluetoothError>!
-    open var discoverDescriptorsForClosure: ((BluetoothCharacteristic) -> Promise<[BluetoothDescriptor], BluetoothError>)?
+    open var discoverDescriptorsForReturnValue: AnyPublisher<BluetoothDescriptor, BluetoothError>!
+    open var discoverDescriptorsForClosure: ((BluetoothCharacteristic) -> AnyPublisher<BluetoothDescriptor, BluetoothError>)?
 
-    open func discoverDescriptors(for characteristic: BluetoothCharacteristic) -> Promise<[BluetoothDescriptor], BluetoothError> {
+    open func discoverDescriptors(for characteristic: BluetoothCharacteristic) -> AnyPublisher<BluetoothDescriptor, BluetoothError> {
         discoverDescriptorsForCallsCount += 1
         discoverDescriptorsForReceivedCharacteristic = characteristic
         return discoverDescriptorsForClosure.map({ $0(characteristic) }) ?? discoverDescriptorsForReturnValue

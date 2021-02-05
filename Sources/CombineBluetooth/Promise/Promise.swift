@@ -11,6 +11,13 @@ extension Promise {
             }
         }
     }
+    public static func create<InnerError>(value: Output) -> Promise<Output, InnerError> {
+        .init {
+            .init { completion in
+                completion(.success(value))
+            }
+        }
+    }
 }
 
 public enum PromiseError<Failure: Error>: Error {

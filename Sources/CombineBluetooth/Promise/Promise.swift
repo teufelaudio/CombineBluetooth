@@ -62,7 +62,7 @@ extension Publisher {
 
 extension Promise {
     public func flatMapPromise<NewOutput, InnerError>(_ transform: @escaping (Output) -> Promise<NewOutput, InnerError>) -> Promise<NewOutput, InnerError>
-    where Failure == PromiseError<InnerError> {
+    where DeferredPublisher.Failure == PromiseError<InnerError> {
         self.map(transform)
             .switchToLatest()
             .catch { (nestedError: PromiseError<InnerError>) -> AnyPublisher<NewOutput, InnerError> in

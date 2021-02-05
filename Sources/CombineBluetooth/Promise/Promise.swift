@@ -46,6 +46,30 @@ extension Promise {
         }
     }
 }
+
+extension Publisher {
+    public var promise: Promise<Output, Failure> {
+        .first(of: self)
+    }
+}
+
+extension Promise {
+    public func flatMap<NewOutput, InnerError>(_ transform: @escaping (Output) -> Promise<NewOutput, InnerError>) -> Promise<NewOutput, InnerError>
+    where Failure == PromiseError<InnerError> {
+        self.map(transform)
+            .switchToLatest()
+            .catch { (nestedError: PromiseError<InnerError>) -> AnyPublisher<NewOutput, InnerError> in
+                switch nestedError {
+                case .completedWithoutValue:
+                    return Empty<NewOutput, InnerError>().eraseToAnyPublisher()
+                case let .completedWithError(error):
+                    return Fail<NewOutput, InnerError>(error: error).eraseToAnyPublisher()
+                }
+            }
+            .promise
+    }
+}
+
 #endif
 
 //#if canImport(Combine)

@@ -104,32 +104,32 @@ extension CoreBluetoothPeripheralManager: PeripheralManager {
         return .success(())
     }
 
-    func add(_ service: BluetoothService) -> Promise<BluetoothService, BluetoothError> {
+    func add(_ service: BluetoothService) -> AnyPublisher<BluetoothService, BluetoothError> {
         guard let coreBluetoothService = service as? CoreBluetoothService,
             let mutableService = coreBluetoothService.service as? CBMutableService
-        else { return .create(error: .unknownWrapperType) }
+        else { return Fail(error: .unknownWrapperType).eraseToAnyPublisher() }
 
         let pm = peripheralManager
         let lock = NSRecursiveLock()
         var added = false
 
-        return Promise<BluetoothService, BluetoothError>.first(of:
-            self._didAddService
-                .filter { $0.service.id == coreBluetoothService.id }
-                .tryMap { try $0.result.get() }
-                .map { _ in service }
-                .mapError { BluetoothError.onAddService(service: service, details: $0) }
-                .handleEvents(
-                    receiveRequest: { demand in
-                        guard demand > .none else { return }
-                        lock.lock()
-                        defer { lock.unlock() }
-                        guard !added else { return }
-                        added = true
-                        pm.add(mutableService)
-                    }
-                )
-        )
+        return _didAddService
+            .filter { $0.service.id == coreBluetoothService.id }
+            .tryMap { try $0.result.get() }
+            .map { _ in service }
+            .mapError { BluetoothError.onAddService(service: service, details: $0) }
+            .handleEvents(
+                receiveRequest: { demand in
+                    guard demand > .none else { return }
+                    lock.lock()
+                    defer { lock.unlock() }
+                    guard !added else { return }
+                    added = true
+                    pm.add(mutableService)
+                }
+
+            )
+            .eraseToAnyPublisher()
     }
 
     func remove(_ service: BluetoothService) -> Result<BluetoothService, BluetoothError> {
@@ -161,53 +161,51 @@ extension CoreBluetoothPeripheralManager: PeripheralManager {
         return .success(peripheralManager.updateValue(value, for: mutableCharacteristic, onSubscribedCentrals: coreBluetothCentrals))
     }
 
-    func publishL2CAPChannel(withEncryption encryptionRequired: Bool) -> Promise<CBL2CAPPSM, BluetoothError> {
+    func publishL2CAPChannel(withEncryption encryptionRequired: Bool) -> AnyPublisher<CBL2CAPPSM, BluetoothError> {
         let pm = peripheralManager
 
-        return Promise<CBL2CAPPSM, BluetoothError>.first(of:
-            self._didPublishL2CAPChannel
-                .tryMap {
-                    let psm = $0.PSM
-                    switch $0.result {
-                    case .success:
-                        return psm
-                    case let .failure(error):
-                        throw BluetoothError.onPublishChannel(PSM: psm, details: error)
-                    }
+        return _didPublishL2CAPChannel
+            .tryMap {
+                let psm = $0.PSM
+                switch $0.result {
+                case .success:
+                    return psm
+                case let .failure(error):
+                    throw BluetoothError.onPublishChannel(PSM: psm, details: error)
                 }
-                .mapError { $0 as! BluetoothError }
-                .handleEvents(
-                    receiveRequest: { demand in
-                        guard demand > .none else { return }
-                        pm.publishL2CAPChannel(withEncryption: encryptionRequired)
-                    }
-                )
-        )
+            }
+            .mapError { $0 as! BluetoothError }
+            .handleEvents(
+                receiveRequest: { demand in
+                    guard demand > .none else { return }
+                    pm.publishL2CAPChannel(withEncryption: encryptionRequired)
+                }
+            )
+            .eraseToAnyPublisher()
     }
 
-    func unpublishL2CAPChannel(_ PSM: CBL2CAPPSM)  -> Promise<CBL2CAPPSM, BluetoothError> {
+    func unpublishL2CAPChannel(_ PSM: CBL2CAPPSM) -> AnyPublisher<CBL2CAPPSM, BluetoothError> {
         let pm = peripheralManager
 
-        return Promise<CBL2CAPPSM, BluetoothError>.first(of:
-            self._didUnpublishL2CAPChannel
-                .filter { $0.PSM == PSM }
-                .tryMap {
-                    let psm = $0.PSM
-                    switch $0.result {
-                    case .success:
-                        return psm
-                    case let .failure(error):
-                        throw BluetoothError.onPublishChannel(PSM: psm, details: error)
-                    }
+        return _didUnpublishL2CAPChannel
+            .filter { $0.PSM == PSM }
+            .tryMap {
+                let psm = $0.PSM
+                switch $0.result {
+                case .success:
+                    return psm
+                case let .failure(error):
+                    throw BluetoothError.onPublishChannel(PSM: psm, details: error)
                 }
-                .mapError { $0 as! BluetoothError }
-                .handleEvents(
-                    receiveRequest: { demand in
-                        guard demand > .none else { return }
-                        pm.unpublishL2CAPChannel(PSM)
-                    }
-                )
-        )
+            }
+            .mapError { $0 as! BluetoothError }
+            .handleEvents(
+                receiveRequest: { demand in
+                    guard demand > .none else { return }
+                    pm.unpublishL2CAPChannel(PSM)
+                }
+            )
+            .eraseToAnyPublisher()
     }
 }
 

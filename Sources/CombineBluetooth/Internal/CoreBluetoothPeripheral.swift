@@ -82,21 +82,20 @@ extension CoreBluetoothPeripheral: BluetoothPeripheral {
         return becameReadyForWriteWithoutResponse.eraseToAnyPublisher()
     }
 
-    func readRSSI() -> Promise<NSNumber, BluetoothError> {
+    func readRSSI() -> AnyPublisher<NSNumber, BluetoothError> {
         let peripheral = self.peripheral
-        return .first(of:
-            self.didReadRSSI
-                .tryMap { try $0.get() }
-                .mapError {
-                    BluetoothError.onReadRSSI(
-                        peripheral: CoreBluetoothPeripheral(peripheral: peripheral),
-                        details: $0
-                    )
-                }
-                .handleEvents(receiveSubscription: { _ in
-                    peripheral.readRSSI()
-                })
-        )
+        return didReadRSSI
+            .tryMap { try $0.get() }
+            .mapError {
+                BluetoothError.onReadRSSI(
+                    peripheral: CoreBluetoothPeripheral(peripheral: peripheral),
+                    details: $0
+                )
+            }
+            .handleEvents(receiveSubscription: { _ in
+                peripheral.readRSSI()
+            })
+            .eraseToAnyPublisher()
     }
 
     func discoverServices(_ serviceUUIDs: [CBUUID]?) -> AnyPublisher<BluetoothService, BluetoothError> {
@@ -174,49 +173,47 @@ extension CoreBluetoothPeripheral: BluetoothPeripheral {
             .eraseToAnyPublisher()
     }
 
-    func readCharacteristicValue(_ characteristic: BluetoothCharacteristic) -> Promise<BluetoothCharacteristic, BluetoothError> {
+    func readCharacteristicValue(_ characteristic: BluetoothCharacteristic) -> AnyPublisher<BluetoothCharacteristic, BluetoothError> {
         guard let coreBluetoothCharacteristic = characteristic as? CoreBluetoothCharacteristic
-        else { return .create(error: .unknownWrapperType) }
+        else { return Fail(error: .unknownWrapperType).eraseToAnyPublisher() }
         let peripheral = self.peripheral
-        return Promise<BluetoothCharacteristic, BluetoothError>.first(of:
-            self.readValueForCharacteristic
-                .tryMap { try $0.get() }
-                .filter { $0.id == coreBluetoothCharacteristic.characteristic.id }
-                .map(CoreBluetoothCharacteristic.init)
-                .mapError {
-                    BluetoothError.onReadValueForCharacteristic(
-                        characteristic: characteristic,
-                        details: $0
-                    )
-                }
-                .handleEvents(receiveSubscription: { _ in
-                    peripheral.readValue(for: coreBluetoothCharacteristic.characteristic)
-                })
-        )
+        return readValueForCharacteristic
+            .tryMap { try $0.get() }
+            .filter { $0.id == coreBluetoothCharacteristic.characteristic.id }
+            .map(CoreBluetoothCharacteristic.init)
+            .mapError {
+                BluetoothError.onReadValueForCharacteristic(
+                    characteristic: characteristic,
+                    details: $0
+                )
+            }
+            .handleEvents(receiveSubscription: { _ in
+                peripheral.readValue(for: coreBluetoothCharacteristic.characteristic)
+            })
+            .eraseToAnyPublisher()
     }
 
     func maximumWriteValueLength(for type: CBCharacteristicWriteType) -> Int {
         peripheral.maximumWriteValueLength(for: type)
     }
 
-    func writeValue(_ data: Data, for characteristic: BluetoothCharacteristic, type: CBCharacteristicWriteType) -> Promise<BluetoothCharacteristic, BluetoothError> {
-        guard let coreBluetoothCharacteristic = characteristic as? CoreBluetoothCharacteristic else { return .create(error: .unknownWrapperType) }
+    func writeValue(_ data: Data, for characteristic: BluetoothCharacteristic, type: CBCharacteristicWriteType) -> AnyPublisher<BluetoothCharacteristic, BluetoothError> {
+        guard let coreBluetoothCharacteristic = characteristic as? CoreBluetoothCharacteristic else { return Fail(error: .unknownWrapperType).eraseToAnyPublisher() }
         let peripheral = self.peripheral
-        return Promise<BluetoothCharacteristic, BluetoothError>.first(of:
-            self.didWriteValueForCharacteristic
-                .tryMap { try $0.get() }
-                .filter { $0.id == coreBluetoothCharacteristic.characteristic.id }
-                .map(CoreBluetoothCharacteristic.init)
-                .mapError {
-                    BluetoothError.onWriteValueForCharacteristic(
-                        characteristic: characteristic,
-                        details: $0
-                    )
-                }
-                .handleEvents(receiveSubscription: { _ in
-                    peripheral.writeValue(data, for: coreBluetoothCharacteristic.characteristic, type: type)
-                })
-        )
+        return didWriteValueForCharacteristic
+            .tryMap { try $0.get() }
+            .filter { $0.id == coreBluetoothCharacteristic.characteristic.id }
+            .map(CoreBluetoothCharacteristic.init)
+            .mapError {
+                BluetoothError.onWriteValueForCharacteristic(
+                    characteristic: characteristic,
+                    details: $0
+                )
+            }
+            .handleEvents(receiveSubscription: { _ in
+                peripheral.writeValue(data, for: coreBluetoothCharacteristic.characteristic, type: type)
+            })
+            .eraseToAnyPublisher()
     }
 
     func notifyValue(for characteristic: BluetoothCharacteristic) -> AnyPublisher<BluetoothCharacteristic, BluetoothError> {
@@ -289,61 +286,58 @@ extension CoreBluetoothPeripheral: BluetoothPeripheral {
             .eraseToAnyPublisher()
     }
 
-    func readDescriptorValue(_ descriptor: BluetoothDescriptor) -> Promise<BluetoothDescriptor, BluetoothError> {
-        guard let coreBluetoothDescriptor = descriptor as? CoreBluetoothDescriptor else { return .create(error: .unknownWrapperType) }
+    func readDescriptorValue(_ descriptor: BluetoothDescriptor) -> AnyPublisher<BluetoothDescriptor, BluetoothError> {
+        guard let coreBluetoothDescriptor = descriptor as? CoreBluetoothDescriptor else { return Fail(error: .unknownWrapperType).eraseToAnyPublisher() }
         let peripheral = self.peripheral
-        return Promise<BluetoothDescriptor, BluetoothError>.first(of:
-            self.readValueForDescriptor
-                .tryMap { try $0.get() }
-                .filter { $0.id == coreBluetoothDescriptor.descriptor.id }
-                .map(CoreBluetoothDescriptor.init)
-                .mapError {
-                    BluetoothError.onReadValueForDescriptor(
-                        descriptor: descriptor,
-                        details: $0
-                    )
-                }
-                .handleEvents(receiveSubscription: { _ in
-                    peripheral.readValue(for: coreBluetoothDescriptor.descriptor)
-                })
-        )
+        return readValueForDescriptor
+            .tryMap { try $0.get() }
+            .filter { $0.id == coreBluetoothDescriptor.descriptor.id }
+            .map(CoreBluetoothDescriptor.init)
+            .mapError {
+                BluetoothError.onReadValueForDescriptor(
+                    descriptor: descriptor,
+                    details: $0
+                )
+            }
+            .handleEvents(receiveSubscription: { _ in
+                peripheral.readValue(for: coreBluetoothDescriptor.descriptor)
+            })
+            .eraseToAnyPublisher()
     }
 
-    func writeValue(_ data: Data, for descriptor: BluetoothDescriptor) -> Promise<BluetoothDescriptor, BluetoothError> {
-        guard let coreBluetoothDescriptor = descriptor as? CoreBluetoothDescriptor else { return .create(error: .unknownWrapperType) }
+    func writeValue(_ data: Data, for descriptor: BluetoothDescriptor) -> AnyPublisher<BluetoothDescriptor, BluetoothError> {
+        guard let coreBluetoothDescriptor = descriptor as? CoreBluetoothDescriptor else { return Fail(error: .unknownWrapperType).eraseToAnyPublisher() }
         let peripheral = self.peripheral
-        return Promise<BluetoothDescriptor, BluetoothError>.first(of:
-            self.didWriteValueForDescriptor
-                .tryMap { try $0.get() }
-                .filter { $0.id == coreBluetoothDescriptor.descriptor.id }
-                .map(CoreBluetoothDescriptor.init)
-                .mapError {
-                    BluetoothError.onWriteValueForDescriptor(
-                        descriptor: descriptor,
-                        details: $0
-                    )
-                }
-                .handleEvents(receiveSubscription: { _ in
-                    peripheral.writeValue(data, for: coreBluetoothDescriptor.descriptor)
-                })
-        )
+        return didWriteValueForDescriptor
+            .tryMap { try $0.get() }
+            .filter { $0.id == coreBluetoothDescriptor.descriptor.id }
+            .map(CoreBluetoothDescriptor.init)
+            .mapError {
+                BluetoothError.onWriteValueForDescriptor(
+                    descriptor: descriptor,
+                    details: $0
+                )
+            }
+            .handleEvents(receiveSubscription: { _ in
+                peripheral.writeValue(data, for: coreBluetoothDescriptor.descriptor)
+            })
+            .eraseToAnyPublisher()
     }
 
-    func openL2CAPChannel(PSM: CBL2CAPPSM) -> Promise<L2CAPChannel, BluetoothError> {
+    func openL2CAPChannel(PSM: CBL2CAPPSM) -> AnyPublisher<L2CAPChannel, BluetoothError> {
         let peripheral = self.peripheral
-        return Promise<L2CAPChannel, BluetoothError>.first(of:
-            self.didOpenChannel
-                .tryMap { try $0.get() }
-                .mapError {
-                    BluetoothError.onOpenChannel(
-                        peripheral: CoreBluetoothPeripheral(peripheral: peripheral),
-                        PSM: PSM,
-                        details: $0
-                    )
-                }
-                .handleEvents(receiveSubscription: { _ in
-                    peripheral.openL2CAPChannel(PSM)
-                })
-        )
+        return didOpenChannel
+            .tryMap { try $0.get() }
+            .mapError {
+                BluetoothError.onOpenChannel(
+                    peripheral: CoreBluetoothPeripheral(peripheral: peripheral),
+                    PSM: PSM,
+                    details: $0
+                )
+            }
+            .handleEvents(receiveSubscription: { _ in
+                peripheral.openL2CAPChannel(PSM)
+            })
+            .eraseToAnyPublisher()
     }
 }

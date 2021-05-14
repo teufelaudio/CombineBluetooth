@@ -11,7 +11,7 @@ struct CoreBluetoothService: Identifiable {
 }
 
 extension CoreBluetoothService: BluetoothService {
-    var peripheral: BluetoothPeripheral { CoreBluetoothPeripheral(peripheral: service.peripheral) }
+    var peripheral: UUID { service.peripheral.identifier }
     var isPrimary: Bool { service.isPrimary }
     var includedServices: [BluetoothService]? { service.includedServices?.map(CoreBluetoothService.init) }
     var characteristics: [BluetoothCharacteristic]? { service.characteristics?.map(CoreBluetoothCharacteristic.init) }

@@ -4,6 +4,11 @@ import CoreBluetooth
 class CoreBluetoothCentralManager: NSObject {
     private var kvoDelegate: AnyCancellable?
     private let centralManager: CBCentralManager
+    // This is required to avoid returning different instances of CoreBluetoothPeripheral every time we discover a device previously discovered.
+    // There should not be different instances because CoreBluetoothPeripheral holds the delegate for the CBPeripheral, which is expected to be
+    // unique.
+    private var cachedPeripherals: [UUID: CoreBluetoothPeripheral] = [:]
+    private let cachedPeripheralsAccess = NSRecursiveLock()
 
     init(centralManager: CBCentralManager) {
         self.centralManager = centralManager
@@ -37,6 +42,15 @@ class CoreBluetoothCentralManager: NSObject {
 }
 
 extension CoreBluetoothCentralManager: CentralManager {
+    private func peripheral(for cbPeripheral: CBPeripheral) -> CoreBluetoothPeripheral {
+        cachedPeripheralsAccess.lock()
+        defer { cachedPeripheralsAccess.unlock() }
+        if let instance = cachedPeripherals[cbPeripheral.identifier] { return instance }
+        let newInstance = CoreBluetoothPeripheral.wrapping(peripheral: cbPeripheral)
+        cachedPeripherals[cbPeripheral.identifier] = newInstance
+        return newInstance
+    }
+
     var isScanning: AnyPublisher<Bool, Never> {
         centralManager
             .publisher(for: \.isScanning)
@@ -76,12 +90,12 @@ extension CoreBluetoothCentralManager: CentralManager {
     var peripheralConnection: AnyPublisher<PeripheralConnectionEvent, Never> {
         Publishers.Merge3(
             _didConnectPeripheral
-                .map(CoreBluetoothPeripheral.init)
+                .map(peripheral(for:))
                 .map(PeripheralConnectionEvent.didConnect),
             _didDisconnectPeripheral
-                .map { PeripheralConnectionEvent.didDisconnect(peripheral: CoreBluetoothPeripheral(peripheral: $0.peripheral), error: $0.error) },
+                .map { PeripheralConnectionEvent.didDisconnect(peripheral: self.peripheral(for: $0.peripheral), error: $0.error) },
             _didFailToConnectPeripheral
-                .map { PeripheralConnectionEvent.didFailToConnect(peripheral: CoreBluetoothPeripheral(peripheral: $0.peripheral), error: $0.error) }
+                .map { PeripheralConnectionEvent.didFailToConnect(peripheral: self.peripheral(for: $0.peripheral), error: $0.error) }
         )
         .eraseToAnyPublisher()
     }
@@ -100,18 +114,18 @@ extension CoreBluetoothCentralManager: CentralManager {
         return Publishers.Merge3(
             _didConnectPeripheral
                 .filter { $0.identifier == coreBluetoothPeripheral.peripheral.identifier }
-                .map(CoreBluetoothPeripheral.init)
+                .map(peripheral(for:))
                 .mapError { never -> BluetoothError in },
             _didDisconnectPeripheral
                 .filter { $0.peripheral.identifier == coreBluetoothPeripheral.peripheral.identifier }
                 .tryMap { disconnection -> BluetoothPeripheral in
-                    throw BluetoothError.lostConnection(peripheral: CoreBluetoothPeripheral(peripheral: disconnection.peripheral), error: disconnection.error)
+                    throw BluetoothError.lostConnection(peripheral: self.peripheral(for: disconnection.peripheral), error: disconnection.error)
                 }
                 .mapError { $0 as! BluetoothError },
             _didFailToConnectPeripheral
                 .filter { $0.peripheral.identifier == coreBluetoothPeripheral.peripheral.identifier }
                 .tryMap { disconnection -> BluetoothPeripheral in
-                    throw BluetoothError.failOnConnect(peripheral: CoreBluetoothPeripheral(peripheral: disconnection.peripheral), error: disconnection.error)
+                    throw BluetoothError.failOnConnect(peripheral: self.peripheral(for: disconnection.peripheral), error: disconnection.error)
                 }
                 .mapError { $0 as! BluetoothError }
         )
@@ -127,11 +141,11 @@ extension CoreBluetoothCentralManager: CentralManager {
     }
 
     func retrievePeripherals(withIdentifiers identifiers: [UUID]) -> [BluetoothPeripheral] {
-        centralManager.retrievePeripherals(withIdentifiers: identifiers).map(CoreBluetoothPeripheral.init)
+        centralManager.retrievePeripherals(withIdentifiers: identifiers).map(peripheral(for:))
     }
 
     func retrieveConnectedPeripherals(withServices serviceUUIDs: [CBUUID]) -> [BluetoothPeripheral] {
-        centralManager.retrieveConnectedPeripherals(withServices: serviceUUIDs).map(CoreBluetoothPeripheral.init)
+        centralManager.retrieveConnectedPeripherals(withServices: serviceUUIDs).map(peripheral(for:))
     }
 }
 
@@ -149,7 +163,7 @@ extension CoreBluetoothCentralManager: CBCentralManagerDelegate {
             CoreBluetoothAdvertisingPeripheral(
                 advertisementData: advertisementData,
                 rssi: RSSI,
-                peripheral: CoreBluetoothPeripheral(peripheral: peripheral)
+                peripheral: self.peripheral(for: peripheral)
             )
         )
     }

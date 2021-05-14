@@ -17,7 +17,11 @@ class CoreBluetoothPeripheral: NSObject, Identifiable {
     private let didWriteValueForDescriptor = PassthroughSubject<Result<CBDescriptor, Error>, Never>()
     private let becameReadyForWriteWithoutResponse = PassthroughSubject<Void, Never>()
 
-    init(peripheral: CBPeripheral) {
+    static func wrapping(peripheral: CBPeripheral) -> CoreBluetoothPeripheral {
+        CoreBluetoothPeripheral(peripheral: peripheral)
+    }
+
+    private init(peripheral: CBPeripheral) {
         self.peripheral = peripheral
         super.init()
         self.peripheral.delegate = self

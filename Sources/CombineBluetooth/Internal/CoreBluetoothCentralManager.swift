@@ -63,13 +63,13 @@ extension CoreBluetoothCentralManager: CentralManager {
     func scanForPeripherals() -> AnyPublisher<AdvertisingPeripheral, BluetoothError> {
         _scanForPeripherals(withServices: nil, options: nil)
     }
-    func scanForPeripherals(withServices serviceUUIDs: [CBUUID]) -> AnyPublisher<AdvertisingPeripheral, BluetoothError> {
+    func scanForPeripherals(withServices serviceUUIDs: [CBUUID]?) -> AnyPublisher<AdvertisingPeripheral, BluetoothError> {
         _scanForPeripherals(withServices: serviceUUIDs, options: nil)
     }
     func scanForPeripherals(options: [String : Any]) -> AnyPublisher<AdvertisingPeripheral, BluetoothError> {
         _scanForPeripherals(withServices: nil, options: options)
     }
-    func scanForPeripherals(withServices serviceUUIDs: [CBUUID], options: [String : Any]) -> AnyPublisher<AdvertisingPeripheral, BluetoothError> {
+    func scanForPeripherals(withServices serviceUUIDs: [CBUUID]?, options: [String : Any]) -> AnyPublisher<AdvertisingPeripheral, BluetoothError> {
         _scanForPeripherals(withServices: serviceUUIDs, options: options)
     }
 

@@ -144,10 +144,10 @@ open class BluetoothPeripheralMock: BluetoothPeripheral {
     open var readRSSICalled: Bool {
         return readRSSICallsCount > 0
     }
-    open var readRSSIReturnValue: Promise<NSNumber, BluetoothError>!
-    open var readRSSIClosure: (() -> Promise<NSNumber, BluetoothError>)?
+    open var readRSSIReturnValue: AnyPublisher<NSNumber, BluetoothError>!
+    open var readRSSIClosure: (() -> AnyPublisher<NSNumber, BluetoothError>)?
 
-    open func readRSSI() -> Promise<NSNumber, BluetoothError> {
+    open func readRSSI() -> AnyPublisher<NSNumber, BluetoothError> {
         readRSSICallsCount += 1
         return readRSSIClosure.map({ $0() }) ?? readRSSIReturnValue
     }
@@ -207,10 +207,10 @@ open class BluetoothPeripheralMock: BluetoothPeripheral {
         return readCharacteristicValueCallsCount > 0
     }
     open var readCharacteristicValueReceivedCharacteristic: BluetoothCharacteristic?
-    open var readCharacteristicValueReturnValue: Promise<BluetoothCharacteristic, BluetoothError>!
-    open var readCharacteristicValueClosure: ((BluetoothCharacteristic) -> Promise<BluetoothCharacteristic, BluetoothError>)?
+    open var readCharacteristicValueReturnValue: AnyPublisher<BluetoothCharacteristic, BluetoothError>!
+    open var readCharacteristicValueClosure: ((BluetoothCharacteristic) -> AnyPublisher<BluetoothCharacteristic, BluetoothError>)?
 
-    open func readCharacteristicValue(_ characteristic: BluetoothCharacteristic) -> Promise<BluetoothCharacteristic, BluetoothError> {
+    open func readCharacteristicValue(_ characteristic: BluetoothCharacteristic) -> AnyPublisher<BluetoothCharacteristic, BluetoothError> {
         readCharacteristicValueCallsCount += 1
         readCharacteristicValueReceivedCharacteristic = characteristic
         return readCharacteristicValueClosure.map({ $0(characteristic) }) ?? readCharacteristicValueReturnValue
@@ -239,10 +239,10 @@ open class BluetoothPeripheralMock: BluetoothPeripheral {
         return writeValueForTypeCallsCount > 0
     }
     open var writeValueForTypeReceivedArguments: (data: Data, characteristic: BluetoothCharacteristic, type: CBCharacteristicWriteType)?
-    open var writeValueForTypeReturnValue: Promise<BluetoothCharacteristic, BluetoothError>!
-    open var writeValueForTypeClosure: ((Data, BluetoothCharacteristic, CBCharacteristicWriteType) -> Promise<BluetoothCharacteristic, BluetoothError>)?
+    open var writeValueForTypeReturnValue: AnyPublisher<BluetoothCharacteristic, BluetoothError>!
+    open var writeValueForTypeClosure: ((Data, BluetoothCharacteristic, CBCharacteristicWriteType) -> AnyPublisher<BluetoothCharacteristic, BluetoothError>)?
 
-    open func writeValue(_ data: Data, for characteristic: BluetoothCharacteristic, type: CBCharacteristicWriteType) -> Promise<BluetoothCharacteristic, BluetoothError> {
+    open func writeValue(_ data: Data, for characteristic: BluetoothCharacteristic, type: CBCharacteristicWriteType) -> AnyPublisher<BluetoothCharacteristic, BluetoothError> {
         writeValueForTypeCallsCount += 1
         writeValueForTypeReceivedArguments = (data: data, characteristic: characteristic, type: type)
         return writeValueForTypeClosure.map({ $0(data, characteristic, type) }) ?? writeValueForTypeReturnValue
@@ -287,10 +287,10 @@ open class BluetoothPeripheralMock: BluetoothPeripheral {
         return readDescriptorValueCallsCount > 0
     }
     open var readDescriptorValueReceivedDescriptor: BluetoothDescriptor?
-    open var readDescriptorValueReturnValue: Promise<BluetoothDescriptor, BluetoothError>!
-    open var readDescriptorValueClosure: ((BluetoothDescriptor) -> Promise<BluetoothDescriptor, BluetoothError>)?
+    open var readDescriptorValueReturnValue: AnyPublisher<BluetoothDescriptor, BluetoothError>!
+    open var readDescriptorValueClosure: ((BluetoothDescriptor) -> AnyPublisher<BluetoothDescriptor, BluetoothError>)?
 
-    open func readDescriptorValue(_ descriptor: BluetoothDescriptor) -> Promise<BluetoothDescriptor, BluetoothError> {
+    open func readDescriptorValue(_ descriptor: BluetoothDescriptor) -> AnyPublisher<BluetoothDescriptor, BluetoothError> {
         readDescriptorValueCallsCount += 1
         readDescriptorValueReceivedDescriptor = descriptor
         return readDescriptorValueClosure.map({ $0(descriptor) }) ?? readDescriptorValueReturnValue
@@ -303,10 +303,10 @@ open class BluetoothPeripheralMock: BluetoothPeripheral {
         return writeValueForCallsCount > 0
     }
     open var writeValueForReceivedArguments: (data: Data, descriptor: BluetoothDescriptor)?
-    open var writeValueForReturnValue: Promise<BluetoothDescriptor, BluetoothError>!
-    open var writeValueForClosure: ((Data, BluetoothDescriptor) -> Promise<BluetoothDescriptor, BluetoothError>)?
+    open var writeValueForReturnValue: AnyPublisher<BluetoothDescriptor, BluetoothError>!
+    open var writeValueForClosure: ((Data, BluetoothDescriptor) -> AnyPublisher<BluetoothDescriptor, BluetoothError>)?
 
-    open func writeValue(_ data: Data, for descriptor: BluetoothDescriptor) -> Promise<BluetoothDescriptor, BluetoothError> {
+    open func writeValue(_ data: Data, for descriptor: BluetoothDescriptor) -> AnyPublisher<BluetoothDescriptor, BluetoothError> {
         writeValueForCallsCount += 1
         writeValueForReceivedArguments = (data: data, descriptor: descriptor)
         return writeValueForClosure.map({ $0(data, descriptor) }) ?? writeValueForReturnValue
@@ -319,10 +319,10 @@ open class BluetoothPeripheralMock: BluetoothPeripheral {
         return openL2CAPChannelPSMCallsCount > 0
     }
     open var openL2CAPChannelPSMReceivedPSM: CBL2CAPPSM?
-    open var openL2CAPChannelPSMReturnValue: Promise<L2CAPChannel, BluetoothError>!
-    open var openL2CAPChannelPSMClosure: ((CBL2CAPPSM) -> Promise<L2CAPChannel, BluetoothError>)?
+    open var openL2CAPChannelPSMReturnValue: AnyPublisher<L2CAPChannel, BluetoothError>!
+    open var openL2CAPChannelPSMClosure: ((CBL2CAPPSM) -> AnyPublisher<L2CAPChannel, BluetoothError>)?
 
-    open func openL2CAPChannel(PSM: CBL2CAPPSM) -> Promise<L2CAPChannel, BluetoothError> {
+    open func openL2CAPChannel(PSM: CBL2CAPPSM) -> AnyPublisher<L2CAPChannel, BluetoothError> {
         openL2CAPChannelPSMCallsCount += 1
         openL2CAPChannelPSMReceivedPSM = PSM
         return openL2CAPChannelPSMClosure.map({ $0(PSM) }) ?? openL2CAPChannelPSMReturnValue
@@ -335,11 +335,11 @@ open class BluetoothServiceMock: BluetoothService {
         set(value) { underlyingId = value }
     }
     open var underlyingId: CBUUID!
-    open var peripheral: BluetoothPeripheral {
+    open var peripheral: UUID {
         get { return underlyingPeripheral }
         set(value) { underlyingPeripheral = value }
     }
-    open var underlyingPeripheral: BluetoothPeripheral!
+    open var underlyingPeripheral: UUID!
     open var isPrimary: Bool {
         get { return underlyingIsPrimary }
         set(value) { underlyingIsPrimary = value }
@@ -391,9 +391,9 @@ open class CentralManagerMock: CentralManager {
     }
     open var scanForPeripheralsWithServicesReceivedServiceUUIDs: [CBUUID]?
     open var scanForPeripheralsWithServicesReturnValue: AnyPublisher<AdvertisingPeripheral, BluetoothError>!
-    open var scanForPeripheralsWithServicesClosure: (([CBUUID]) -> AnyPublisher<AdvertisingPeripheral, BluetoothError>)?
+    open var scanForPeripheralsWithServicesClosure: (([CBUUID]?) -> AnyPublisher<AdvertisingPeripheral, BluetoothError>)?
 
-    open func scanForPeripherals(withServices serviceUUIDs: [CBUUID]) -> AnyPublisher<AdvertisingPeripheral, BluetoothError> {
+    open func scanForPeripherals(withServices serviceUUIDs: [CBUUID]?) -> AnyPublisher<AdvertisingPeripheral, BluetoothError> {
         scanForPeripheralsWithServicesCallsCount += 1
         scanForPeripheralsWithServicesReceivedServiceUUIDs = serviceUUIDs
         return scanForPeripheralsWithServicesClosure.map({ $0(serviceUUIDs) }) ?? scanForPeripheralsWithServicesReturnValue
@@ -405,11 +405,11 @@ open class CentralManagerMock: CentralManager {
     open var scanForPeripheralsWithServicesOptionsCalled: Bool {
         return scanForPeripheralsWithServicesOptionsCallsCount > 0
     }
-    open var scanForPeripheralsWithServicesOptionsReceivedArguments: (serviceUUIDs: [CBUUID], options: [String: Any])?
+    open var scanForPeripheralsWithServicesOptionsReceivedArguments: (serviceUUIDs: [CBUUID]?, options: [String: Any])?
     open var scanForPeripheralsWithServicesOptionsReturnValue: AnyPublisher<AdvertisingPeripheral, BluetoothError>!
-    open var scanForPeripheralsWithServicesOptionsClosure: (([CBUUID], [String: Any]) -> AnyPublisher<AdvertisingPeripheral, BluetoothError>)?
+    open var scanForPeripheralsWithServicesOptionsClosure: (([CBUUID]?, [String: Any]) -> AnyPublisher<AdvertisingPeripheral, BluetoothError>)?
 
-    open func scanForPeripherals(withServices serviceUUIDs: [CBUUID], options: [String: Any]) -> AnyPublisher<AdvertisingPeripheral, BluetoothError> {
+    open func scanForPeripherals(withServices serviceUUIDs: [CBUUID]?, options: [String: Any]) -> AnyPublisher<AdvertisingPeripheral, BluetoothError> {
         scanForPeripheralsWithServicesOptionsCallsCount += 1
         scanForPeripheralsWithServicesOptionsReceivedArguments = (serviceUUIDs: serviceUUIDs, options: options)
         return scanForPeripheralsWithServicesOptionsClosure.map({ $0(serviceUUIDs, options) }) ?? scanForPeripheralsWithServicesOptionsReturnValue
@@ -592,10 +592,10 @@ open class PeripheralManagerMock: PeripheralManager {
         return addCallsCount > 0
     }
     open var addReceivedService: BluetoothService?
-    open var addReturnValue: Promise<BluetoothService, BluetoothError>!
-    open var addClosure: ((BluetoothService) -> Promise<BluetoothService, BluetoothError>)?
+    open var addReturnValue: AnyPublisher<BluetoothService, BluetoothError>!
+    open var addClosure: ((BluetoothService) -> AnyPublisher<BluetoothService, BluetoothError>)?
 
-    open func add(_ service: BluetoothService) -> Promise<BluetoothService, BluetoothError> {
+    open func add(_ service: BluetoothService) -> AnyPublisher<BluetoothService, BluetoothError> {
         addCallsCount += 1
         addReceivedService = service
         return addClosure.map({ $0(service) }) ?? addReturnValue
@@ -669,10 +669,10 @@ open class PeripheralManagerMock: PeripheralManager {
         return publishL2CAPChannelWithEncryptionCallsCount > 0
     }
     open var publishL2CAPChannelWithEncryptionReceivedEncryptionRequired: Bool?
-    open var publishL2CAPChannelWithEncryptionReturnValue: Promise<CBL2CAPPSM, BluetoothError>!
-    open var publishL2CAPChannelWithEncryptionClosure: ((Bool) -> Promise<CBL2CAPPSM, BluetoothError>)?
+    open var publishL2CAPChannelWithEncryptionReturnValue: AnyPublisher<CBL2CAPPSM, BluetoothError>!
+    open var publishL2CAPChannelWithEncryptionClosure: ((Bool) -> AnyPublisher<CBL2CAPPSM, BluetoothError>)?
 
-    open func publishL2CAPChannel(withEncryption encryptionRequired: Bool) -> Promise<CBL2CAPPSM, BluetoothError> {
+    open func publishL2CAPChannel(withEncryption encryptionRequired: Bool) -> AnyPublisher<CBL2CAPPSM, BluetoothError> {
         publishL2CAPChannelWithEncryptionCallsCount += 1
         publishL2CAPChannelWithEncryptionReceivedEncryptionRequired = encryptionRequired
         return publishL2CAPChannelWithEncryptionClosure.map({ $0(encryptionRequired) }) ?? publishL2CAPChannelWithEncryptionReturnValue
@@ -685,10 +685,10 @@ open class PeripheralManagerMock: PeripheralManager {
         return unpublishL2CAPChannelCallsCount > 0
     }
     open var unpublishL2CAPChannelReceivedPSM: CBL2CAPPSM?
-    open var unpublishL2CAPChannelReturnValue: Promise<CBL2CAPPSM, BluetoothError>!
-    open var unpublishL2CAPChannelClosure: ((CBL2CAPPSM) -> Promise<CBL2CAPPSM, BluetoothError>)?
+    open var unpublishL2CAPChannelReturnValue: AnyPublisher<CBL2CAPPSM, BluetoothError>!
+    open var unpublishL2CAPChannelClosure: ((CBL2CAPPSM) -> AnyPublisher<CBL2CAPPSM, BluetoothError>)?
 
-    open func unpublishL2CAPChannel(_ PSM: CBL2CAPPSM) -> Promise<CBL2CAPPSM, BluetoothError> {
+    open func unpublishL2CAPChannel(_ PSM: CBL2CAPPSM) -> AnyPublisher<CBL2CAPPSM, BluetoothError> {
         unpublishL2CAPChannelCallsCount += 1
         unpublishL2CAPChannelReceivedPSM = PSM
         return unpublishL2CAPChannelClosure.map({ $0(PSM) }) ?? unpublishL2CAPChannelReturnValue

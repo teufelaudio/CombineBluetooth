@@ -63,11 +63,7 @@ open class BluetoothCharacteristicMock: BluetoothCharacteristic {
         set(value) { underlyingId = value }
     }
     open var underlyingId: CBUUID!
-    open var service: BluetoothService {
-        get { return underlyingService }
-        set(value) { underlyingService = value }
-    }
-    open var underlyingService: BluetoothService!
+    open var service: BluetoothService?
     open var properties: CBCharacteristicProperties {
         get { return underlyingProperties }
         set(value) { underlyingProperties = value }
@@ -89,11 +85,7 @@ open class BluetoothDescriptorMock: BluetoothDescriptor {
         set(value) { underlyingId = value }
     }
     open var underlyingId: CBUUID!
-    open var characteristic: BluetoothCharacteristic {
-        get { return underlyingCharacteristic }
-        set(value) { underlyingCharacteristic = value }
-    }
-    open var underlyingCharacteristic: BluetoothCharacteristic!
+    open var characteristic: BluetoothCharacteristic?
     open var value: Any?
 }
 open class BluetoothManagerMock: BluetoothManager {
@@ -335,11 +327,7 @@ open class BluetoothServiceMock: BluetoothService {
         set(value) { underlyingId = value }
     }
     open var underlyingId: CBUUID!
-    open var peripheral: UUID {
-        get { return underlyingPeripheral }
-        set(value) { underlyingPeripheral = value }
-    }
-    open var underlyingPeripheral: UUID!
+    open var peripheral: UUID?
     open var isPrimary: Bool {
         get { return underlyingIsPrimary }
         set(value) { underlyingIsPrimary = value }

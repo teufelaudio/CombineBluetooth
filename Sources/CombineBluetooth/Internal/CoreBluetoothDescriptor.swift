@@ -11,6 +11,10 @@ struct CoreBluetoothDescriptor: Identifiable {
 }
 
 extension CoreBluetoothDescriptor: BluetoothDescriptor {
-    var characteristic: BluetoothCharacteristic { CoreBluetoothCharacteristic(characteristic: descriptor.characteristic) }
+    #if swift(>=5.5) && !os(macOS)
+    var characteristic: BluetoothCharacteristic? { descriptor.characteristic.map(CoreBluetoothCharacteristic.init) }
+    #else
+    var characteristic: BluetoothCharacteristic? { CoreBluetoothCharacteristic(characteristic: descriptor.characteristic) }
+    #endif
     var value: Any? { descriptor.value }
 }

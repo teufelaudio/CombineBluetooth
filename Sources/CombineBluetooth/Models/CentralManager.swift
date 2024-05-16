@@ -13,6 +13,7 @@ public protocol CentralManager: BluetoothManager {
     func retrieveConnectedPeripherals(withServices serviceUUIDs: [CBUUID]) -> [BluetoothPeripheral]
     func connect(_ peripheral: BluetoothPeripheral) -> AnyPublisher<BluetoothPeripheral, BluetoothError>
     func connect(_ peripheral: BluetoothPeripheral, options: [String : Any]) -> AnyPublisher<BluetoothPeripheral, BluetoothError>
+    func peripheral(for uuid: UUID) -> CBPeripheral?
     // TODO: Nice to have, but complicate to handle single delegate (subscribing again with different options should end prior observations, which can
     //       be a bit unexpected).
     // - (void)registerForConnectionEventsWithOptions:(nullable NSDictionary<CBConnectionEventMatchingOption, id> *)options NS_AVAILABLE_IOS(13_0);

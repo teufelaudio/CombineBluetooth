@@ -51,6 +51,13 @@ extension CoreBluetoothCentralManager: CentralManager {
         return newInstance
     }
 
+    public func peripheral(for uuid: UUID) -> CBPeripheral? {
+        cachedPeripheralsAccess.lock()
+        defer { cachedPeripheralsAccess.unlock() }
+        if let instance = cachedPeripherals[uuid] { return instance.peripheral }
+        return nil
+    }
+
     var isScanning: AnyPublisher<Bool, Never> {
         centralManager
             .publisher(for: \.isScanning)

@@ -51,10 +51,10 @@ extension CoreBluetoothCentralManager: CentralManager {
         return newInstance
     }
 
-    public func peripheral(for uuid: UUID) -> CBPeripheral? {
+    public func peripheral(for uuid: UUID) -> BluetoothPeripheral? {
         cachedPeripheralsAccess.lock()
         defer { cachedPeripheralsAccess.unlock() }
-        if let instance = cachedPeripherals[uuid] { return instance.peripheral }
+        if let instance = cachedPeripherals[uuid] { return instance }
         return nil
     }
 

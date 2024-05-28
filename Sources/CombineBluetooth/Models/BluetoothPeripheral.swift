@@ -9,6 +9,7 @@ public protocol BluetoothPeripheral: BluetoothPeer {
     var services: [BluetoothService]? { get }
     var canSendWriteWithoutResponse: Bool { get }
     var isReadyAgainForWriteWithoutResponse: AnyPublisher<Void, Never> { get }
+    var proxyDelegate: CBPeripheralDelegate? { get set }
     func readRSSI() -> AnyPublisher<NSNumber, BluetoothError>
     func discoverServices(_ serviceUUIDs: [CBUUID]?) -> AnyPublisher<BluetoothService, BluetoothError>
     func discoverIncludedServices(_ includedServiceUUIDs: [CBUUID]?, for service: BluetoothService) -> AnyPublisher<BluetoothService, BluetoothError>

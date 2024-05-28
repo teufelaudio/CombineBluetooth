@@ -26,44 +26,69 @@ class CoreBluetoothPeripheral: NSObject, Identifiable {
         super.init()
         self.peripheral.delegate = self
     }
+    
+    var proxyDelegate: CBPeripheralDelegate?
 }
 
 extension CoreBluetoothPeripheral: CBPeripheralDelegate {
     func peripheralDidUpdateName(_ peripheral: CBPeripheral) { }
+    
     func peripheral(_ peripheral: CBPeripheral, didModifyServices invalidatedServices: [CBService]) { }
+    
     func peripheral(_ peripheral: CBPeripheral, didReadRSSI RSSI: NSNumber, error: Error?) {
         didReadRSSI.send(error.map(Result.failure) ?? .success(RSSI))
+        proxyDelegate?.peripheral?(peripheral, didReadRSSI: RSSI, error: error)
     }
+    
     func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
         didDiscoverServices.send(error.map(Result.failure) ?? .success(peripheral.services ?? []))
+        proxyDelegate?.peripheral?(peripheral, didDiscoverServices: error)
     }
     func peripheral(_ peripheral: CBPeripheral, didDiscoverIncludedServicesFor service: CBService, error: Error?) {
         didDiscoverIncludedServices.send(error.map(Result.failure) ?? .success((parent: service, included: service.includedServices ?? [])))
+        proxyDelegate?.peripheral?(peripheral, didDiscoverIncludedServicesFor: service, error: error)
     }
+    
     func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
         didDiscoverCharacteristics.send(error.map(Result.failure) ?? .success((service: service, characteristics: service.characteristics ?? [])))
+        proxyDelegate?.peripheral?(peripheral, didDiscoverCharacteristicsFor: service, error: error)
     }
+    
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
         readValueForCharacteristic.send(error.map(Result.failure) ?? .success(characteristic))
+        proxyDelegate?.peripheral?(peripheral, didUpdateValueFor: characteristic, error: error)
     }
+    
     func peripheral(_ peripheral: CBPeripheral, didWriteValueFor characteristic: CBCharacteristic, error: Error?) {
         didWriteValueForCharacteristic.send(error.map(Result.failure) ?? .success(characteristic))
+        proxyDelegate?.peripheral?(peripheral, didWriteValueFor: characteristic, error: error)
     }
+    
     func peripheral(_ peripheral: CBPeripheral, didUpdateNotificationStateFor characteristic: CBCharacteristic, error: Error?) {
         didUpdateNotificationStateForCharacteristic.send(error.map(Result.failure) ?? .success(characteristic))
+        proxyDelegate?.peripheral?(peripheral, didUpdateNotificationStateFor: characteristic, error: error)
     }
+    
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor descriptor: CBDescriptor, error: Error?) {
         readValueForDescriptor.send(error.map(Result.failure) ?? .success(descriptor))
+        proxyDelegate?.peripheral?(peripheral, didUpdateValueFor: descriptor, error: error)
     }
+    
     func peripheral(_ peripheral: CBPeripheral, didDiscoverDescriptorsFor characteristic: CBCharacteristic, error: Error?) {
         didDiscoverDescriptors.send(error.map(Result.failure) ?? .success((characteristic: characteristic, descriptors: characteristic.descriptors ?? [])))
+        proxyDelegate?.peripheral?(peripheral, didDiscoverDescriptorsFor: characteristic, error: error)
     }
+    
     func peripheral(_ peripheral: CBPeripheral, didWriteValueFor descriptor: CBDescriptor, error: Error?) {
         didWriteValueForDescriptor.send(error.map(Result.failure) ?? .success(descriptor))
+        proxyDelegate?.peripheral?(peripheral, didWriteValueFor: descriptor, error: error)
     }
+    
     func peripheralIsReady(toSendWriteWithoutResponse peripheral: CBPeripheral) {
         becameReadyForWriteWithoutResponse.send(())
+        proxyDelegate?.peripheralIsReady?(toSendWriteWithoutResponse: peripheral)
     }
+    
     func peripheral(_ peripheral: CBPeripheral, didOpen channel: CBL2CAPChannel?, error: Error?) {
         didOpenChannel.send(
             error.map(Result.failure)
@@ -74,6 +99,7 @@ extension CoreBluetoothPeripheral: CBPeripheralDelegate {
                     userInfo: nil
                 ))
         )
+        proxyDelegate?.peripheral?(peripheral, didOpen: channel, error: error)
     }
 }
 

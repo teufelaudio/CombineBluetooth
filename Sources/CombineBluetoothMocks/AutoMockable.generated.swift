@@ -125,6 +125,7 @@ open class BluetoothPeripheralMock: BluetoothPeripheral {
         set(value) { underlyingIsReadyAgainForWriteWithoutResponse = value }
     }
     open var underlyingIsReadyAgainForWriteWithoutResponse: AnyPublisher<Void, Never>!
+    open var proxyDelegate: CBPeripheralDelegate?
     open var id: UUID {
         get { return underlyingId }
         set(value) { underlyingId = value }
@@ -481,6 +482,22 @@ open class CentralManagerMock: CentralManager {
         connectOptionsCallsCount += 1
         connectOptionsReceivedArguments = (peripheral: peripheral, options: options)
         return connectOptionsClosure.map({ $0(peripheral, options) }) ?? connectOptionsReturnValue
+    }
+
+    //MARK: - peripheral
+
+    open var peripheralForCallsCount = 0
+    open var peripheralForCalled: Bool {
+        return peripheralForCallsCount > 0
+    }
+    open var peripheralForReceivedUuid: UUID?
+    open var peripheralForReturnValue: BluetoothPeripheral?
+    open var peripheralForClosure: ((UUID) -> BluetoothPeripheral?)?
+
+    open func peripheral(for uuid: UUID) -> BluetoothPeripheral? {
+        peripheralForCallsCount += 1
+        peripheralForReceivedUuid = uuid
+        return peripheralForClosure.map({ $0(uuid) }) ?? peripheralForReturnValue
     }
 
 }

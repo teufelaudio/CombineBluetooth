@@ -39,6 +39,9 @@ class CoreBluetoothCentralManager: NSObject {
             self.kvoDelegate = nil
         }
     }
+    
+    /// Proxy delegate to be registered to receive `CBCentralManagerDelegate` callbacks before these get published.
+    private var proxyDelegate: CBCentralManagerDelegate?
 }
 
 extension CoreBluetoothCentralManager: CentralManager {
@@ -154,18 +157,29 @@ extension CoreBluetoothCentralManager: CentralManager {
     func retrieveConnectedPeripherals(withServices serviceUUIDs: [CBUUID]) -> [BluetoothPeripheral] {
         centralManager.retrieveConnectedPeripherals(withServices: serviceUUIDs).map(peripheral(for:))
     }
+    
+    func registerProxyDelegate(_ proxyDelegate: any CBCentralManagerDelegate) {
+        self.proxyDelegate = proxyDelegate
+    }
+    
+    func unregisterProxyDelegate() {
+        proxyDelegate = nil
+    }
 }
 
 extension CoreBluetoothCentralManager: CBCentralManagerDelegate {
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
+        proxyDelegate?.centralManagerDidUpdateState(central)
         _state.send(central.state)
     }
 
     func centralManager(_ central: CBCentralManager, willRestoreState dict: [String : Any]) {
+        proxyDelegate?.centralManager?(central, willRestoreState: dict)
         _stateRestoration.send(.willRestoreState(dict))
     }
 
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
+        proxyDelegate?.centralManager?(central, didDiscover: peripheral, advertisementData: advertisementData, rssi: RSSI)
         _scanPublisher.send(
             CoreBluetoothAdvertisingPeripheral(
                 advertisementData: advertisementData,
@@ -176,14 +190,17 @@ extension CoreBluetoothCentralManager: CBCentralManagerDelegate {
     }
 
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
+        proxyDelegate?.centralManager?(central, didConnect: peripheral)
         _didConnectPeripheral.send(peripheral)
     }
 
     func centralManager(_ central: CBCentralManager, didFailToConnect peripheral: CBPeripheral, error: Error?) {
+        proxyDelegate?.centralManager?(central, didFailToConnect: peripheral, error: error)
         _didFailToConnectPeripheral.send((peripheral: peripheral, error: error))
     }
 
     func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
+        proxyDelegate?.centralManager?(central, didDisconnectPeripheral: peripheral, error: error)
         _didDisconnectPeripheral.send((peripheral: peripheral, error: error))
     }
 }

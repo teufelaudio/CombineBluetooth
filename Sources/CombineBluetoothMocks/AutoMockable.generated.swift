@@ -500,6 +500,34 @@ open class CentralManagerMock: CentralManager {
         return peripheralForClosure.map({ $0(uuid) }) ?? peripheralForReturnValue
     }
 
+    //MARK: - registerProxyDelegate
+
+    open var registerProxyDelegateCallsCount = 0
+    open var registerProxyDelegateCalled: Bool {
+        return registerProxyDelegateCallsCount > 0
+    }
+    open var registerProxyDelegateReceivedProxyDelegate: CBCentralManagerDelegate?
+    open var registerProxyDelegateClosure: ((CBCentralManagerDelegate) -> Void)?
+
+    open func registerProxyDelegate(_ proxyDelegate: CBCentralManagerDelegate) {
+        registerProxyDelegateCallsCount += 1
+        registerProxyDelegateReceivedProxyDelegate = proxyDelegate
+        registerProxyDelegateClosure?(proxyDelegate)
+    }
+
+    //MARK: - unregisterProxyDelegate
+
+    open var unregisterProxyDelegateCallsCount = 0
+    open var unregisterProxyDelegateCalled: Bool {
+        return unregisterProxyDelegateCallsCount > 0
+    }
+    open var unregisterProxyDelegateClosure: (() -> Void)?
+
+    open func unregisterProxyDelegate() {
+        unregisterProxyDelegateCallsCount += 1
+        unregisterProxyDelegateClosure?()
+    }
+
 }
 open class L2CAPChannelMock: L2CAPChannel {
     open var peer: BluetoothPeer {

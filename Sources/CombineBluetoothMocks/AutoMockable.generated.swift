@@ -358,6 +358,15 @@ open class CentralManagerMock: CentralManager {
         set(value) { underlyingStateRestoration = value }
     }
     open var underlyingStateRestoration: AnyPublisher<StateRestorationEvent, BluetoothError>!
+    //MARK: - init
+
+    open var initCentralManagerSkipCentralManagerDelegateObservationReceivedArguments: (centralManager: T, skipCentralManagerDelegateObservation: Bool)?
+    open var initCentralManagerSkipCentralManagerDelegateObservationClosure: ((T, Bool) -> Void)?
+
+    public required init(centralManager: T, skipCentralManagerDelegateObservation: Bool) {
+        initCentralManagerSkipCentralManagerDelegateObservationReceivedArguments = (centralManager: centralManager, skipCentralManagerDelegateObservation: skipCentralManagerDelegateObservation)
+        initCentralManagerSkipCentralManagerDelegateObservationClosure?(centralManager, skipCentralManagerDelegateObservation)
+    }
     //MARK: - scanForPeripherals
 
     open var scanForPeripheralsCallsCount = 0
@@ -498,34 +507,6 @@ open class CentralManagerMock: CentralManager {
         peripheralForCallsCount += 1
         peripheralForReceivedUuid = uuid
         return peripheralForClosure.map({ $0(uuid) }) ?? peripheralForReturnValue
-    }
-
-    //MARK: - registerProxyDelegate
-
-    open var registerProxyDelegateCallsCount = 0
-    open var registerProxyDelegateCalled: Bool {
-        return registerProxyDelegateCallsCount > 0
-    }
-    open var registerProxyDelegateReceivedProxyDelegate: CBCentralManagerDelegate?
-    open var registerProxyDelegateClosure: ((CBCentralManagerDelegate) -> Void)?
-
-    open func registerProxyDelegate(_ proxyDelegate: CBCentralManagerDelegate) {
-        registerProxyDelegateCallsCount += 1
-        registerProxyDelegateReceivedProxyDelegate = proxyDelegate
-        registerProxyDelegateClosure?(proxyDelegate)
-    }
-
-    //MARK: - unregisterProxyDelegate
-
-    open var unregisterProxyDelegateCallsCount = 0
-    open var unregisterProxyDelegateCalled: Bool {
-        return unregisterProxyDelegateCallsCount > 0
-    }
-    open var unregisterProxyDelegateClosure: (() -> Void)?
-
-    open func unregisterProxyDelegate() {
-        unregisterProxyDelegateCallsCount += 1
-        unregisterProxyDelegateClosure?()
     }
 
 }

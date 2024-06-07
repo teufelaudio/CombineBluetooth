@@ -3,6 +3,15 @@ import CoreBluetooth
 
 // sourcery: AutoMockable
 public protocol CentralManager: BluetoothManager {
+    associatedtype T: CentralManagerDependency
+    
+    /// Init of an instance of `CentralManager`
+    /// - Parameters:
+    ///   - centralManager: `CentralManagerDependency` to inject, such as an instance of `CBCentralManager`
+    ///   - skipCentralManagerDelegateObservation: Flag to skip the KVO on centralManager's delegate.
+    ///   Useful in case you're managing multiple delegates.
+    init(centralManager: T, skipCentralManagerDelegateObservation: Bool)
+    
     var isScanning: AnyPublisher<Bool, Never> { get }
     var peripheralConnection: AnyPublisher<PeripheralConnectionEvent, Never> { get }
     func scanForPeripherals() -> AnyPublisher<AdvertisingPeripheral, BluetoothError>
@@ -14,9 +23,17 @@ public protocol CentralManager: BluetoothManager {
     func connect(_ peripheral: BluetoothPeripheral) -> AnyPublisher<BluetoothPeripheral, BluetoothError>
     func connect(_ peripheral: BluetoothPeripheral, options: [String : Any]) -> AnyPublisher<BluetoothPeripheral, BluetoothError>
     func peripheral(for uuid: UUID) -> BluetoothPeripheral?
-    func registerProxyDelegate(_ proxyDelegate: CBCentralManagerDelegate)
-    func unregisterProxyDelegate()
+    
     // TODO: Nice to have, but complicate to handle single delegate (subscribing again with different options should end prior observations, which can
     //       be a bit unexpected).
     // - (void)registerForConnectionEventsWithOptions:(nullable NSDictionary<CBConnectionEventMatchingOption, id> *)options NS_AVAILABLE_IOS(13_0);
+}
+
+public struct CentralManagerFactory {
+    public static func createCentralManager(
+        from centralManagerDependency: some CentralManagerDependency, 
+        skipCentralManagerDelegateObservation: Bool = false
+    ) -> any CentralManager {
+        CoreBluetoothCentralManager(centralManager: centralManagerDependency, skipCentralManagerDelegateObservation: skipCentralManagerDelegateObservation)
+    }
 }

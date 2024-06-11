@@ -2,15 +2,15 @@ import Combine
 import CoreBluetooth
 
 // sourcery: AutoMockable
-public protocol CentralManager: BluetoothManager {
-    associatedtype T: CentralManagerDependency
+public protocol CentralManager<CentralManagerDependency>: BluetoothManager {
+    associatedtype CentralManagerDependency
     
     /// Init of an instance of `CentralManager`
     /// - Parameters:
     ///   - centralManager: `CentralManagerDependency` to inject, such as an instance of `CBCentralManager`
     ///   - skipCentralManagerDelegateObservation: Flag to skip the KVO on centralManager's delegate.
     ///   Useful in case you're managing multiple delegates.
-    init(centralManager: T, skipCentralManagerDelegateObservation: Bool)
+    init(centralManager: CentralManagerDependency, skipCentralManagerDelegateObservation: Bool)
     
     var isScanning: AnyPublisher<Bool, Never> { get }
     var peripheralConnection: AnyPublisher<PeripheralConnectionEvent, Never> { get }

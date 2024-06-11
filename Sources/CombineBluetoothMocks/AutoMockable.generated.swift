@@ -360,10 +360,10 @@ open class CentralManagerMock: CentralManager {
     open var underlyingStateRestoration: AnyPublisher<StateRestorationEvent, BluetoothError>!
     //MARK: - init
 
-    open var initCentralManagerSkipCentralManagerDelegateObservationReceivedArguments: (centralManager: T, skipCentralManagerDelegateObservation: Bool)?
-    open var initCentralManagerSkipCentralManagerDelegateObservationClosure: ((T, Bool) -> Void)?
+    open var initCentralManagerSkipCentralManagerDelegateObservationReceivedArguments: (centralManager: CentralManagerDependency, skipCentralManagerDelegateObservation: Bool)?
+    open var initCentralManagerSkipCentralManagerDelegateObservationClosure: ((CentralManagerDependency, Bool) -> Void)?
 
-    public required init(centralManager: T, skipCentralManagerDelegateObservation: Bool) {
+    public required init(centralManager: CentralManagerDependency, skipCentralManagerDelegateObservation: Bool) {
         initCentralManagerSkipCentralManagerDelegateObservationReceivedArguments = (centralManager: centralManager, skipCentralManagerDelegateObservation: skipCentralManagerDelegateObservation)
         initCentralManagerSkipCentralManagerDelegateObservationClosure?(centralManager, skipCentralManagerDelegateObservation)
     }

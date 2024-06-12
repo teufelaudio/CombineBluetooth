@@ -510,6 +510,109 @@ open class CentralManagerMock: CentralManager {
     }
 
 }
+open class CentralManagerDependencyMock: CentralManagerDependency {
+    open var state: CBManagerState {
+        get { return underlyingState }
+        set(value) { underlyingState = value }
+    }
+    open var underlyingState: CBManagerState!
+    open var delegate: CBCentralManagerDelegate?
+    open var isScanning: Bool {
+        get { return underlyingIsScanning }
+        set(value) { underlyingIsScanning = value }
+    }
+    open var underlyingIsScanning: Bool!
+    //MARK: - stopScan
+
+    open var stopScanCallsCount = 0
+    open var stopScanCalled: Bool {
+        return stopScanCallsCount > 0
+    }
+    open var stopScanClosure: (() -> Void)?
+
+    open func stopScan() {
+        stopScanCallsCount += 1
+        stopScanClosure?()
+    }
+
+    //MARK: - scanForPeripherals
+
+    open var scanForPeripheralsWithServicesOptionsCallsCount = 0
+    open var scanForPeripheralsWithServicesOptionsCalled: Bool {
+        return scanForPeripheralsWithServicesOptionsCallsCount > 0
+    }
+    open var scanForPeripheralsWithServicesOptionsReceivedArguments: (withServices: [CBUUID]?, options: [String : Any]?)?
+    open var scanForPeripheralsWithServicesOptionsClosure: (([CBUUID]?, [String : Any]?) -> Void)?
+
+    open func scanForPeripherals(withServices: [CBUUID]?, options: [String : Any]?) {
+        scanForPeripheralsWithServicesOptionsCallsCount += 1
+        scanForPeripheralsWithServicesOptionsReceivedArguments = (withServices: withServices, options: options)
+        scanForPeripheralsWithServicesOptionsClosure?(withServices, options)
+    }
+
+    //MARK: - connect
+
+    open var connectOptionsCallsCount = 0
+    open var connectOptionsCalled: Bool {
+        return connectOptionsCallsCount > 0
+    }
+    open var connectOptionsReceivedArguments: (peripheral: CBPeripheral, options: [String: Any]?)?
+    open var connectOptionsClosure: ((CBPeripheral, [String: Any]?) -> Void)?
+
+    open func connect(_ peripheral: CBPeripheral, options: [String: Any]?) {
+        connectOptionsCallsCount += 1
+        connectOptionsReceivedArguments = (peripheral: peripheral, options: options)
+        connectOptionsClosure?(peripheral, options)
+    }
+
+    //MARK: - cancelPeripheralConnection
+
+    open var cancelPeripheralConnectionCallsCount = 0
+    open var cancelPeripheralConnectionCalled: Bool {
+        return cancelPeripheralConnectionCallsCount > 0
+    }
+    open var cancelPeripheralConnectionReceivedPeripheral: CBPeripheral?
+    open var cancelPeripheralConnectionClosure: ((CBPeripheral) -> Void)?
+
+    open func cancelPeripheralConnection(_ peripheral: CBPeripheral) {
+        cancelPeripheralConnectionCallsCount += 1
+        cancelPeripheralConnectionReceivedPeripheral = peripheral
+        cancelPeripheralConnectionClosure?(peripheral)
+    }
+
+    //MARK: - retrievePeripherals
+
+    open var retrievePeripheralsWithIdentifiersCallsCount = 0
+    open var retrievePeripheralsWithIdentifiersCalled: Bool {
+        return retrievePeripheralsWithIdentifiersCallsCount > 0
+    }
+    open var retrievePeripheralsWithIdentifiersReceivedWithIdentifiers: [UUID]?
+    open var retrievePeripheralsWithIdentifiersReturnValue: [CBPeripheral]!
+    open var retrievePeripheralsWithIdentifiersClosure: (([UUID]) -> [CBPeripheral])?
+
+    open func retrievePeripherals(withIdentifiers: [UUID]) -> [CBPeripheral] {
+        retrievePeripheralsWithIdentifiersCallsCount += 1
+        retrievePeripheralsWithIdentifiersReceivedWithIdentifiers = withIdentifiers
+        return retrievePeripheralsWithIdentifiersClosure.map({ $0(withIdentifiers) }) ?? retrievePeripheralsWithIdentifiersReturnValue
+    }
+
+    //MARK: - retrieveConnectedPeripherals
+
+    open var retrieveConnectedPeripheralsWithServicesCallsCount = 0
+    open var retrieveConnectedPeripheralsWithServicesCalled: Bool {
+        return retrieveConnectedPeripheralsWithServicesCallsCount > 0
+    }
+    open var retrieveConnectedPeripheralsWithServicesReceivedWithServices: [CBUUID]?
+    open var retrieveConnectedPeripheralsWithServicesReturnValue: [CBPeripheral]!
+    open var retrieveConnectedPeripheralsWithServicesClosure: (([CBUUID]) -> [CBPeripheral])?
+
+    open func retrieveConnectedPeripherals(withServices: [CBUUID]) -> [CBPeripheral] {
+        retrieveConnectedPeripheralsWithServicesCallsCount += 1
+        retrieveConnectedPeripheralsWithServicesReceivedWithServices = withServices
+        return retrieveConnectedPeripheralsWithServicesClosure.map({ $0(withServices) }) ?? retrieveConnectedPeripheralsWithServicesReturnValue
+    }
+
+}
 open class L2CAPChannelMock: L2CAPChannel {
     open var peer: BluetoothPeer {
         get { return underlyingPeer }

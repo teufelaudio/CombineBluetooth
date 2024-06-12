@@ -3,8 +3,8 @@
 import CoreBluetooth
 import Foundation
 
-@objc
-public protocol CentralManagerDependency where Self: NSObject {
+// sourcery:AutoMockable
+@objc public protocol CentralManagerDependency where Self: NSObject {
     var state: CBManagerState { get }
     var delegate: CBCentralManagerDelegate? { get set }
     var isScanning: Bool { get }

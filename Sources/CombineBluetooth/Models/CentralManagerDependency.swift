@@ -3,8 +3,13 @@
 import CoreBluetooth
 import Foundation
 
-// sourcery:AutoMockable
-@objc public protocol CentralManagerDependency where Self: NSObject {
+/*
+This protocol has no AutoMockable annotation for a reason, for further epxlanation see
+it's mock in CombineBluetoothMocks > CentralManagerDependencyMock. 
+*/
+
+@objc 
+public protocol CentralManagerDependency where Self: NSObject {
     var state: CBManagerState { get }
     var delegate: CBCentralManagerDelegate? { get set }
     var isScanning: Bool { get }

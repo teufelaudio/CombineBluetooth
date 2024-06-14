@@ -509,17 +509,6 @@ public class CentralManagerMock: CentralManager {
     public var underlyingStateRestoration: (AnyPublisher<StateRestorationEvent, BluetoothError>)!
 
 
-    //MARK: - init
-
-    public var initCentralManagerCentralManagerDependencySkipCentralManagerDelegateObservationBoolCentralManagerReceivedArguments: (centralManager: CentralManagerDependency, skipCentralManagerDelegateObservation: Bool)?
-    public var initCentralManagerCentralManagerDependencySkipCentralManagerDelegateObservationBoolCentralManagerReceivedInvocations: [(centralManager: CentralManagerDependency, skipCentralManagerDelegateObservation: Bool)] = []
-    public var initCentralManagerCentralManagerDependencySkipCentralManagerDelegateObservationBoolCentralManagerClosure: ((CentralManagerDependency, Bool) -> Void)?
-
-    public required init(centralManager: CentralManagerDependency, skipCentralManagerDelegateObservation: Bool) {
-        initCentralManagerCentralManagerDependencySkipCentralManagerDelegateObservationBoolCentralManagerReceivedArguments = (centralManager: centralManager, skipCentralManagerDelegateObservation: skipCentralManagerDelegateObservation)
-        initCentralManagerCentralManagerDependencySkipCentralManagerDelegateObservationBoolCentralManagerReceivedInvocations.append((centralManager: centralManager, skipCentralManagerDelegateObservation: skipCentralManagerDelegateObservation))
-        initCentralManagerCentralManagerDependencySkipCentralManagerDelegateObservationBoolCentralManagerClosure?(centralManager, skipCentralManagerDelegateObservation)
-    }
     //MARK: - scanForPeripherals
 
     public var scanForPeripheralsAnyPublisherAdvertisingPeripheralBluetoothErrorCallsCount = 0

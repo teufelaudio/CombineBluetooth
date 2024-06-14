@@ -1,13 +1,11 @@
 import Combine
 import CoreBluetooth
 
-class CoreBluetoothCentralManager<T: CentralManagerDependency>: NSObject, CBCentralManagerDelegate {
+class CoreBluetoothCentralManager: NSObject {
     // MARK: - Properties
     private var kvoDelegate: AnyCancellable?
-    private let centralManager: T
-    // This is required to avoid returning different instances of CoreBluetoothPeripheral every time we discover a device previously discovered.
-    // There should not be different instances because CoreBluetoothPeripheral holds the delegate for the CBPeripheral, which is expected to be
-    // unique.
+    private let centralManager: CBCentralManager
+    
     private var cachedPeripherals: [UUID: CoreBluetoothPeripheral] = [:]
     private let cachedPeripheralsAccess = NSRecursiveLock()
     
@@ -20,20 +18,18 @@ class CoreBluetoothCentralManager<T: CentralManagerDependency>: NSObject, CBCent
     private var _didDisconnectPeripheral: PassthroughSubject<(peripheral: CBPeripheral, error: Error?), Never> = .init()
     
     // MARK: Init
-    required public init(centralManager: T, skipCentralManagerDelegateObservation: Bool) {
+    required public init(centralManager: CBCentralManager) {
         self.centralManager = centralManager
         super.init()
-        restoreDelegation(skipCentralManagerDelegateObservation: skipCentralManagerDelegateObservation)
+        restoreDelegation()
     }
 
     // MARK: Private funcs
-    private func restoreDelegation(skipCentralManagerDelegateObservation: Bool) {
+    private func restoreDelegation() {
         _state = .init(centralManager.state)
         _stateRestoration = .init()
         _scanPublisher = .init()
         centralManager.delegate = self
-        
-        if skipCentralManagerDelegateObservation { return }
         
         kvoDelegate = centralManager
             .publisher(for: \.delegate)
@@ -46,38 +42,6 @@ class CoreBluetoothCentralManager<T: CentralManagerDependency>: NSObject, CBCent
                 self._scanPublisher.send(completion: .failure(.noLongerDelegate))
                 self.kvoDelegate = nil
             }
-    }
-    
-    // MARK: CBCentralManagerDelegate implementation
-    
-    func centralManagerDidUpdateState(_ central: CBCentralManager) {
-        _state.send(central.state)
-    }
-    
-    func centralManager(_ central: CBCentralManager, willRestoreState dict: [String : Any]) {
-        _stateRestoration.send(.willRestoreState(dict))
-    }
-
-    func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
-        _scanPublisher.send(
-            CoreBluetoothAdvertisingPeripheral(
-                advertisementData: advertisementData,
-                rssi: RSSI,
-                peripheral: self.peripheral(for: peripheral)
-            )
-        )
-    }
-
-    func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
-        _didConnectPeripheral.send(peripheral)
-    }
-
-    func centralManager(_ central: CBCentralManager, didFailToConnect peripheral: CBPeripheral, error: Error?) {
-        _didFailToConnectPeripheral.send((peripheral: peripheral, error: error))
-    }
-
-    func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
-        _didDisconnectPeripheral.send((peripheral: peripheral, error: error))
     }
 }
 
@@ -195,5 +159,37 @@ extension CoreBluetoothCentralManager: CentralManager {
 
     func retrieveConnectedPeripherals(withServices serviceUUIDs: [CBUUID]) -> [BluetoothPeripheral] {
         centralManager.retrieveConnectedPeripherals(withServices: serviceUUIDs).map(peripheral(for:))
+    }
+}
+
+extension CoreBluetoothCentralManager: CBCentralManagerDelegate {
+    func centralManagerDidUpdateState(_ central: CBCentralManager) {
+        _state.send(central.state)
+    }
+    
+    func centralManager(_ central: CBCentralManager, willRestoreState dict: [String : Any]) {
+        _stateRestoration.send(.willRestoreState(dict))
+    }
+
+    func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
+        _scanPublisher.send(
+            CoreBluetoothAdvertisingPeripheral(
+                advertisementData: advertisementData,
+                rssi: RSSI,
+                peripheral: self.peripheral(for: peripheral)
+            )
+        )
+    }
+
+    func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
+        _didConnectPeripheral.send(peripheral)
+    }
+
+    func centralManager(_ central: CBCentralManager, didFailToConnect peripheral: CBPeripheral, error: Error?) {
+        _didFailToConnectPeripheral.send((peripheral: peripheral, error: error))
+    }
+
+    func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
+        _didDisconnectPeripheral.send((peripheral: peripheral, error: error))
     }
 }

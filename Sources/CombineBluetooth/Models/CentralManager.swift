@@ -2,16 +2,7 @@ import Combine
 import CoreBluetooth
 
 // sourcery: AutoMockable
-public protocol CentralManager<CentralManagerDependency>: BluetoothManager {
-    associatedtype CentralManagerDependency
-    
-    /// Init of an instance of `CentralManager`
-    /// - Parameters:
-    ///   - centralManager: `CentralManagerDependency` to inject, such as an instance of `CBCentralManager`
-    ///   - skipCentralManagerDelegateObservation: Flag to skip the KVO on centralManager's delegate.
-    ///   Useful in case you're managing multiple delegates.
-    init(centralManager: CentralManagerDependency, skipCentralManagerDelegateObservation: Bool)
-    
+public protocol CentralManager: BluetoothManager {
     var isScanning: AnyPublisher<Bool, Never> { get }
     var peripheralConnection: AnyPublisher<PeripheralConnectionEvent, Never> { get }
     func scanForPeripherals() -> AnyPublisher<AdvertisingPeripheral, BluetoothError>
@@ -30,10 +21,7 @@ public protocol CentralManager<CentralManagerDependency>: BluetoothManager {
 }
 
 public struct CentralManagerFactory {
-    public static func createCentralManager(
-        from centralManagerDependency: some CentralManagerDependency, 
-        skipCentralManagerDelegateObservation: Bool = false
-    ) -> any CentralManager {
-        CoreBluetoothCentralManager(centralManager: centralManagerDependency, skipCentralManagerDelegateObservation: skipCentralManagerDelegateObservation)
+    public static func create(from centralManager: CBCentralManager) -> CentralManager {
+        CoreBluetoothCentralManager(centralManager: centralManager)
     }
 }

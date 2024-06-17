@@ -192,7 +192,6 @@ public class BluetoothPeripheralMock: BluetoothPeripheral {
         set(value) { underlyingIsReadyAgainForWriteWithoutResponse = value }
     }
     public var underlyingIsReadyAgainForWriteWithoutResponse: (AnyPublisher<Void, Never>)!
-    public var proxyDelegate: CBPeripheralDelegate?
     public var id: UUID {
         get { return underlyingId }
         set(value) { underlyingId = value }
@@ -458,6 +457,23 @@ public class BluetoothPeripheralMock: BluetoothPeripheral {
         } else {
             return openL2CAPChannelPSMCBL2CAPPSMAnyPublisherL2CAPChannelBluetoothErrorReturnValue
         }
+    }
+
+    //MARK: - register
+
+    public var registerDelegateCBPeripheralDelegateVoidCallsCount = 0
+    public var registerDelegateCBPeripheralDelegateVoidCalled: Bool {
+        return registerDelegateCBPeripheralDelegateVoidCallsCount > 0
+    }
+    public var registerDelegateCBPeripheralDelegateVoidReceivedDelegate: (CBPeripheralDelegate)?
+    public var registerDelegateCBPeripheralDelegateVoidReceivedInvocations: [(CBPeripheralDelegate)] = []
+    public var registerDelegateCBPeripheralDelegateVoidClosure: ((CBPeripheralDelegate) -> Void)?
+
+    public func register(delegate: CBPeripheralDelegate) {
+        registerDelegateCBPeripheralDelegateVoidCallsCount += 1
+        registerDelegateCBPeripheralDelegateVoidReceivedDelegate = delegate
+        registerDelegateCBPeripheralDelegateVoidReceivedInvocations.append(delegate)
+        registerDelegateCBPeripheralDelegateVoidClosure?(delegate)
     }
 
 

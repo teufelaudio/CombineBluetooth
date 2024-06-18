@@ -19,9 +19,3 @@ public protocol CentralManager: BluetoothManager {
     //       be a bit unexpected).
     // - (void)registerForConnectionEventsWithOptions:(nullable NSDictionary<CBConnectionEventMatchingOption, id> *)options NS_AVAILABLE_IOS(13_0);
 }
-
-public struct CentralManagerFactory {
-    public static func create(from centralManager: CBCentralManager) -> CentralManager {
-        CoreBluetoothCentralManager(centralManager: centralManager)
-    }
-}

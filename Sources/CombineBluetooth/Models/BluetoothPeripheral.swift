@@ -9,6 +9,12 @@ public protocol BluetoothPeripheral: BluetoothPeer {
     var services: [BluetoothService]? { get }
     var canSendWriteWithoutResponse: Bool { get }
     var isReadyAgainForWriteWithoutResponse: AnyPublisher<Void, Never> { get }
+    
+    /// `CBPeripheralDelegate` which gets referenced weakly and peripheral's delegate calls
+    /// get proxied to. Be aware that the `CBPeripheral` within the delegate methods get passed by reference
+    /// so in case you access their delegate you might overwrite it, thus cancelling this proxyDelegate.
+    var proxyDelegate: CBPeripheralDelegate? { get set }
+    
     func readRSSI() -> AnyPublisher<NSNumber, BluetoothError>
     func discoverServices(_ serviceUUIDs: [CBUUID]?) -> AnyPublisher<BluetoothService, BluetoothError>
     func discoverIncludedServices(_ includedServiceUUIDs: [CBUUID]?, for service: BluetoothService) -> AnyPublisher<BluetoothService, BluetoothError>
@@ -21,5 +27,4 @@ public protocol BluetoothPeripheral: BluetoothPeer {
     func readDescriptorValue(_ descriptor: BluetoothDescriptor) -> AnyPublisher<BluetoothDescriptor, BluetoothError>
     func writeValue(_ data: Data, for descriptor: BluetoothDescriptor) -> AnyPublisher<BluetoothDescriptor, BluetoothError>
     func openL2CAPChannel(PSM: CBL2CAPPSM) -> AnyPublisher<L2CAPChannel, BluetoothError>
-    func register(delegate: CBPeripheralDelegate)
 }

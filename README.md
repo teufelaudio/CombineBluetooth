@@ -185,3 +185,5 @@ for tests this is probably the behaviour you want, so you control the race condi
 in runtime.
 
 For more information, please check the auto-generated mocks file source code.
+
+To generate mocks you'd need to install [Mint](https://github.com/yonaskolb/Mint) and execute `make code`, which bootstraps Mint as well as executes Sourcery to generate mocks.

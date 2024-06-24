@@ -6,5 +6,5 @@ templates:
 output:
   Sources/CombineBluetoothMocks
 args:
-  imports: ["Combine", "CombineBluetooth", "CoreBluetooth"]
-  testable-imports: []
+  autoMockableImports: ["Combine", "CombineBluetooth", "CoreBluetooth"]
+  autoMockableTestableImports: []

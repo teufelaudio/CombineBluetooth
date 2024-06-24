@@ -21,19 +21,19 @@ class CoreBluetoothPeripheral: NSObject, Identifiable {
         CoreBluetoothPeripheral(peripheral: peripheral)
     }
 
+    weak var proxyDelegate: CBPeripheralDelegate?
+    
     private init(peripheral: CBPeripheral) {
         self.peripheral = peripheral
         super.init()
         self.peripheral.delegate = self
     }
-    
-    var proxyDelegate: CBPeripheralDelegate?
 }
 
 extension CoreBluetoothPeripheral: CBPeripheralDelegate {
-    func peripheralDidUpdateName(_ peripheral: CBPeripheral) { }
-    
-    func peripheral(_ peripheral: CBPeripheral, didModifyServices invalidatedServices: [CBService]) { }
+    func peripheralDidUpdateName(_ peripheral: CBPeripheral) { 
+        proxyDelegate?.peripheralDidUpdateName?(peripheral)
+    }
     
     func peripheral(_ peripheral: CBPeripheral, didReadRSSI RSSI: NSNumber, error: Error?) {
         didReadRSSI.send(error.map(Result.failure) ?? .success(RSSI))

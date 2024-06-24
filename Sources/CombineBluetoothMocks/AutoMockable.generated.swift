@@ -1,7 +1,7 @@
-// Generated using Sourcery 0.17.0 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 2.2.4 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
-
-// swiftlint:disable all
+// swiftlint:disable line_length
+// swiftlint:disable variable_name
 
 import Foundation
 #if os(iOS) || os(tvOS) || os(watchOS)
@@ -14,689 +14,957 @@ import Combine
 import CombineBluetooth
 import CoreBluetooth
 
-open class ATTRequestMock: ATTRequest {
-    open var central: BluetoothCentral {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+public class ATTRequestMock: ATTRequest {
+
+    public init() {}
+
+    public var central: BluetoothCentral {
         get { return underlyingCentral }
         set(value) { underlyingCentral = value }
     }
-    open var underlyingCentral: BluetoothCentral!
-    open var characteristic: BluetoothCharacteristic {
+    public var underlyingCentral: (BluetoothCentral)!
+    public var characteristic: BluetoothCharacteristic {
         get { return underlyingCharacteristic }
         set(value) { underlyingCharacteristic = value }
     }
-    open var underlyingCharacteristic: BluetoothCharacteristic!
-    open var offset: Int {
+    public var underlyingCharacteristic: (BluetoothCharacteristic)!
+    public var offset: Int {
         get { return underlyingOffset }
         set(value) { underlyingOffset = value }
     }
-    open var underlyingOffset: Int!
-    open var value: Data?
+    public var underlyingOffset: (Int)!
+    public var value: Data?
+
+
+
 }
-open class AdvertisingPeripheralMock: AdvertisingPeripheral {
-    open var advertisementData: [String: Any] = [:]
-    open var rssi: NSNumber {
+public class AdvertisingPeripheralMock: AdvertisingPeripheral {
+
+    public init() {}
+
+    public var advertisementData: [String: Any] = [:]
+    public var rssi: NSNumber {
         get { return underlyingRssi }
         set(value) { underlyingRssi = value }
     }
-    open var underlyingRssi: NSNumber!
-    open var peripheral: BluetoothPeripheral {
+    public var underlyingRssi: (NSNumber)!
+    public var peripheral: BluetoothPeripheral {
         get { return underlyingPeripheral }
         set(value) { underlyingPeripheral = value }
     }
-    open var underlyingPeripheral: BluetoothPeripheral!
+    public var underlyingPeripheral: (BluetoothPeripheral)!
+
+
+
 }
-open class BluetoothCentralMock: BluetoothCentral {
-    open var maximumUpdateValueLength: Int {
+public class BluetoothCentralMock: BluetoothCentral {
+
+    public init() {}
+
+    public var maximumUpdateValueLength: Int {
         get { return underlyingMaximumUpdateValueLength }
         set(value) { underlyingMaximumUpdateValueLength = value }
     }
-    open var underlyingMaximumUpdateValueLength: Int!
-    open var id: UUID {
+    public var underlyingMaximumUpdateValueLength: (Int)!
+    public var id: UUID {
         get { return underlyingId }
         set(value) { underlyingId = value }
     }
-    open var underlyingId: UUID!
+    public var underlyingId: (UUID)!
+
+
+
 }
-open class BluetoothCharacteristicMock: BluetoothCharacteristic {
-    open var id: CBUUID {
+public class BluetoothCharacteristicMock: BluetoothCharacteristic {
+
+    public init() {}
+
+    public var id: CBUUID {
         get { return underlyingId }
         set(value) { underlyingId = value }
     }
-    open var underlyingId: CBUUID!
-    open var service: BluetoothService?
-    open var properties: CBCharacteristicProperties {
+    public var underlyingId: (CBUUID)!
+    public var service: BluetoothService?
+    public var properties: CBCharacteristicProperties {
         get { return underlyingProperties }
         set(value) { underlyingProperties = value }
     }
-    open var underlyingProperties: CBCharacteristicProperties!
-    open var value: Data?
-    open var descriptors: [BluetoothDescriptor]?
-    open var isNotifying: Bool {
+    public var underlyingProperties: (CBCharacteristicProperties)!
+    public var value: Data?
+    public var descriptors: [BluetoothDescriptor]?
+    public var isNotifying: Bool {
         get { return underlyingIsNotifying }
         set(value) { underlyingIsNotifying = value }
     }
-    open var underlyingIsNotifying: Bool!
-    open var permissions: CBAttributePermissions?
-    open var subscribedCentrals: [BluetoothCentral]?
+    public var underlyingIsNotifying: (Bool)!
+    public var permissions: CBAttributePermissions?
+    public var subscribedCentrals: [BluetoothCentral]?
+
+
+
 }
-open class BluetoothDescriptorMock: BluetoothDescriptor {
-    open var id: CBUUID {
+public class BluetoothDescriptorMock: BluetoothDescriptor {
+
+    public init() {}
+
+    public var id: CBUUID {
         get { return underlyingId }
         set(value) { underlyingId = value }
     }
-    open var underlyingId: CBUUID!
-    open var characteristic: BluetoothCharacteristic?
-    open var value: Any?
+    public var underlyingId: (CBUUID)!
+    public var characteristic: BluetoothCharacteristic?
+    public var value: Any?
+
+
+
 }
-open class BluetoothManagerMock: BluetoothManager {
-    open var state: AnyPublisher<CBManagerState, BluetoothError> {
+public class BluetoothManagerMock: BluetoothManager {
+
+    public init() {}
+
+    public var state: AnyPublisher<CBManagerState, BluetoothError> {
         get { return underlyingState }
         set(value) { underlyingState = value }
     }
-    open var underlyingState: AnyPublisher<CBManagerState, BluetoothError>!
-    open var stateRestoration: AnyPublisher<StateRestorationEvent, BluetoothError> {
+    public var underlyingState: (AnyPublisher<CBManagerState, BluetoothError>)!
+    public var stateRestoration: AnyPublisher<StateRestorationEvent, BluetoothError> {
         get { return underlyingStateRestoration }
         set(value) { underlyingStateRestoration = value }
     }
-    open var underlyingStateRestoration: AnyPublisher<StateRestorationEvent, BluetoothError>!
+    public var underlyingStateRestoration: (AnyPublisher<StateRestorationEvent, BluetoothError>)!
+
+
+
 }
-open class BluetoothPeerMock: BluetoothPeer {
-    open var id: UUID {
+public class BluetoothPeerMock: BluetoothPeer {
+
+    public init() {}
+
+    public var id: UUID {
         get { return underlyingId }
         set(value) { underlyingId = value }
     }
-    open var underlyingId: UUID!
+    public var underlyingId: (UUID)!
+
+
+
 }
-open class BluetoothPeripheralMock: BluetoothPeripheral {
-    open var name: String?
-    open var state: CBPeripheralState {
+public class BluetoothPeripheralMock: BluetoothPeripheral {
+
+    public init() {}
+
+    public var name: String?
+    public var state: CBPeripheralState {
         get { return underlyingState }
         set(value) { underlyingState = value }
     }
-    open var underlyingState: CBPeripheralState!
-    open var services: [BluetoothService]?
-    open var canSendWriteWithoutResponse: Bool {
+    public var underlyingState: (CBPeripheralState)!
+    public var services: [BluetoothService]?
+    public var canSendWriteWithoutResponse: Bool {
         get { return underlyingCanSendWriteWithoutResponse }
         set(value) { underlyingCanSendWriteWithoutResponse = value }
     }
-    open var underlyingCanSendWriteWithoutResponse: Bool!
-    open var isReadyAgainForWriteWithoutResponse: AnyPublisher<Void, Never> {
+    public var underlyingCanSendWriteWithoutResponse: (Bool)!
+    public var isReadyAgainForWriteWithoutResponse: AnyPublisher<Void, Never> {
         get { return underlyingIsReadyAgainForWriteWithoutResponse }
         set(value) { underlyingIsReadyAgainForWriteWithoutResponse = value }
     }
-    open var underlyingIsReadyAgainForWriteWithoutResponse: AnyPublisher<Void, Never>!
-    open var proxyDelegate: CBPeripheralDelegate?
-    open var id: UUID {
+    public var underlyingIsReadyAgainForWriteWithoutResponse: (AnyPublisher<Void, Never>)!
+    public var proxyDelegate: CBPeripheralDelegate?
+    public var id: UUID {
         get { return underlyingId }
         set(value) { underlyingId = value }
     }
-    open var underlyingId: UUID!
+    public var underlyingId: (UUID)!
+
+
     //MARK: - readRSSI
 
-    open var readRSSICallsCount = 0
-    open var readRSSICalled: Bool {
-        return readRSSICallsCount > 0
+    public var readRSSIAnyPublisherNSNumberBluetoothErrorCallsCount = 0
+    public var readRSSIAnyPublisherNSNumberBluetoothErrorCalled: Bool {
+        return readRSSIAnyPublisherNSNumberBluetoothErrorCallsCount > 0
     }
-    open var readRSSIReturnValue: AnyPublisher<NSNumber, BluetoothError>!
-    open var readRSSIClosure: (() -> AnyPublisher<NSNumber, BluetoothError>)?
+    public var readRSSIAnyPublisherNSNumberBluetoothErrorReturnValue: AnyPublisher<NSNumber, BluetoothError>!
+    public var readRSSIAnyPublisherNSNumberBluetoothErrorClosure: (() -> AnyPublisher<NSNumber, BluetoothError>)?
 
-    open func readRSSI() -> AnyPublisher<NSNumber, BluetoothError> {
-        readRSSICallsCount += 1
-        return readRSSIClosure.map({ $0() }) ?? readRSSIReturnValue
+    public func readRSSI() -> AnyPublisher<NSNumber, BluetoothError> {
+        readRSSIAnyPublisherNSNumberBluetoothErrorCallsCount += 1
+        if let readRSSIAnyPublisherNSNumberBluetoothErrorClosure = readRSSIAnyPublisherNSNumberBluetoothErrorClosure {
+            return readRSSIAnyPublisherNSNumberBluetoothErrorClosure()
+        } else {
+            return readRSSIAnyPublisherNSNumberBluetoothErrorReturnValue
+        }
     }
 
     //MARK: - discoverServices
 
-    open var discoverServicesCallsCount = 0
-    open var discoverServicesCalled: Bool {
-        return discoverServicesCallsCount > 0
+    public var discoverServicesServiceUUIDsCBUUIDAnyPublisherBluetoothServiceBluetoothErrorCallsCount = 0
+    public var discoverServicesServiceUUIDsCBUUIDAnyPublisherBluetoothServiceBluetoothErrorCalled: Bool {
+        return discoverServicesServiceUUIDsCBUUIDAnyPublisherBluetoothServiceBluetoothErrorCallsCount > 0
     }
-    open var discoverServicesReceivedServiceUUIDs: [CBUUID]?
-    open var discoverServicesReturnValue: AnyPublisher<BluetoothService, BluetoothError>!
-    open var discoverServicesClosure: (([CBUUID]?) -> AnyPublisher<BluetoothService, BluetoothError>)?
+    public var discoverServicesServiceUUIDsCBUUIDAnyPublisherBluetoothServiceBluetoothErrorReceivedServiceUUIDs: ([CBUUID])?
+    public var discoverServicesServiceUUIDsCBUUIDAnyPublisherBluetoothServiceBluetoothErrorReceivedInvocations: [([CBUUID])?] = []
+    public var discoverServicesServiceUUIDsCBUUIDAnyPublisherBluetoothServiceBluetoothErrorReturnValue: AnyPublisher<BluetoothService, BluetoothError>!
+    public var discoverServicesServiceUUIDsCBUUIDAnyPublisherBluetoothServiceBluetoothErrorClosure: (([CBUUID]?) -> AnyPublisher<BluetoothService, BluetoothError>)?
 
-    open func discoverServices(_ serviceUUIDs: [CBUUID]?) -> AnyPublisher<BluetoothService, BluetoothError> {
-        discoverServicesCallsCount += 1
-        discoverServicesReceivedServiceUUIDs = serviceUUIDs
-        return discoverServicesClosure.map({ $0(serviceUUIDs) }) ?? discoverServicesReturnValue
+    public func discoverServices(_ serviceUUIDs: [CBUUID]?) -> AnyPublisher<BluetoothService, BluetoothError> {
+        discoverServicesServiceUUIDsCBUUIDAnyPublisherBluetoothServiceBluetoothErrorCallsCount += 1
+        discoverServicesServiceUUIDsCBUUIDAnyPublisherBluetoothServiceBluetoothErrorReceivedServiceUUIDs = serviceUUIDs
+        discoverServicesServiceUUIDsCBUUIDAnyPublisherBluetoothServiceBluetoothErrorReceivedInvocations.append(serviceUUIDs)
+        if let discoverServicesServiceUUIDsCBUUIDAnyPublisherBluetoothServiceBluetoothErrorClosure = discoverServicesServiceUUIDsCBUUIDAnyPublisherBluetoothServiceBluetoothErrorClosure {
+            return discoverServicesServiceUUIDsCBUUIDAnyPublisherBluetoothServiceBluetoothErrorClosure(serviceUUIDs)
+        } else {
+            return discoverServicesServiceUUIDsCBUUIDAnyPublisherBluetoothServiceBluetoothErrorReturnValue
+        }
     }
 
     //MARK: - discoverIncludedServices
 
-    open var discoverIncludedServicesForCallsCount = 0
-    open var discoverIncludedServicesForCalled: Bool {
-        return discoverIncludedServicesForCallsCount > 0
+    public var discoverIncludedServicesIncludedServiceUUIDsCBUUIDForServiceBluetoothServiceAnyPublisherBluetoothServiceBluetoothErrorCallsCount = 0
+    public var discoverIncludedServicesIncludedServiceUUIDsCBUUIDForServiceBluetoothServiceAnyPublisherBluetoothServiceBluetoothErrorCalled: Bool {
+        return discoverIncludedServicesIncludedServiceUUIDsCBUUIDForServiceBluetoothServiceAnyPublisherBluetoothServiceBluetoothErrorCallsCount > 0
     }
-    open var discoverIncludedServicesForReceivedArguments: (includedServiceUUIDs: [CBUUID]?, service: BluetoothService)?
-    open var discoverIncludedServicesForReturnValue: AnyPublisher<BluetoothService, BluetoothError>!
-    open var discoverIncludedServicesForClosure: (([CBUUID]?, BluetoothService) -> AnyPublisher<BluetoothService, BluetoothError>)?
+    public var discoverIncludedServicesIncludedServiceUUIDsCBUUIDForServiceBluetoothServiceAnyPublisherBluetoothServiceBluetoothErrorReceivedArguments: (includedServiceUUIDs: [CBUUID]?, service: BluetoothService)?
+    public var discoverIncludedServicesIncludedServiceUUIDsCBUUIDForServiceBluetoothServiceAnyPublisherBluetoothServiceBluetoothErrorReceivedInvocations: [(includedServiceUUIDs: [CBUUID]?, service: BluetoothService)] = []
+    public var discoverIncludedServicesIncludedServiceUUIDsCBUUIDForServiceBluetoothServiceAnyPublisherBluetoothServiceBluetoothErrorReturnValue: AnyPublisher<BluetoothService, BluetoothError>!
+    public var discoverIncludedServicesIncludedServiceUUIDsCBUUIDForServiceBluetoothServiceAnyPublisherBluetoothServiceBluetoothErrorClosure: (([CBUUID]?, BluetoothService) -> AnyPublisher<BluetoothService, BluetoothError>)?
 
-    open func discoverIncludedServices(_ includedServiceUUIDs: [CBUUID]?, for service: BluetoothService) -> AnyPublisher<BluetoothService, BluetoothError> {
-        discoverIncludedServicesForCallsCount += 1
-        discoverIncludedServicesForReceivedArguments = (includedServiceUUIDs: includedServiceUUIDs, service: service)
-        return discoverIncludedServicesForClosure.map({ $0(includedServiceUUIDs, service) }) ?? discoverIncludedServicesForReturnValue
+    public func discoverIncludedServices(_ includedServiceUUIDs: [CBUUID]?, for service: BluetoothService) -> AnyPublisher<BluetoothService, BluetoothError> {
+        discoverIncludedServicesIncludedServiceUUIDsCBUUIDForServiceBluetoothServiceAnyPublisherBluetoothServiceBluetoothErrorCallsCount += 1
+        discoverIncludedServicesIncludedServiceUUIDsCBUUIDForServiceBluetoothServiceAnyPublisherBluetoothServiceBluetoothErrorReceivedArguments = (includedServiceUUIDs: includedServiceUUIDs, service: service)
+        discoverIncludedServicesIncludedServiceUUIDsCBUUIDForServiceBluetoothServiceAnyPublisherBluetoothServiceBluetoothErrorReceivedInvocations.append((includedServiceUUIDs: includedServiceUUIDs, service: service))
+        if let discoverIncludedServicesIncludedServiceUUIDsCBUUIDForServiceBluetoothServiceAnyPublisherBluetoothServiceBluetoothErrorClosure = discoverIncludedServicesIncludedServiceUUIDsCBUUIDForServiceBluetoothServiceAnyPublisherBluetoothServiceBluetoothErrorClosure {
+            return discoverIncludedServicesIncludedServiceUUIDsCBUUIDForServiceBluetoothServiceAnyPublisherBluetoothServiceBluetoothErrorClosure(includedServiceUUIDs, service)
+        } else {
+            return discoverIncludedServicesIncludedServiceUUIDsCBUUIDForServiceBluetoothServiceAnyPublisherBluetoothServiceBluetoothErrorReturnValue
+        }
     }
 
     //MARK: - discoverCharacteristics
 
-    open var discoverCharacteristicsForCallsCount = 0
-    open var discoverCharacteristicsForCalled: Bool {
-        return discoverCharacteristicsForCallsCount > 0
+    public var discoverCharacteristicsCharacteristicUUIDsCBUUIDForServiceBluetoothServiceAnyPublisherBluetoothCharacteristicBluetoothErrorCallsCount = 0
+    public var discoverCharacteristicsCharacteristicUUIDsCBUUIDForServiceBluetoothServiceAnyPublisherBluetoothCharacteristicBluetoothErrorCalled: Bool {
+        return discoverCharacteristicsCharacteristicUUIDsCBUUIDForServiceBluetoothServiceAnyPublisherBluetoothCharacteristicBluetoothErrorCallsCount > 0
     }
-    open var discoverCharacteristicsForReceivedArguments: (characteristicUUIDs: [CBUUID]?, service: BluetoothService)?
-    open var discoverCharacteristicsForReturnValue: AnyPublisher<BluetoothCharacteristic, BluetoothError>!
-    open var discoverCharacteristicsForClosure: (([CBUUID]?, BluetoothService) -> AnyPublisher<BluetoothCharacteristic, BluetoothError>)?
+    public var discoverCharacteristicsCharacteristicUUIDsCBUUIDForServiceBluetoothServiceAnyPublisherBluetoothCharacteristicBluetoothErrorReceivedArguments: (characteristicUUIDs: [CBUUID]?, service: BluetoothService)?
+    public var discoverCharacteristicsCharacteristicUUIDsCBUUIDForServiceBluetoothServiceAnyPublisherBluetoothCharacteristicBluetoothErrorReceivedInvocations: [(characteristicUUIDs: [CBUUID]?, service: BluetoothService)] = []
+    public var discoverCharacteristicsCharacteristicUUIDsCBUUIDForServiceBluetoothServiceAnyPublisherBluetoothCharacteristicBluetoothErrorReturnValue: AnyPublisher<BluetoothCharacteristic, BluetoothError>!
+    public var discoverCharacteristicsCharacteristicUUIDsCBUUIDForServiceBluetoothServiceAnyPublisherBluetoothCharacteristicBluetoothErrorClosure: (([CBUUID]?, BluetoothService) -> AnyPublisher<BluetoothCharacteristic, BluetoothError>)?
 
-    open func discoverCharacteristics(_ characteristicUUIDs: [CBUUID]?, for service: BluetoothService) -> AnyPublisher<BluetoothCharacteristic, BluetoothError> {
-        discoverCharacteristicsForCallsCount += 1
-        discoverCharacteristicsForReceivedArguments = (characteristicUUIDs: characteristicUUIDs, service: service)
-        return discoverCharacteristicsForClosure.map({ $0(characteristicUUIDs, service) }) ?? discoverCharacteristicsForReturnValue
+    public func discoverCharacteristics(_ characteristicUUIDs: [CBUUID]?, for service: BluetoothService) -> AnyPublisher<BluetoothCharacteristic, BluetoothError> {
+        discoverCharacteristicsCharacteristicUUIDsCBUUIDForServiceBluetoothServiceAnyPublisherBluetoothCharacteristicBluetoothErrorCallsCount += 1
+        discoverCharacteristicsCharacteristicUUIDsCBUUIDForServiceBluetoothServiceAnyPublisherBluetoothCharacteristicBluetoothErrorReceivedArguments = (characteristicUUIDs: characteristicUUIDs, service: service)
+        discoverCharacteristicsCharacteristicUUIDsCBUUIDForServiceBluetoothServiceAnyPublisherBluetoothCharacteristicBluetoothErrorReceivedInvocations.append((characteristicUUIDs: characteristicUUIDs, service: service))
+        if let discoverCharacteristicsCharacteristicUUIDsCBUUIDForServiceBluetoothServiceAnyPublisherBluetoothCharacteristicBluetoothErrorClosure = discoverCharacteristicsCharacteristicUUIDsCBUUIDForServiceBluetoothServiceAnyPublisherBluetoothCharacteristicBluetoothErrorClosure {
+            return discoverCharacteristicsCharacteristicUUIDsCBUUIDForServiceBluetoothServiceAnyPublisherBluetoothCharacteristicBluetoothErrorClosure(characteristicUUIDs, service)
+        } else {
+            return discoverCharacteristicsCharacteristicUUIDsCBUUIDForServiceBluetoothServiceAnyPublisherBluetoothCharacteristicBluetoothErrorReturnValue
+        }
     }
 
     //MARK: - readCharacteristicValue
 
-    open var readCharacteristicValueCallsCount = 0
-    open var readCharacteristicValueCalled: Bool {
-        return readCharacteristicValueCallsCount > 0
+    public var readCharacteristicValueCharacteristicBluetoothCharacteristicAnyPublisherBluetoothCharacteristicBluetoothErrorCallsCount = 0
+    public var readCharacteristicValueCharacteristicBluetoothCharacteristicAnyPublisherBluetoothCharacteristicBluetoothErrorCalled: Bool {
+        return readCharacteristicValueCharacteristicBluetoothCharacteristicAnyPublisherBluetoothCharacteristicBluetoothErrorCallsCount > 0
     }
-    open var readCharacteristicValueReceivedCharacteristic: BluetoothCharacteristic?
-    open var readCharacteristicValueReturnValue: AnyPublisher<BluetoothCharacteristic, BluetoothError>!
-    open var readCharacteristicValueClosure: ((BluetoothCharacteristic) -> AnyPublisher<BluetoothCharacteristic, BluetoothError>)?
+    public var readCharacteristicValueCharacteristicBluetoothCharacteristicAnyPublisherBluetoothCharacteristicBluetoothErrorReceivedCharacteristic: (BluetoothCharacteristic)?
+    public var readCharacteristicValueCharacteristicBluetoothCharacteristicAnyPublisherBluetoothCharacteristicBluetoothErrorReceivedInvocations: [(BluetoothCharacteristic)] = []
+    public var readCharacteristicValueCharacteristicBluetoothCharacteristicAnyPublisherBluetoothCharacteristicBluetoothErrorReturnValue: AnyPublisher<BluetoothCharacteristic, BluetoothError>!
+    public var readCharacteristicValueCharacteristicBluetoothCharacteristicAnyPublisherBluetoothCharacteristicBluetoothErrorClosure: ((BluetoothCharacteristic) -> AnyPublisher<BluetoothCharacteristic, BluetoothError>)?
 
-    open func readCharacteristicValue(_ characteristic: BluetoothCharacteristic) -> AnyPublisher<BluetoothCharacteristic, BluetoothError> {
-        readCharacteristicValueCallsCount += 1
-        readCharacteristicValueReceivedCharacteristic = characteristic
-        return readCharacteristicValueClosure.map({ $0(characteristic) }) ?? readCharacteristicValueReturnValue
+    public func readCharacteristicValue(_ characteristic: BluetoothCharacteristic) -> AnyPublisher<BluetoothCharacteristic, BluetoothError> {
+        readCharacteristicValueCharacteristicBluetoothCharacteristicAnyPublisherBluetoothCharacteristicBluetoothErrorCallsCount += 1
+        readCharacteristicValueCharacteristicBluetoothCharacteristicAnyPublisherBluetoothCharacteristicBluetoothErrorReceivedCharacteristic = characteristic
+        readCharacteristicValueCharacteristicBluetoothCharacteristicAnyPublisherBluetoothCharacteristicBluetoothErrorReceivedInvocations.append(characteristic)
+        if let readCharacteristicValueCharacteristicBluetoothCharacteristicAnyPublisherBluetoothCharacteristicBluetoothErrorClosure = readCharacteristicValueCharacteristicBluetoothCharacteristicAnyPublisherBluetoothCharacteristicBluetoothErrorClosure {
+            return readCharacteristicValueCharacteristicBluetoothCharacteristicAnyPublisherBluetoothCharacteristicBluetoothErrorClosure(characteristic)
+        } else {
+            return readCharacteristicValueCharacteristicBluetoothCharacteristicAnyPublisherBluetoothCharacteristicBluetoothErrorReturnValue
+        }
     }
 
     //MARK: - maximumWriteValueLength
 
-    open var maximumWriteValueLengthForCallsCount = 0
-    open var maximumWriteValueLengthForCalled: Bool {
-        return maximumWriteValueLengthForCallsCount > 0
+    public var maximumWriteValueLengthForTypeCBCharacteristicWriteTypeIntCallsCount = 0
+    public var maximumWriteValueLengthForTypeCBCharacteristicWriteTypeIntCalled: Bool {
+        return maximumWriteValueLengthForTypeCBCharacteristicWriteTypeIntCallsCount > 0
     }
-    open var maximumWriteValueLengthForReceivedType: CBCharacteristicWriteType?
-    open var maximumWriteValueLengthForReturnValue: Int!
-    open var maximumWriteValueLengthForClosure: ((CBCharacteristicWriteType) -> Int)?
+    public var maximumWriteValueLengthForTypeCBCharacteristicWriteTypeIntReceivedType: (CBCharacteristicWriteType)?
+    public var maximumWriteValueLengthForTypeCBCharacteristicWriteTypeIntReceivedInvocations: [(CBCharacteristicWriteType)] = []
+    public var maximumWriteValueLengthForTypeCBCharacteristicWriteTypeIntReturnValue: Int!
+    public var maximumWriteValueLengthForTypeCBCharacteristicWriteTypeIntClosure: ((CBCharacteristicWriteType) -> Int)?
 
-    open func maximumWriteValueLength(for type: CBCharacteristicWriteType) -> Int {
-        maximumWriteValueLengthForCallsCount += 1
-        maximumWriteValueLengthForReceivedType = type
-        return maximumWriteValueLengthForClosure.map({ $0(type) }) ?? maximumWriteValueLengthForReturnValue
+    public func maximumWriteValueLength(for type: CBCharacteristicWriteType) -> Int {
+        maximumWriteValueLengthForTypeCBCharacteristicWriteTypeIntCallsCount += 1
+        maximumWriteValueLengthForTypeCBCharacteristicWriteTypeIntReceivedType = type
+        maximumWriteValueLengthForTypeCBCharacteristicWriteTypeIntReceivedInvocations.append(type)
+        if let maximumWriteValueLengthForTypeCBCharacteristicWriteTypeIntClosure = maximumWriteValueLengthForTypeCBCharacteristicWriteTypeIntClosure {
+            return maximumWriteValueLengthForTypeCBCharacteristicWriteTypeIntClosure(type)
+        } else {
+            return maximumWriteValueLengthForTypeCBCharacteristicWriteTypeIntReturnValue
+        }
     }
 
     //MARK: - writeValue
 
-    open var writeValueForTypeCallsCount = 0
-    open var writeValueForTypeCalled: Bool {
-        return writeValueForTypeCallsCount > 0
+    public var writeValueDataDataForCharacteristicBluetoothCharacteristicTypeCBCharacteristicWriteTypeAnyPublisherBluetoothCharacteristicBluetoothErrorCallsCount = 0
+    public var writeValueDataDataForCharacteristicBluetoothCharacteristicTypeCBCharacteristicWriteTypeAnyPublisherBluetoothCharacteristicBluetoothErrorCalled: Bool {
+        return writeValueDataDataForCharacteristicBluetoothCharacteristicTypeCBCharacteristicWriteTypeAnyPublisherBluetoothCharacteristicBluetoothErrorCallsCount > 0
     }
-    open var writeValueForTypeReceivedArguments: (data: Data, characteristic: BluetoothCharacteristic, type: CBCharacteristicWriteType)?
-    open var writeValueForTypeReturnValue: AnyPublisher<BluetoothCharacteristic, BluetoothError>!
-    open var writeValueForTypeClosure: ((Data, BluetoothCharacteristic, CBCharacteristicWriteType) -> AnyPublisher<BluetoothCharacteristic, BluetoothError>)?
+    public var writeValueDataDataForCharacteristicBluetoothCharacteristicTypeCBCharacteristicWriteTypeAnyPublisherBluetoothCharacteristicBluetoothErrorReceivedArguments: (data: Data, characteristic: BluetoothCharacteristic, type: CBCharacteristicWriteType)?
+    public var writeValueDataDataForCharacteristicBluetoothCharacteristicTypeCBCharacteristicWriteTypeAnyPublisherBluetoothCharacteristicBluetoothErrorReceivedInvocations: [(data: Data, characteristic: BluetoothCharacteristic, type: CBCharacteristicWriteType)] = []
+    public var writeValueDataDataForCharacteristicBluetoothCharacteristicTypeCBCharacteristicWriteTypeAnyPublisherBluetoothCharacteristicBluetoothErrorReturnValue: AnyPublisher<BluetoothCharacteristic, BluetoothError>!
+    public var writeValueDataDataForCharacteristicBluetoothCharacteristicTypeCBCharacteristicWriteTypeAnyPublisherBluetoothCharacteristicBluetoothErrorClosure: ((Data, BluetoothCharacteristic, CBCharacteristicWriteType) -> AnyPublisher<BluetoothCharacteristic, BluetoothError>)?
 
-    open func writeValue(_ data: Data, for characteristic: BluetoothCharacteristic, type: CBCharacteristicWriteType) -> AnyPublisher<BluetoothCharacteristic, BluetoothError> {
-        writeValueForTypeCallsCount += 1
-        writeValueForTypeReceivedArguments = (data: data, characteristic: characteristic, type: type)
-        return writeValueForTypeClosure.map({ $0(data, characteristic, type) }) ?? writeValueForTypeReturnValue
+    public func writeValue(_ data: Data, for characteristic: BluetoothCharacteristic, type: CBCharacteristicWriteType) -> AnyPublisher<BluetoothCharacteristic, BluetoothError> {
+        writeValueDataDataForCharacteristicBluetoothCharacteristicTypeCBCharacteristicWriteTypeAnyPublisherBluetoothCharacteristicBluetoothErrorCallsCount += 1
+        writeValueDataDataForCharacteristicBluetoothCharacteristicTypeCBCharacteristicWriteTypeAnyPublisherBluetoothCharacteristicBluetoothErrorReceivedArguments = (data: data, characteristic: characteristic, type: type)
+        writeValueDataDataForCharacteristicBluetoothCharacteristicTypeCBCharacteristicWriteTypeAnyPublisherBluetoothCharacteristicBluetoothErrorReceivedInvocations.append((data: data, characteristic: characteristic, type: type))
+        if let writeValueDataDataForCharacteristicBluetoothCharacteristicTypeCBCharacteristicWriteTypeAnyPublisherBluetoothCharacteristicBluetoothErrorClosure = writeValueDataDataForCharacteristicBluetoothCharacteristicTypeCBCharacteristicWriteTypeAnyPublisherBluetoothCharacteristicBluetoothErrorClosure {
+            return writeValueDataDataForCharacteristicBluetoothCharacteristicTypeCBCharacteristicWriteTypeAnyPublisherBluetoothCharacteristicBluetoothErrorClosure(data, characteristic, type)
+        } else {
+            return writeValueDataDataForCharacteristicBluetoothCharacteristicTypeCBCharacteristicWriteTypeAnyPublisherBluetoothCharacteristicBluetoothErrorReturnValue
+        }
     }
 
     //MARK: - notifyValue
 
-    open var notifyValueForCallsCount = 0
-    open var notifyValueForCalled: Bool {
-        return notifyValueForCallsCount > 0
+    public var notifyValueForCharacteristicBluetoothCharacteristicAnyPublisherBluetoothCharacteristicBluetoothErrorCallsCount = 0
+    public var notifyValueForCharacteristicBluetoothCharacteristicAnyPublisherBluetoothCharacteristicBluetoothErrorCalled: Bool {
+        return notifyValueForCharacteristicBluetoothCharacteristicAnyPublisherBluetoothCharacteristicBluetoothErrorCallsCount > 0
     }
-    open var notifyValueForReceivedCharacteristic: BluetoothCharacteristic?
-    open var notifyValueForReturnValue: AnyPublisher<BluetoothCharacteristic, BluetoothError>!
-    open var notifyValueForClosure: ((BluetoothCharacteristic) -> AnyPublisher<BluetoothCharacteristic, BluetoothError>)?
+    public var notifyValueForCharacteristicBluetoothCharacteristicAnyPublisherBluetoothCharacteristicBluetoothErrorReceivedCharacteristic: (BluetoothCharacteristic)?
+    public var notifyValueForCharacteristicBluetoothCharacteristicAnyPublisherBluetoothCharacteristicBluetoothErrorReceivedInvocations: [(BluetoothCharacteristic)] = []
+    public var notifyValueForCharacteristicBluetoothCharacteristicAnyPublisherBluetoothCharacteristicBluetoothErrorReturnValue: AnyPublisher<BluetoothCharacteristic, BluetoothError>!
+    public var notifyValueForCharacteristicBluetoothCharacteristicAnyPublisherBluetoothCharacteristicBluetoothErrorClosure: ((BluetoothCharacteristic) -> AnyPublisher<BluetoothCharacteristic, BluetoothError>)?
 
-    open func notifyValue(for characteristic: BluetoothCharacteristic) -> AnyPublisher<BluetoothCharacteristic, BluetoothError> {
-        notifyValueForCallsCount += 1
-        notifyValueForReceivedCharacteristic = characteristic
-        return notifyValueForClosure.map({ $0(characteristic) }) ?? notifyValueForReturnValue
+    public func notifyValue(for characteristic: BluetoothCharacteristic) -> AnyPublisher<BluetoothCharacteristic, BluetoothError> {
+        notifyValueForCharacteristicBluetoothCharacteristicAnyPublisherBluetoothCharacteristicBluetoothErrorCallsCount += 1
+        notifyValueForCharacteristicBluetoothCharacteristicAnyPublisherBluetoothCharacteristicBluetoothErrorReceivedCharacteristic = characteristic
+        notifyValueForCharacteristicBluetoothCharacteristicAnyPublisherBluetoothCharacteristicBluetoothErrorReceivedInvocations.append(characteristic)
+        if let notifyValueForCharacteristicBluetoothCharacteristicAnyPublisherBluetoothCharacteristicBluetoothErrorClosure = notifyValueForCharacteristicBluetoothCharacteristicAnyPublisherBluetoothCharacteristicBluetoothErrorClosure {
+            return notifyValueForCharacteristicBluetoothCharacteristicAnyPublisherBluetoothCharacteristicBluetoothErrorClosure(characteristic)
+        } else {
+            return notifyValueForCharacteristicBluetoothCharacteristicAnyPublisherBluetoothCharacteristicBluetoothErrorReturnValue
+        }
     }
 
     //MARK: - discoverDescriptors
 
-    open var discoverDescriptorsForCallsCount = 0
-    open var discoverDescriptorsForCalled: Bool {
-        return discoverDescriptorsForCallsCount > 0
+    public var discoverDescriptorsForCharacteristicBluetoothCharacteristicAnyPublisherBluetoothDescriptorBluetoothErrorCallsCount = 0
+    public var discoverDescriptorsForCharacteristicBluetoothCharacteristicAnyPublisherBluetoothDescriptorBluetoothErrorCalled: Bool {
+        return discoverDescriptorsForCharacteristicBluetoothCharacteristicAnyPublisherBluetoothDescriptorBluetoothErrorCallsCount > 0
     }
-    open var discoverDescriptorsForReceivedCharacteristic: BluetoothCharacteristic?
-    open var discoverDescriptorsForReturnValue: AnyPublisher<BluetoothDescriptor, BluetoothError>!
-    open var discoverDescriptorsForClosure: ((BluetoothCharacteristic) -> AnyPublisher<BluetoothDescriptor, BluetoothError>)?
+    public var discoverDescriptorsForCharacteristicBluetoothCharacteristicAnyPublisherBluetoothDescriptorBluetoothErrorReceivedCharacteristic: (BluetoothCharacteristic)?
+    public var discoverDescriptorsForCharacteristicBluetoothCharacteristicAnyPublisherBluetoothDescriptorBluetoothErrorReceivedInvocations: [(BluetoothCharacteristic)] = []
+    public var discoverDescriptorsForCharacteristicBluetoothCharacteristicAnyPublisherBluetoothDescriptorBluetoothErrorReturnValue: AnyPublisher<BluetoothDescriptor, BluetoothError>!
+    public var discoverDescriptorsForCharacteristicBluetoothCharacteristicAnyPublisherBluetoothDescriptorBluetoothErrorClosure: ((BluetoothCharacteristic) -> AnyPublisher<BluetoothDescriptor, BluetoothError>)?
 
-    open func discoverDescriptors(for characteristic: BluetoothCharacteristic) -> AnyPublisher<BluetoothDescriptor, BluetoothError> {
-        discoverDescriptorsForCallsCount += 1
-        discoverDescriptorsForReceivedCharacteristic = characteristic
-        return discoverDescriptorsForClosure.map({ $0(characteristic) }) ?? discoverDescriptorsForReturnValue
+    public func discoverDescriptors(for characteristic: BluetoothCharacteristic) -> AnyPublisher<BluetoothDescriptor, BluetoothError> {
+        discoverDescriptorsForCharacteristicBluetoothCharacteristicAnyPublisherBluetoothDescriptorBluetoothErrorCallsCount += 1
+        discoverDescriptorsForCharacteristicBluetoothCharacteristicAnyPublisherBluetoothDescriptorBluetoothErrorReceivedCharacteristic = characteristic
+        discoverDescriptorsForCharacteristicBluetoothCharacteristicAnyPublisherBluetoothDescriptorBluetoothErrorReceivedInvocations.append(characteristic)
+        if let discoverDescriptorsForCharacteristicBluetoothCharacteristicAnyPublisherBluetoothDescriptorBluetoothErrorClosure = discoverDescriptorsForCharacteristicBluetoothCharacteristicAnyPublisherBluetoothDescriptorBluetoothErrorClosure {
+            return discoverDescriptorsForCharacteristicBluetoothCharacteristicAnyPublisherBluetoothDescriptorBluetoothErrorClosure(characteristic)
+        } else {
+            return discoverDescriptorsForCharacteristicBluetoothCharacteristicAnyPublisherBluetoothDescriptorBluetoothErrorReturnValue
+        }
     }
 
     //MARK: - readDescriptorValue
 
-    open var readDescriptorValueCallsCount = 0
-    open var readDescriptorValueCalled: Bool {
-        return readDescriptorValueCallsCount > 0
+    public var readDescriptorValueDescriptorBluetoothDescriptorAnyPublisherBluetoothDescriptorBluetoothErrorCallsCount = 0
+    public var readDescriptorValueDescriptorBluetoothDescriptorAnyPublisherBluetoothDescriptorBluetoothErrorCalled: Bool {
+        return readDescriptorValueDescriptorBluetoothDescriptorAnyPublisherBluetoothDescriptorBluetoothErrorCallsCount > 0
     }
-    open var readDescriptorValueReceivedDescriptor: BluetoothDescriptor?
-    open var readDescriptorValueReturnValue: AnyPublisher<BluetoothDescriptor, BluetoothError>!
-    open var readDescriptorValueClosure: ((BluetoothDescriptor) -> AnyPublisher<BluetoothDescriptor, BluetoothError>)?
+    public var readDescriptorValueDescriptorBluetoothDescriptorAnyPublisherBluetoothDescriptorBluetoothErrorReceivedDescriptor: (BluetoothDescriptor)?
+    public var readDescriptorValueDescriptorBluetoothDescriptorAnyPublisherBluetoothDescriptorBluetoothErrorReceivedInvocations: [(BluetoothDescriptor)] = []
+    public var readDescriptorValueDescriptorBluetoothDescriptorAnyPublisherBluetoothDescriptorBluetoothErrorReturnValue: AnyPublisher<BluetoothDescriptor, BluetoothError>!
+    public var readDescriptorValueDescriptorBluetoothDescriptorAnyPublisherBluetoothDescriptorBluetoothErrorClosure: ((BluetoothDescriptor) -> AnyPublisher<BluetoothDescriptor, BluetoothError>)?
 
-    open func readDescriptorValue(_ descriptor: BluetoothDescriptor) -> AnyPublisher<BluetoothDescriptor, BluetoothError> {
-        readDescriptorValueCallsCount += 1
-        readDescriptorValueReceivedDescriptor = descriptor
-        return readDescriptorValueClosure.map({ $0(descriptor) }) ?? readDescriptorValueReturnValue
+    public func readDescriptorValue(_ descriptor: BluetoothDescriptor) -> AnyPublisher<BluetoothDescriptor, BluetoothError> {
+        readDescriptorValueDescriptorBluetoothDescriptorAnyPublisherBluetoothDescriptorBluetoothErrorCallsCount += 1
+        readDescriptorValueDescriptorBluetoothDescriptorAnyPublisherBluetoothDescriptorBluetoothErrorReceivedDescriptor = descriptor
+        readDescriptorValueDescriptorBluetoothDescriptorAnyPublisherBluetoothDescriptorBluetoothErrorReceivedInvocations.append(descriptor)
+        if let readDescriptorValueDescriptorBluetoothDescriptorAnyPublisherBluetoothDescriptorBluetoothErrorClosure = readDescriptorValueDescriptorBluetoothDescriptorAnyPublisherBluetoothDescriptorBluetoothErrorClosure {
+            return readDescriptorValueDescriptorBluetoothDescriptorAnyPublisherBluetoothDescriptorBluetoothErrorClosure(descriptor)
+        } else {
+            return readDescriptorValueDescriptorBluetoothDescriptorAnyPublisherBluetoothDescriptorBluetoothErrorReturnValue
+        }
     }
 
     //MARK: - writeValue
 
-    open var writeValueForCallsCount = 0
-    open var writeValueForCalled: Bool {
-        return writeValueForCallsCount > 0
+    public var writeValueDataDataForDescriptorBluetoothDescriptorAnyPublisherBluetoothDescriptorBluetoothErrorCallsCount = 0
+    public var writeValueDataDataForDescriptorBluetoothDescriptorAnyPublisherBluetoothDescriptorBluetoothErrorCalled: Bool {
+        return writeValueDataDataForDescriptorBluetoothDescriptorAnyPublisherBluetoothDescriptorBluetoothErrorCallsCount > 0
     }
-    open var writeValueForReceivedArguments: (data: Data, descriptor: BluetoothDescriptor)?
-    open var writeValueForReturnValue: AnyPublisher<BluetoothDescriptor, BluetoothError>!
-    open var writeValueForClosure: ((Data, BluetoothDescriptor) -> AnyPublisher<BluetoothDescriptor, BluetoothError>)?
+    public var writeValueDataDataForDescriptorBluetoothDescriptorAnyPublisherBluetoothDescriptorBluetoothErrorReceivedArguments: (data: Data, descriptor: BluetoothDescriptor)?
+    public var writeValueDataDataForDescriptorBluetoothDescriptorAnyPublisherBluetoothDescriptorBluetoothErrorReceivedInvocations: [(data: Data, descriptor: BluetoothDescriptor)] = []
+    public var writeValueDataDataForDescriptorBluetoothDescriptorAnyPublisherBluetoothDescriptorBluetoothErrorReturnValue: AnyPublisher<BluetoothDescriptor, BluetoothError>!
+    public var writeValueDataDataForDescriptorBluetoothDescriptorAnyPublisherBluetoothDescriptorBluetoothErrorClosure: ((Data, BluetoothDescriptor) -> AnyPublisher<BluetoothDescriptor, BluetoothError>)?
 
-    open func writeValue(_ data: Data, for descriptor: BluetoothDescriptor) -> AnyPublisher<BluetoothDescriptor, BluetoothError> {
-        writeValueForCallsCount += 1
-        writeValueForReceivedArguments = (data: data, descriptor: descriptor)
-        return writeValueForClosure.map({ $0(data, descriptor) }) ?? writeValueForReturnValue
+    public func writeValue(_ data: Data, for descriptor: BluetoothDescriptor) -> AnyPublisher<BluetoothDescriptor, BluetoothError> {
+        writeValueDataDataForDescriptorBluetoothDescriptorAnyPublisherBluetoothDescriptorBluetoothErrorCallsCount += 1
+        writeValueDataDataForDescriptorBluetoothDescriptorAnyPublisherBluetoothDescriptorBluetoothErrorReceivedArguments = (data: data, descriptor: descriptor)
+        writeValueDataDataForDescriptorBluetoothDescriptorAnyPublisherBluetoothDescriptorBluetoothErrorReceivedInvocations.append((data: data, descriptor: descriptor))
+        if let writeValueDataDataForDescriptorBluetoothDescriptorAnyPublisherBluetoothDescriptorBluetoothErrorClosure = writeValueDataDataForDescriptorBluetoothDescriptorAnyPublisherBluetoothDescriptorBluetoothErrorClosure {
+            return writeValueDataDataForDescriptorBluetoothDescriptorAnyPublisherBluetoothDescriptorBluetoothErrorClosure(data, descriptor)
+        } else {
+            return writeValueDataDataForDescriptorBluetoothDescriptorAnyPublisherBluetoothDescriptorBluetoothErrorReturnValue
+        }
     }
 
     //MARK: - openL2CAPChannel
 
-    open var openL2CAPChannelPSMCallsCount = 0
-    open var openL2CAPChannelPSMCalled: Bool {
-        return openL2CAPChannelPSMCallsCount > 0
+    public var openL2CAPChannelPSMCBL2CAPPSMAnyPublisherL2CAPChannelBluetoothErrorCallsCount = 0
+    public var openL2CAPChannelPSMCBL2CAPPSMAnyPublisherL2CAPChannelBluetoothErrorCalled: Bool {
+        return openL2CAPChannelPSMCBL2CAPPSMAnyPublisherL2CAPChannelBluetoothErrorCallsCount > 0
     }
-    open var openL2CAPChannelPSMReceivedPSM: CBL2CAPPSM?
-    open var openL2CAPChannelPSMReturnValue: AnyPublisher<L2CAPChannel, BluetoothError>!
-    open var openL2CAPChannelPSMClosure: ((CBL2CAPPSM) -> AnyPublisher<L2CAPChannel, BluetoothError>)?
+    public var openL2CAPChannelPSMCBL2CAPPSMAnyPublisherL2CAPChannelBluetoothErrorReceivedPSM: (CBL2CAPPSM)?
+    public var openL2CAPChannelPSMCBL2CAPPSMAnyPublisherL2CAPChannelBluetoothErrorReceivedInvocations: [(CBL2CAPPSM)] = []
+    public var openL2CAPChannelPSMCBL2CAPPSMAnyPublisherL2CAPChannelBluetoothErrorReturnValue: AnyPublisher<L2CAPChannel, BluetoothError>!
+    public var openL2CAPChannelPSMCBL2CAPPSMAnyPublisherL2CAPChannelBluetoothErrorClosure: ((CBL2CAPPSM) -> AnyPublisher<L2CAPChannel, BluetoothError>)?
 
-    open func openL2CAPChannel(PSM: CBL2CAPPSM) -> AnyPublisher<L2CAPChannel, BluetoothError> {
-        openL2CAPChannelPSMCallsCount += 1
-        openL2CAPChannelPSMReceivedPSM = PSM
-        return openL2CAPChannelPSMClosure.map({ $0(PSM) }) ?? openL2CAPChannelPSMReturnValue
+    public func openL2CAPChannel(PSM: CBL2CAPPSM) -> AnyPublisher<L2CAPChannel, BluetoothError> {
+        openL2CAPChannelPSMCBL2CAPPSMAnyPublisherL2CAPChannelBluetoothErrorCallsCount += 1
+        openL2CAPChannelPSMCBL2CAPPSMAnyPublisherL2CAPChannelBluetoothErrorReceivedPSM = PSM
+        openL2CAPChannelPSMCBL2CAPPSMAnyPublisherL2CAPChannelBluetoothErrorReceivedInvocations.append(PSM)
+        if let openL2CAPChannelPSMCBL2CAPPSMAnyPublisherL2CAPChannelBluetoothErrorClosure = openL2CAPChannelPSMCBL2CAPPSMAnyPublisherL2CAPChannelBluetoothErrorClosure {
+            return openL2CAPChannelPSMCBL2CAPPSMAnyPublisherL2CAPChannelBluetoothErrorClosure(PSM)
+        } else {
+            return openL2CAPChannelPSMCBL2CAPPSMAnyPublisherL2CAPChannelBluetoothErrorReturnValue
+        }
     }
+
 
 }
-open class BluetoothServiceMock: BluetoothService {
-    open var id: CBUUID {
+public class BluetoothServiceMock: BluetoothService {
+
+    public init() {}
+
+    public var id: CBUUID {
         get { return underlyingId }
         set(value) { underlyingId = value }
     }
-    open var underlyingId: CBUUID!
-    open var peripheral: UUID?
-    open var isPrimary: Bool {
+    public var underlyingId: (CBUUID)!
+    public var peripheral: UUID?
+    public var isPrimary: Bool {
         get { return underlyingIsPrimary }
         set(value) { underlyingIsPrimary = value }
     }
-    open var underlyingIsPrimary: Bool!
-    open var includedServices: [BluetoothService]?
-    open var characteristics: [BluetoothCharacteristic]?
+    public var underlyingIsPrimary: (Bool)!
+    public var includedServices: [BluetoothService]?
+    public var characteristics: [BluetoothCharacteristic]?
+
+
+
 }
-open class CentralManagerMock: CentralManager {
-    open var isScanning: AnyPublisher<Bool, Never> {
+public class CentralManagerMock: CentralManager {
+
+    public init() {}
+
+    public var isScanning: AnyPublisher<Bool, Never> {
         get { return underlyingIsScanning }
         set(value) { underlyingIsScanning = value }
     }
-    open var underlyingIsScanning: AnyPublisher<Bool, Never>!
-    open var peripheralConnection: AnyPublisher<PeripheralConnectionEvent, Never> {
+    public var underlyingIsScanning: (AnyPublisher<Bool, Never>)!
+    public var peripheralConnection: AnyPublisher<PeripheralConnectionEvent, Never> {
         get { return underlyingPeripheralConnection }
         set(value) { underlyingPeripheralConnection = value }
     }
-    open var underlyingPeripheralConnection: AnyPublisher<PeripheralConnectionEvent, Never>!
-    open var state: AnyPublisher<CBManagerState, BluetoothError> {
+    public var underlyingPeripheralConnection: (AnyPublisher<PeripheralConnectionEvent, Never>)!
+    public var state: AnyPublisher<CBManagerState, BluetoothError> {
         get { return underlyingState }
         set(value) { underlyingState = value }
     }
-    open var underlyingState: AnyPublisher<CBManagerState, BluetoothError>!
-    open var stateRestoration: AnyPublisher<StateRestorationEvent, BluetoothError> {
+    public var underlyingState: (AnyPublisher<CBManagerState, BluetoothError>)!
+    public var stateRestoration: AnyPublisher<StateRestorationEvent, BluetoothError> {
         get { return underlyingStateRestoration }
         set(value) { underlyingStateRestoration = value }
     }
-    open var underlyingStateRestoration: AnyPublisher<StateRestorationEvent, BluetoothError>!
-    //MARK: - scanForPeripherals
+    public var underlyingStateRestoration: (AnyPublisher<StateRestorationEvent, BluetoothError>)!
 
-    open var scanForPeripheralsCallsCount = 0
-    open var scanForPeripheralsCalled: Bool {
-        return scanForPeripheralsCallsCount > 0
-    }
-    open var scanForPeripheralsReturnValue: AnyPublisher<AdvertisingPeripheral, BluetoothError>!
-    open var scanForPeripheralsClosure: (() -> AnyPublisher<AdvertisingPeripheral, BluetoothError>)?
-
-    open func scanForPeripherals() -> AnyPublisher<AdvertisingPeripheral, BluetoothError> {
-        scanForPeripheralsCallsCount += 1
-        return scanForPeripheralsClosure.map({ $0() }) ?? scanForPeripheralsReturnValue
-    }
 
     //MARK: - scanForPeripherals
 
-    open var scanForPeripheralsWithServicesCallsCount = 0
-    open var scanForPeripheralsWithServicesCalled: Bool {
-        return scanForPeripheralsWithServicesCallsCount > 0
+    public var scanForPeripheralsAnyPublisherAdvertisingPeripheralBluetoothErrorCallsCount = 0
+    public var scanForPeripheralsAnyPublisherAdvertisingPeripheralBluetoothErrorCalled: Bool {
+        return scanForPeripheralsAnyPublisherAdvertisingPeripheralBluetoothErrorCallsCount > 0
     }
-    open var scanForPeripheralsWithServicesReceivedServiceUUIDs: [CBUUID]?
-    open var scanForPeripheralsWithServicesReturnValue: AnyPublisher<AdvertisingPeripheral, BluetoothError>!
-    open var scanForPeripheralsWithServicesClosure: (([CBUUID]?) -> AnyPublisher<AdvertisingPeripheral, BluetoothError>)?
+    public var scanForPeripheralsAnyPublisherAdvertisingPeripheralBluetoothErrorReturnValue: AnyPublisher<AdvertisingPeripheral, BluetoothError>!
+    public var scanForPeripheralsAnyPublisherAdvertisingPeripheralBluetoothErrorClosure: (() -> AnyPublisher<AdvertisingPeripheral, BluetoothError>)?
 
-    open func scanForPeripherals(withServices serviceUUIDs: [CBUUID]?) -> AnyPublisher<AdvertisingPeripheral, BluetoothError> {
-        scanForPeripheralsWithServicesCallsCount += 1
-        scanForPeripheralsWithServicesReceivedServiceUUIDs = serviceUUIDs
-        return scanForPeripheralsWithServicesClosure.map({ $0(serviceUUIDs) }) ?? scanForPeripheralsWithServicesReturnValue
+    public func scanForPeripherals() -> AnyPublisher<AdvertisingPeripheral, BluetoothError> {
+        scanForPeripheralsAnyPublisherAdvertisingPeripheralBluetoothErrorCallsCount += 1
+        if let scanForPeripheralsAnyPublisherAdvertisingPeripheralBluetoothErrorClosure = scanForPeripheralsAnyPublisherAdvertisingPeripheralBluetoothErrorClosure {
+            return scanForPeripheralsAnyPublisherAdvertisingPeripheralBluetoothErrorClosure()
+        } else {
+            return scanForPeripheralsAnyPublisherAdvertisingPeripheralBluetoothErrorReturnValue
+        }
     }
 
     //MARK: - scanForPeripherals
 
-    open var scanForPeripheralsWithServicesOptionsCallsCount = 0
-    open var scanForPeripheralsWithServicesOptionsCalled: Bool {
-        return scanForPeripheralsWithServicesOptionsCallsCount > 0
+    public var scanForPeripheralsWithServicesServiceUUIDsCBUUIDAnyPublisherAdvertisingPeripheralBluetoothErrorCallsCount = 0
+    public var scanForPeripheralsWithServicesServiceUUIDsCBUUIDAnyPublisherAdvertisingPeripheralBluetoothErrorCalled: Bool {
+        return scanForPeripheralsWithServicesServiceUUIDsCBUUIDAnyPublisherAdvertisingPeripheralBluetoothErrorCallsCount > 0
     }
-    open var scanForPeripheralsWithServicesOptionsReceivedArguments: (serviceUUIDs: [CBUUID]?, options: [String: Any])?
-    open var scanForPeripheralsWithServicesOptionsReturnValue: AnyPublisher<AdvertisingPeripheral, BluetoothError>!
-    open var scanForPeripheralsWithServicesOptionsClosure: (([CBUUID]?, [String: Any]) -> AnyPublisher<AdvertisingPeripheral, BluetoothError>)?
+    public var scanForPeripheralsWithServicesServiceUUIDsCBUUIDAnyPublisherAdvertisingPeripheralBluetoothErrorReceivedServiceUUIDs: ([CBUUID])?
+    public var scanForPeripheralsWithServicesServiceUUIDsCBUUIDAnyPublisherAdvertisingPeripheralBluetoothErrorReceivedInvocations: [([CBUUID])?] = []
+    public var scanForPeripheralsWithServicesServiceUUIDsCBUUIDAnyPublisherAdvertisingPeripheralBluetoothErrorReturnValue: AnyPublisher<AdvertisingPeripheral, BluetoothError>!
+    public var scanForPeripheralsWithServicesServiceUUIDsCBUUIDAnyPublisherAdvertisingPeripheralBluetoothErrorClosure: (([CBUUID]?) -> AnyPublisher<AdvertisingPeripheral, BluetoothError>)?
 
-    open func scanForPeripherals(withServices serviceUUIDs: [CBUUID]?, options: [String: Any]) -> AnyPublisher<AdvertisingPeripheral, BluetoothError> {
-        scanForPeripheralsWithServicesOptionsCallsCount += 1
-        scanForPeripheralsWithServicesOptionsReceivedArguments = (serviceUUIDs: serviceUUIDs, options: options)
-        return scanForPeripheralsWithServicesOptionsClosure.map({ $0(serviceUUIDs, options) }) ?? scanForPeripheralsWithServicesOptionsReturnValue
+    public func scanForPeripherals(withServices serviceUUIDs: [CBUUID]?) -> AnyPublisher<AdvertisingPeripheral, BluetoothError> {
+        scanForPeripheralsWithServicesServiceUUIDsCBUUIDAnyPublisherAdvertisingPeripheralBluetoothErrorCallsCount += 1
+        scanForPeripheralsWithServicesServiceUUIDsCBUUIDAnyPublisherAdvertisingPeripheralBluetoothErrorReceivedServiceUUIDs = serviceUUIDs
+        scanForPeripheralsWithServicesServiceUUIDsCBUUIDAnyPublisherAdvertisingPeripheralBluetoothErrorReceivedInvocations.append(serviceUUIDs)
+        if let scanForPeripheralsWithServicesServiceUUIDsCBUUIDAnyPublisherAdvertisingPeripheralBluetoothErrorClosure = scanForPeripheralsWithServicesServiceUUIDsCBUUIDAnyPublisherAdvertisingPeripheralBluetoothErrorClosure {
+            return scanForPeripheralsWithServicesServiceUUIDsCBUUIDAnyPublisherAdvertisingPeripheralBluetoothErrorClosure(serviceUUIDs)
+        } else {
+            return scanForPeripheralsWithServicesServiceUUIDsCBUUIDAnyPublisherAdvertisingPeripheralBluetoothErrorReturnValue
+        }
     }
 
     //MARK: - scanForPeripherals
 
-    open var scanForPeripheralsOptionsCallsCount = 0
-    open var scanForPeripheralsOptionsCalled: Bool {
-        return scanForPeripheralsOptionsCallsCount > 0
+    public var scanForPeripheralsWithServicesServiceUUIDsCBUUIDOptionsStringAnyAnyPublisherAdvertisingPeripheralBluetoothErrorCallsCount = 0
+    public var scanForPeripheralsWithServicesServiceUUIDsCBUUIDOptionsStringAnyAnyPublisherAdvertisingPeripheralBluetoothErrorCalled: Bool {
+        return scanForPeripheralsWithServicesServiceUUIDsCBUUIDOptionsStringAnyAnyPublisherAdvertisingPeripheralBluetoothErrorCallsCount > 0
     }
-    open var scanForPeripheralsOptionsReceivedOptions: [String: Any]?
-    open var scanForPeripheralsOptionsReturnValue: AnyPublisher<AdvertisingPeripheral, BluetoothError>!
-    open var scanForPeripheralsOptionsClosure: (([String: Any]) -> AnyPublisher<AdvertisingPeripheral, BluetoothError>)?
+    public var scanForPeripheralsWithServicesServiceUUIDsCBUUIDOptionsStringAnyAnyPublisherAdvertisingPeripheralBluetoothErrorReceivedArguments: (serviceUUIDs: [CBUUID]?, options: [String: Any])?
+    public var scanForPeripheralsWithServicesServiceUUIDsCBUUIDOptionsStringAnyAnyPublisherAdvertisingPeripheralBluetoothErrorReceivedInvocations: [(serviceUUIDs: [CBUUID]?, options: [String: Any])] = []
+    public var scanForPeripheralsWithServicesServiceUUIDsCBUUIDOptionsStringAnyAnyPublisherAdvertisingPeripheralBluetoothErrorReturnValue: AnyPublisher<AdvertisingPeripheral, BluetoothError>!
+    public var scanForPeripheralsWithServicesServiceUUIDsCBUUIDOptionsStringAnyAnyPublisherAdvertisingPeripheralBluetoothErrorClosure: (([CBUUID]?, [String: Any]) -> AnyPublisher<AdvertisingPeripheral, BluetoothError>)?
 
-    open func scanForPeripherals(options: [String: Any]) -> AnyPublisher<AdvertisingPeripheral, BluetoothError> {
-        scanForPeripheralsOptionsCallsCount += 1
-        scanForPeripheralsOptionsReceivedOptions = options
-        return scanForPeripheralsOptionsClosure.map({ $0(options) }) ?? scanForPeripheralsOptionsReturnValue
+    public func scanForPeripherals(withServices serviceUUIDs: [CBUUID]?, options: [String: Any]) -> AnyPublisher<AdvertisingPeripheral, BluetoothError> {
+        scanForPeripheralsWithServicesServiceUUIDsCBUUIDOptionsStringAnyAnyPublisherAdvertisingPeripheralBluetoothErrorCallsCount += 1
+        scanForPeripheralsWithServicesServiceUUIDsCBUUIDOptionsStringAnyAnyPublisherAdvertisingPeripheralBluetoothErrorReceivedArguments = (serviceUUIDs: serviceUUIDs, options: options)
+        scanForPeripheralsWithServicesServiceUUIDsCBUUIDOptionsStringAnyAnyPublisherAdvertisingPeripheralBluetoothErrorReceivedInvocations.append((serviceUUIDs: serviceUUIDs, options: options))
+        if let scanForPeripheralsWithServicesServiceUUIDsCBUUIDOptionsStringAnyAnyPublisherAdvertisingPeripheralBluetoothErrorClosure = scanForPeripheralsWithServicesServiceUUIDsCBUUIDOptionsStringAnyAnyPublisherAdvertisingPeripheralBluetoothErrorClosure {
+            return scanForPeripheralsWithServicesServiceUUIDsCBUUIDOptionsStringAnyAnyPublisherAdvertisingPeripheralBluetoothErrorClosure(serviceUUIDs, options)
+        } else {
+            return scanForPeripheralsWithServicesServiceUUIDsCBUUIDOptionsStringAnyAnyPublisherAdvertisingPeripheralBluetoothErrorReturnValue
+        }
+    }
+
+    //MARK: - scanForPeripherals
+
+    public var scanForPeripheralsOptionsStringAnyAnyPublisherAdvertisingPeripheralBluetoothErrorCallsCount = 0
+    public var scanForPeripheralsOptionsStringAnyAnyPublisherAdvertisingPeripheralBluetoothErrorCalled: Bool {
+        return scanForPeripheralsOptionsStringAnyAnyPublisherAdvertisingPeripheralBluetoothErrorCallsCount > 0
+    }
+    public var scanForPeripheralsOptionsStringAnyAnyPublisherAdvertisingPeripheralBluetoothErrorReceivedOptions: ([String: Any])?
+    public var scanForPeripheralsOptionsStringAnyAnyPublisherAdvertisingPeripheralBluetoothErrorReceivedInvocations: [([String: Any])] = []
+    public var scanForPeripheralsOptionsStringAnyAnyPublisherAdvertisingPeripheralBluetoothErrorReturnValue: AnyPublisher<AdvertisingPeripheral, BluetoothError>!
+    public var scanForPeripheralsOptionsStringAnyAnyPublisherAdvertisingPeripheralBluetoothErrorClosure: (([String: Any]) -> AnyPublisher<AdvertisingPeripheral, BluetoothError>)?
+
+    public func scanForPeripherals(options: [String: Any]) -> AnyPublisher<AdvertisingPeripheral, BluetoothError> {
+        scanForPeripheralsOptionsStringAnyAnyPublisherAdvertisingPeripheralBluetoothErrorCallsCount += 1
+        scanForPeripheralsOptionsStringAnyAnyPublisherAdvertisingPeripheralBluetoothErrorReceivedOptions = options
+        scanForPeripheralsOptionsStringAnyAnyPublisherAdvertisingPeripheralBluetoothErrorReceivedInvocations.append(options)
+        if let scanForPeripheralsOptionsStringAnyAnyPublisherAdvertisingPeripheralBluetoothErrorClosure = scanForPeripheralsOptionsStringAnyAnyPublisherAdvertisingPeripheralBluetoothErrorClosure {
+            return scanForPeripheralsOptionsStringAnyAnyPublisherAdvertisingPeripheralBluetoothErrorClosure(options)
+        } else {
+            return scanForPeripheralsOptionsStringAnyAnyPublisherAdvertisingPeripheralBluetoothErrorReturnValue
+        }
     }
 
     //MARK: - retrievePeripherals
 
-    open var retrievePeripheralsWithIdentifiersCallsCount = 0
-    open var retrievePeripheralsWithIdentifiersCalled: Bool {
-        return retrievePeripheralsWithIdentifiersCallsCount > 0
+    public var retrievePeripheralsWithIdentifiersIdentifiersUUIDBluetoothPeripheralCallsCount = 0
+    public var retrievePeripheralsWithIdentifiersIdentifiersUUIDBluetoothPeripheralCalled: Bool {
+        return retrievePeripheralsWithIdentifiersIdentifiersUUIDBluetoothPeripheralCallsCount > 0
     }
-    open var retrievePeripheralsWithIdentifiersReceivedIdentifiers: [UUID]?
-    open var retrievePeripheralsWithIdentifiersReturnValue: [BluetoothPeripheral]!
-    open var retrievePeripheralsWithIdentifiersClosure: (([UUID]) -> [BluetoothPeripheral])?
+    public var retrievePeripheralsWithIdentifiersIdentifiersUUIDBluetoothPeripheralReceivedIdentifiers: ([UUID])?
+    public var retrievePeripheralsWithIdentifiersIdentifiersUUIDBluetoothPeripheralReceivedInvocations: [([UUID])] = []
+    public var retrievePeripheralsWithIdentifiersIdentifiersUUIDBluetoothPeripheralReturnValue: [BluetoothPeripheral]!
+    public var retrievePeripheralsWithIdentifiersIdentifiersUUIDBluetoothPeripheralClosure: (([UUID]) -> [BluetoothPeripheral])?
 
-    open func retrievePeripherals(withIdentifiers identifiers: [UUID]) -> [BluetoothPeripheral] {
-        retrievePeripheralsWithIdentifiersCallsCount += 1
-        retrievePeripheralsWithIdentifiersReceivedIdentifiers = identifiers
-        return retrievePeripheralsWithIdentifiersClosure.map({ $0(identifiers) }) ?? retrievePeripheralsWithIdentifiersReturnValue
+    public func retrievePeripherals(withIdentifiers identifiers: [UUID]) -> [BluetoothPeripheral] {
+        retrievePeripheralsWithIdentifiersIdentifiersUUIDBluetoothPeripheralCallsCount += 1
+        retrievePeripheralsWithIdentifiersIdentifiersUUIDBluetoothPeripheralReceivedIdentifiers = identifiers
+        retrievePeripheralsWithIdentifiersIdentifiersUUIDBluetoothPeripheralReceivedInvocations.append(identifiers)
+        if let retrievePeripheralsWithIdentifiersIdentifiersUUIDBluetoothPeripheralClosure = retrievePeripheralsWithIdentifiersIdentifiersUUIDBluetoothPeripheralClosure {
+            return retrievePeripheralsWithIdentifiersIdentifiersUUIDBluetoothPeripheralClosure(identifiers)
+        } else {
+            return retrievePeripheralsWithIdentifiersIdentifiersUUIDBluetoothPeripheralReturnValue
+        }
     }
 
     //MARK: - retrieveConnectedPeripherals
 
-    open var retrieveConnectedPeripheralsWithServicesCallsCount = 0
-    open var retrieveConnectedPeripheralsWithServicesCalled: Bool {
-        return retrieveConnectedPeripheralsWithServicesCallsCount > 0
+    public var retrieveConnectedPeripheralsWithServicesServiceUUIDsCBUUIDBluetoothPeripheralCallsCount = 0
+    public var retrieveConnectedPeripheralsWithServicesServiceUUIDsCBUUIDBluetoothPeripheralCalled: Bool {
+        return retrieveConnectedPeripheralsWithServicesServiceUUIDsCBUUIDBluetoothPeripheralCallsCount > 0
     }
-    open var retrieveConnectedPeripheralsWithServicesReceivedServiceUUIDs: [CBUUID]?
-    open var retrieveConnectedPeripheralsWithServicesReturnValue: [BluetoothPeripheral]!
-    open var retrieveConnectedPeripheralsWithServicesClosure: (([CBUUID]) -> [BluetoothPeripheral])?
+    public var retrieveConnectedPeripheralsWithServicesServiceUUIDsCBUUIDBluetoothPeripheralReceivedServiceUUIDs: ([CBUUID])?
+    public var retrieveConnectedPeripheralsWithServicesServiceUUIDsCBUUIDBluetoothPeripheralReceivedInvocations: [([CBUUID])] = []
+    public var retrieveConnectedPeripheralsWithServicesServiceUUIDsCBUUIDBluetoothPeripheralReturnValue: [BluetoothPeripheral]!
+    public var retrieveConnectedPeripheralsWithServicesServiceUUIDsCBUUIDBluetoothPeripheralClosure: (([CBUUID]) -> [BluetoothPeripheral])?
 
-    open func retrieveConnectedPeripherals(withServices serviceUUIDs: [CBUUID]) -> [BluetoothPeripheral] {
-        retrieveConnectedPeripheralsWithServicesCallsCount += 1
-        retrieveConnectedPeripheralsWithServicesReceivedServiceUUIDs = serviceUUIDs
-        return retrieveConnectedPeripheralsWithServicesClosure.map({ $0(serviceUUIDs) }) ?? retrieveConnectedPeripheralsWithServicesReturnValue
-    }
-
-    //MARK: - connect
-
-    open var connectCallsCount = 0
-    open var connectCalled: Bool {
-        return connectCallsCount > 0
-    }
-    open var connectReceivedPeripheral: BluetoothPeripheral?
-    open var connectReturnValue: AnyPublisher<BluetoothPeripheral, BluetoothError>!
-    open var connectClosure: ((BluetoothPeripheral) -> AnyPublisher<BluetoothPeripheral, BluetoothError>)?
-
-    open func connect(_ peripheral: BluetoothPeripheral) -> AnyPublisher<BluetoothPeripheral, BluetoothError> {
-        connectCallsCount += 1
-        connectReceivedPeripheral = peripheral
-        return connectClosure.map({ $0(peripheral) }) ?? connectReturnValue
+    public func retrieveConnectedPeripherals(withServices serviceUUIDs: [CBUUID]) -> [BluetoothPeripheral] {
+        retrieveConnectedPeripheralsWithServicesServiceUUIDsCBUUIDBluetoothPeripheralCallsCount += 1
+        retrieveConnectedPeripheralsWithServicesServiceUUIDsCBUUIDBluetoothPeripheralReceivedServiceUUIDs = serviceUUIDs
+        retrieveConnectedPeripheralsWithServicesServiceUUIDsCBUUIDBluetoothPeripheralReceivedInvocations.append(serviceUUIDs)
+        if let retrieveConnectedPeripheralsWithServicesServiceUUIDsCBUUIDBluetoothPeripheralClosure = retrieveConnectedPeripheralsWithServicesServiceUUIDsCBUUIDBluetoothPeripheralClosure {
+            return retrieveConnectedPeripheralsWithServicesServiceUUIDsCBUUIDBluetoothPeripheralClosure(serviceUUIDs)
+        } else {
+            return retrieveConnectedPeripheralsWithServicesServiceUUIDsCBUUIDBluetoothPeripheralReturnValue
+        }
     }
 
     //MARK: - connect
 
-    open var connectOptionsCallsCount = 0
-    open var connectOptionsCalled: Bool {
-        return connectOptionsCallsCount > 0
+    public var connectPeripheralBluetoothPeripheralAnyPublisherBluetoothPeripheralBluetoothErrorCallsCount = 0
+    public var connectPeripheralBluetoothPeripheralAnyPublisherBluetoothPeripheralBluetoothErrorCalled: Bool {
+        return connectPeripheralBluetoothPeripheralAnyPublisherBluetoothPeripheralBluetoothErrorCallsCount > 0
     }
-    open var connectOptionsReceivedArguments: (peripheral: BluetoothPeripheral, options: [String : Any])?
-    open var connectOptionsReturnValue: AnyPublisher<BluetoothPeripheral, BluetoothError>!
-    open var connectOptionsClosure: ((BluetoothPeripheral, [String : Any]) -> AnyPublisher<BluetoothPeripheral, BluetoothError>)?
+    public var connectPeripheralBluetoothPeripheralAnyPublisherBluetoothPeripheralBluetoothErrorReceivedPeripheral: (BluetoothPeripheral)?
+    public var connectPeripheralBluetoothPeripheralAnyPublisherBluetoothPeripheralBluetoothErrorReceivedInvocations: [(BluetoothPeripheral)] = []
+    public var connectPeripheralBluetoothPeripheralAnyPublisherBluetoothPeripheralBluetoothErrorReturnValue: AnyPublisher<BluetoothPeripheral, BluetoothError>!
+    public var connectPeripheralBluetoothPeripheralAnyPublisherBluetoothPeripheralBluetoothErrorClosure: ((BluetoothPeripheral) -> AnyPublisher<BluetoothPeripheral, BluetoothError>)?
 
-    open func connect(_ peripheral: BluetoothPeripheral, options: [String : Any]) -> AnyPublisher<BluetoothPeripheral, BluetoothError> {
-        connectOptionsCallsCount += 1
-        connectOptionsReceivedArguments = (peripheral: peripheral, options: options)
-        return connectOptionsClosure.map({ $0(peripheral, options) }) ?? connectOptionsReturnValue
+    public func connect(_ peripheral: BluetoothPeripheral) -> AnyPublisher<BluetoothPeripheral, BluetoothError> {
+        connectPeripheralBluetoothPeripheralAnyPublisherBluetoothPeripheralBluetoothErrorCallsCount += 1
+        connectPeripheralBluetoothPeripheralAnyPublisherBluetoothPeripheralBluetoothErrorReceivedPeripheral = peripheral
+        connectPeripheralBluetoothPeripheralAnyPublisherBluetoothPeripheralBluetoothErrorReceivedInvocations.append(peripheral)
+        if let connectPeripheralBluetoothPeripheralAnyPublisherBluetoothPeripheralBluetoothErrorClosure = connectPeripheralBluetoothPeripheralAnyPublisherBluetoothPeripheralBluetoothErrorClosure {
+            return connectPeripheralBluetoothPeripheralAnyPublisherBluetoothPeripheralBluetoothErrorClosure(peripheral)
+        } else {
+            return connectPeripheralBluetoothPeripheralAnyPublisherBluetoothPeripheralBluetoothErrorReturnValue
+        }
+    }
+
+    //MARK: - connect
+
+    public var connectPeripheralBluetoothPeripheralOptionsStringAnyAnyPublisherBluetoothPeripheralBluetoothErrorCallsCount = 0
+    public var connectPeripheralBluetoothPeripheralOptionsStringAnyAnyPublisherBluetoothPeripheralBluetoothErrorCalled: Bool {
+        return connectPeripheralBluetoothPeripheralOptionsStringAnyAnyPublisherBluetoothPeripheralBluetoothErrorCallsCount > 0
+    }
+    public var connectPeripheralBluetoothPeripheralOptionsStringAnyAnyPublisherBluetoothPeripheralBluetoothErrorReceivedArguments: (peripheral: BluetoothPeripheral, options: [String : Any])?
+    public var connectPeripheralBluetoothPeripheralOptionsStringAnyAnyPublisherBluetoothPeripheralBluetoothErrorReceivedInvocations: [(peripheral: BluetoothPeripheral, options: [String : Any])] = []
+    public var connectPeripheralBluetoothPeripheralOptionsStringAnyAnyPublisherBluetoothPeripheralBluetoothErrorReturnValue: AnyPublisher<BluetoothPeripheral, BluetoothError>!
+    public var connectPeripheralBluetoothPeripheralOptionsStringAnyAnyPublisherBluetoothPeripheralBluetoothErrorClosure: ((BluetoothPeripheral, [String : Any]) -> AnyPublisher<BluetoothPeripheral, BluetoothError>)?
+
+    public func connect(_ peripheral: BluetoothPeripheral, options: [String : Any]) -> AnyPublisher<BluetoothPeripheral, BluetoothError> {
+        connectPeripheralBluetoothPeripheralOptionsStringAnyAnyPublisherBluetoothPeripheralBluetoothErrorCallsCount += 1
+        connectPeripheralBluetoothPeripheralOptionsStringAnyAnyPublisherBluetoothPeripheralBluetoothErrorReceivedArguments = (peripheral: peripheral, options: options)
+        connectPeripheralBluetoothPeripheralOptionsStringAnyAnyPublisherBluetoothPeripheralBluetoothErrorReceivedInvocations.append((peripheral: peripheral, options: options))
+        if let connectPeripheralBluetoothPeripheralOptionsStringAnyAnyPublisherBluetoothPeripheralBluetoothErrorClosure = connectPeripheralBluetoothPeripheralOptionsStringAnyAnyPublisherBluetoothPeripheralBluetoothErrorClosure {
+            return connectPeripheralBluetoothPeripheralOptionsStringAnyAnyPublisherBluetoothPeripheralBluetoothErrorClosure(peripheral, options)
+        } else {
+            return connectPeripheralBluetoothPeripheralOptionsStringAnyAnyPublisherBluetoothPeripheralBluetoothErrorReturnValue
+        }
     }
 
     //MARK: - peripheral
 
-    open var peripheralForCallsCount = 0
-    open var peripheralForCalled: Bool {
-        return peripheralForCallsCount > 0
+    public var peripheralForUuidUUIDBluetoothPeripheralCallsCount = 0
+    public var peripheralForUuidUUIDBluetoothPeripheralCalled: Bool {
+        return peripheralForUuidUUIDBluetoothPeripheralCallsCount > 0
     }
-    open var peripheralForReceivedUuid: UUID?
-    open var peripheralForReturnValue: BluetoothPeripheral?
-    open var peripheralForClosure: ((UUID) -> BluetoothPeripheral?)?
+    public var peripheralForUuidUUIDBluetoothPeripheralReceivedUuid: (UUID)?
+    public var peripheralForUuidUUIDBluetoothPeripheralReceivedInvocations: [(UUID)] = []
+    public var peripheralForUuidUUIDBluetoothPeripheralReturnValue: BluetoothPeripheral?
+    public var peripheralForUuidUUIDBluetoothPeripheralClosure: ((UUID) -> BluetoothPeripheral?)?
 
-    open func peripheral(for uuid: UUID) -> BluetoothPeripheral? {
-        peripheralForCallsCount += 1
-        peripheralForReceivedUuid = uuid
-        return peripheralForClosure.map({ $0(uuid) }) ?? peripheralForReturnValue
+    public func peripheral(for uuid: UUID) -> BluetoothPeripheral? {
+        peripheralForUuidUUIDBluetoothPeripheralCallsCount += 1
+        peripheralForUuidUUIDBluetoothPeripheralReceivedUuid = uuid
+        peripheralForUuidUUIDBluetoothPeripheralReceivedInvocations.append(uuid)
+        if let peripheralForUuidUUIDBluetoothPeripheralClosure = peripheralForUuidUUIDBluetoothPeripheralClosure {
+            return peripheralForUuidUUIDBluetoothPeripheralClosure(uuid)
+        } else {
+            return peripheralForUuidUUIDBluetoothPeripheralReturnValue
+        }
     }
+
 
 }
-open class L2CAPChannelMock: L2CAPChannel {
-    open var peer: BluetoothPeer {
+public class L2CAPChannelMock: L2CAPChannel {
+
+    public init() {}
+
+    public var peer: BluetoothPeer {
         get { return underlyingPeer }
         set(value) { underlyingPeer = value }
     }
-    open var underlyingPeer: BluetoothPeer!
-    open var inputStream: InputStream {
+    public var underlyingPeer: (BluetoothPeer)!
+    public var inputStream: InputStream {
         get { return underlyingInputStream }
         set(value) { underlyingInputStream = value }
     }
-    open var underlyingInputStream: InputStream!
-    open var outputStream: OutputStream {
+    public var underlyingInputStream: (InputStream)!
+    public var outputStream: OutputStream {
         get { return underlyingOutputStream }
         set(value) { underlyingOutputStream = value }
     }
-    open var underlyingOutputStream: OutputStream!
-    open var psm: CBL2CAPPSM {
+    public var underlyingOutputStream: (OutputStream)!
+    public var psm: CBL2CAPPSM {
         get { return underlyingPsm }
         set(value) { underlyingPsm = value }
     }
-    open var underlyingPsm: CBL2CAPPSM!
+    public var underlyingPsm: (CBL2CAPPSM)!
+
+
+
 }
-open class PeripheralManagerMock: PeripheralManager {
-    open var isAdvertising: AnyPublisher<Bool, Never> {
+public class PeripheralManagerMock: PeripheralManager {
+
+    public init() {}
+
+    public var isAdvertising: AnyPublisher<Bool, Never> {
         get { return underlyingIsAdvertising }
         set(value) { underlyingIsAdvertising = value }
     }
-    open var underlyingIsAdvertising: AnyPublisher<Bool, Never>!
-    open var isReadyAgainForWriteWithoutResponse: AnyPublisher<Void, Never> {
+    public var underlyingIsAdvertising: (AnyPublisher<Bool, Never>)!
+    public var isReadyAgainForWriteWithoutResponse: AnyPublisher<Void, Never> {
         get { return underlyingIsReadyAgainForWriteWithoutResponse }
         set(value) { underlyingIsReadyAgainForWriteWithoutResponse = value }
     }
-    open var underlyingIsReadyAgainForWriteWithoutResponse: AnyPublisher<Void, Never>!
-    open var state: AnyPublisher<CBManagerState, BluetoothError> {
+    public var underlyingIsReadyAgainForWriteWithoutResponse: (AnyPublisher<Void, Never>)!
+    public var state: AnyPublisher<CBManagerState, BluetoothError> {
         get { return underlyingState }
         set(value) { underlyingState = value }
     }
-    open var underlyingState: AnyPublisher<CBManagerState, BluetoothError>!
-    open var stateRestoration: AnyPublisher<StateRestorationEvent, BluetoothError> {
+    public var underlyingState: (AnyPublisher<CBManagerState, BluetoothError>)!
+    public var stateRestoration: AnyPublisher<StateRestorationEvent, BluetoothError> {
         get { return underlyingStateRestoration }
         set(value) { underlyingStateRestoration = value }
     }
-    open var underlyingStateRestoration: AnyPublisher<StateRestorationEvent, BluetoothError>!
-    //MARK: - startAdvertising
+    public var underlyingStateRestoration: (AnyPublisher<StateRestorationEvent, BluetoothError>)!
 
-    open var startAdvertisingCallsCount = 0
-    open var startAdvertisingCalled: Bool {
-        return startAdvertisingCallsCount > 0
-    }
-    open var startAdvertisingReturnValue: AnyPublisher<Void, BluetoothError>!
-    open var startAdvertisingClosure: (() -> AnyPublisher<Void, BluetoothError>)?
-
-    open func startAdvertising() -> AnyPublisher<Void, BluetoothError> {
-        startAdvertisingCallsCount += 1
-        return startAdvertisingClosure.map({ $0() }) ?? startAdvertisingReturnValue
-    }
 
     //MARK: - startAdvertising
 
-    open var startAdvertisingAdvertisementDataCallsCount = 0
-    open var startAdvertisingAdvertisementDataCalled: Bool {
-        return startAdvertisingAdvertisementDataCallsCount > 0
+    public var startAdvertisingAnyPublisherVoidBluetoothErrorCallsCount = 0
+    public var startAdvertisingAnyPublisherVoidBluetoothErrorCalled: Bool {
+        return startAdvertisingAnyPublisherVoidBluetoothErrorCallsCount > 0
     }
-    open var startAdvertisingAdvertisementDataReceivedAdvertisementData: [String: Any]?
-    open var startAdvertisingAdvertisementDataReturnValue: AnyPublisher<Void, BluetoothError>!
-    open var startAdvertisingAdvertisementDataClosure: (([String: Any]) -> AnyPublisher<Void, BluetoothError>)?
+    public var startAdvertisingAnyPublisherVoidBluetoothErrorReturnValue: AnyPublisher<Void, BluetoothError>!
+    public var startAdvertisingAnyPublisherVoidBluetoothErrorClosure: (() -> AnyPublisher<Void, BluetoothError>)?
 
-    open func startAdvertising(advertisementData: [String: Any]) -> AnyPublisher<Void, BluetoothError> {
-        startAdvertisingAdvertisementDataCallsCount += 1
-        startAdvertisingAdvertisementDataReceivedAdvertisementData = advertisementData
-        return startAdvertisingAdvertisementDataClosure.map({ $0(advertisementData) }) ?? startAdvertisingAdvertisementDataReturnValue
+    public func startAdvertising() -> AnyPublisher<Void, BluetoothError> {
+        startAdvertisingAnyPublisherVoidBluetoothErrorCallsCount += 1
+        if let startAdvertisingAnyPublisherVoidBluetoothErrorClosure = startAdvertisingAnyPublisherVoidBluetoothErrorClosure {
+            return startAdvertisingAnyPublisherVoidBluetoothErrorClosure()
+        } else {
+            return startAdvertisingAnyPublisherVoidBluetoothErrorReturnValue
+        }
+    }
+
+    //MARK: - startAdvertising
+
+    public var startAdvertisingAdvertisementDataStringAnyAnyPublisherVoidBluetoothErrorCallsCount = 0
+    public var startAdvertisingAdvertisementDataStringAnyAnyPublisherVoidBluetoothErrorCalled: Bool {
+        return startAdvertisingAdvertisementDataStringAnyAnyPublisherVoidBluetoothErrorCallsCount > 0
+    }
+    public var startAdvertisingAdvertisementDataStringAnyAnyPublisherVoidBluetoothErrorReceivedAdvertisementData: ([String: Any])?
+    public var startAdvertisingAdvertisementDataStringAnyAnyPublisherVoidBluetoothErrorReceivedInvocations: [([String: Any])] = []
+    public var startAdvertisingAdvertisementDataStringAnyAnyPublisherVoidBluetoothErrorReturnValue: AnyPublisher<Void, BluetoothError>!
+    public var startAdvertisingAdvertisementDataStringAnyAnyPublisherVoidBluetoothErrorClosure: (([String: Any]) -> AnyPublisher<Void, BluetoothError>)?
+
+    public func startAdvertising(advertisementData: [String: Any]) -> AnyPublisher<Void, BluetoothError> {
+        startAdvertisingAdvertisementDataStringAnyAnyPublisherVoidBluetoothErrorCallsCount += 1
+        startAdvertisingAdvertisementDataStringAnyAnyPublisherVoidBluetoothErrorReceivedAdvertisementData = advertisementData
+        startAdvertisingAdvertisementDataStringAnyAnyPublisherVoidBluetoothErrorReceivedInvocations.append(advertisementData)
+        if let startAdvertisingAdvertisementDataStringAnyAnyPublisherVoidBluetoothErrorClosure = startAdvertisingAdvertisementDataStringAnyAnyPublisherVoidBluetoothErrorClosure {
+            return startAdvertisingAdvertisementDataStringAnyAnyPublisherVoidBluetoothErrorClosure(advertisementData)
+        } else {
+            return startAdvertisingAdvertisementDataStringAnyAnyPublisherVoidBluetoothErrorReturnValue
+        }
     }
 
     //MARK: - setDesiredConnectionLatency
 
-    open var setDesiredConnectionLatencyForCallsCount = 0
-    open var setDesiredConnectionLatencyForCalled: Bool {
-        return setDesiredConnectionLatencyForCallsCount > 0
+    public var setDesiredConnectionLatencyLatencyCBPeripheralManagerConnectionLatencyForCentralBluetoothCentralResultVoidBluetoothErrorCallsCount = 0
+    public var setDesiredConnectionLatencyLatencyCBPeripheralManagerConnectionLatencyForCentralBluetoothCentralResultVoidBluetoothErrorCalled: Bool {
+        return setDesiredConnectionLatencyLatencyCBPeripheralManagerConnectionLatencyForCentralBluetoothCentralResultVoidBluetoothErrorCallsCount > 0
     }
-    open var setDesiredConnectionLatencyForReceivedArguments: (latency: CBPeripheralManagerConnectionLatency, central: BluetoothCentral)?
-    open var setDesiredConnectionLatencyForReturnValue: Result<Void, BluetoothError>!
-    open var setDesiredConnectionLatencyForClosure: ((CBPeripheralManagerConnectionLatency, BluetoothCentral) -> Result<Void, BluetoothError>)?
+    public var setDesiredConnectionLatencyLatencyCBPeripheralManagerConnectionLatencyForCentralBluetoothCentralResultVoidBluetoothErrorReceivedArguments: (latency: CBPeripheralManagerConnectionLatency, central: BluetoothCentral)?
+    public var setDesiredConnectionLatencyLatencyCBPeripheralManagerConnectionLatencyForCentralBluetoothCentralResultVoidBluetoothErrorReceivedInvocations: [(latency: CBPeripheralManagerConnectionLatency, central: BluetoothCentral)] = []
+    public var setDesiredConnectionLatencyLatencyCBPeripheralManagerConnectionLatencyForCentralBluetoothCentralResultVoidBluetoothErrorReturnValue: Result<Void, BluetoothError>!
+    public var setDesiredConnectionLatencyLatencyCBPeripheralManagerConnectionLatencyForCentralBluetoothCentralResultVoidBluetoothErrorClosure: ((CBPeripheralManagerConnectionLatency, BluetoothCentral) -> Result<Void, BluetoothError>)?
 
-    open func setDesiredConnectionLatency(_ latency: CBPeripheralManagerConnectionLatency, for central: BluetoothCentral) -> Result<Void, BluetoothError> {
-        setDesiredConnectionLatencyForCallsCount += 1
-        setDesiredConnectionLatencyForReceivedArguments = (latency: latency, central: central)
-        return setDesiredConnectionLatencyForClosure.map({ $0(latency, central) }) ?? setDesiredConnectionLatencyForReturnValue
+    public func setDesiredConnectionLatency(_ latency: CBPeripheralManagerConnectionLatency, for central: BluetoothCentral) -> Result<Void, BluetoothError> {
+        setDesiredConnectionLatencyLatencyCBPeripheralManagerConnectionLatencyForCentralBluetoothCentralResultVoidBluetoothErrorCallsCount += 1
+        setDesiredConnectionLatencyLatencyCBPeripheralManagerConnectionLatencyForCentralBluetoothCentralResultVoidBluetoothErrorReceivedArguments = (latency: latency, central: central)
+        setDesiredConnectionLatencyLatencyCBPeripheralManagerConnectionLatencyForCentralBluetoothCentralResultVoidBluetoothErrorReceivedInvocations.append((latency: latency, central: central))
+        if let setDesiredConnectionLatencyLatencyCBPeripheralManagerConnectionLatencyForCentralBluetoothCentralResultVoidBluetoothErrorClosure = setDesiredConnectionLatencyLatencyCBPeripheralManagerConnectionLatencyForCentralBluetoothCentralResultVoidBluetoothErrorClosure {
+            return setDesiredConnectionLatencyLatencyCBPeripheralManagerConnectionLatencyForCentralBluetoothCentralResultVoidBluetoothErrorClosure(latency, central)
+        } else {
+            return setDesiredConnectionLatencyLatencyCBPeripheralManagerConnectionLatencyForCentralBluetoothCentralResultVoidBluetoothErrorReturnValue
+        }
     }
 
     //MARK: - add
 
-    open var addCallsCount = 0
-    open var addCalled: Bool {
-        return addCallsCount > 0
+    public var addServiceBluetoothServiceAnyPublisherBluetoothServiceBluetoothErrorCallsCount = 0
+    public var addServiceBluetoothServiceAnyPublisherBluetoothServiceBluetoothErrorCalled: Bool {
+        return addServiceBluetoothServiceAnyPublisherBluetoothServiceBluetoothErrorCallsCount > 0
     }
-    open var addReceivedService: BluetoothService?
-    open var addReturnValue: AnyPublisher<BluetoothService, BluetoothError>!
-    open var addClosure: ((BluetoothService) -> AnyPublisher<BluetoothService, BluetoothError>)?
+    public var addServiceBluetoothServiceAnyPublisherBluetoothServiceBluetoothErrorReceivedService: (BluetoothService)?
+    public var addServiceBluetoothServiceAnyPublisherBluetoothServiceBluetoothErrorReceivedInvocations: [(BluetoothService)] = []
+    public var addServiceBluetoothServiceAnyPublisherBluetoothServiceBluetoothErrorReturnValue: AnyPublisher<BluetoothService, BluetoothError>!
+    public var addServiceBluetoothServiceAnyPublisherBluetoothServiceBluetoothErrorClosure: ((BluetoothService) -> AnyPublisher<BluetoothService, BluetoothError>)?
 
-    open func add(_ service: BluetoothService) -> AnyPublisher<BluetoothService, BluetoothError> {
-        addCallsCount += 1
-        addReceivedService = service
-        return addClosure.map({ $0(service) }) ?? addReturnValue
+    public func add(_ service: BluetoothService) -> AnyPublisher<BluetoothService, BluetoothError> {
+        addServiceBluetoothServiceAnyPublisherBluetoothServiceBluetoothErrorCallsCount += 1
+        addServiceBluetoothServiceAnyPublisherBluetoothServiceBluetoothErrorReceivedService = service
+        addServiceBluetoothServiceAnyPublisherBluetoothServiceBluetoothErrorReceivedInvocations.append(service)
+        if let addServiceBluetoothServiceAnyPublisherBluetoothServiceBluetoothErrorClosure = addServiceBluetoothServiceAnyPublisherBluetoothServiceBluetoothErrorClosure {
+            return addServiceBluetoothServiceAnyPublisherBluetoothServiceBluetoothErrorClosure(service)
+        } else {
+            return addServiceBluetoothServiceAnyPublisherBluetoothServiceBluetoothErrorReturnValue
+        }
     }
 
     //MARK: - remove
 
-    open var removeCallsCount = 0
-    open var removeCalled: Bool {
-        return removeCallsCount > 0
+    public var removeServiceBluetoothServiceResultBluetoothServiceBluetoothErrorCallsCount = 0
+    public var removeServiceBluetoothServiceResultBluetoothServiceBluetoothErrorCalled: Bool {
+        return removeServiceBluetoothServiceResultBluetoothServiceBluetoothErrorCallsCount > 0
     }
-    open var removeReceivedService: BluetoothService?
-    open var removeReturnValue: Result<BluetoothService, BluetoothError>!
-    open var removeClosure: ((BluetoothService) -> Result<BluetoothService, BluetoothError>)?
+    public var removeServiceBluetoothServiceResultBluetoothServiceBluetoothErrorReceivedService: (BluetoothService)?
+    public var removeServiceBluetoothServiceResultBluetoothServiceBluetoothErrorReceivedInvocations: [(BluetoothService)] = []
+    public var removeServiceBluetoothServiceResultBluetoothServiceBluetoothErrorReturnValue: Result<BluetoothService, BluetoothError>!
+    public var removeServiceBluetoothServiceResultBluetoothServiceBluetoothErrorClosure: ((BluetoothService) -> Result<BluetoothService, BluetoothError>)?
 
-    open func remove(_ service: BluetoothService) -> Result<BluetoothService, BluetoothError> {
-        removeCallsCount += 1
-        removeReceivedService = service
-        return removeClosure.map({ $0(service) }) ?? removeReturnValue
+    public func remove(_ service: BluetoothService) -> Result<BluetoothService, BluetoothError> {
+        removeServiceBluetoothServiceResultBluetoothServiceBluetoothErrorCallsCount += 1
+        removeServiceBluetoothServiceResultBluetoothServiceBluetoothErrorReceivedService = service
+        removeServiceBluetoothServiceResultBluetoothServiceBluetoothErrorReceivedInvocations.append(service)
+        if let removeServiceBluetoothServiceResultBluetoothServiceBluetoothErrorClosure = removeServiceBluetoothServiceResultBluetoothServiceBluetoothErrorClosure {
+            return removeServiceBluetoothServiceResultBluetoothServiceBluetoothErrorClosure(service)
+        } else {
+            return removeServiceBluetoothServiceResultBluetoothServiceBluetoothErrorReturnValue
+        }
     }
 
     //MARK: - removeAllServices
 
-    open var removeAllServicesCallsCount = 0
-    open var removeAllServicesCalled: Bool {
-        return removeAllServicesCallsCount > 0
+    public var removeAllServicesVoidCallsCount = 0
+    public var removeAllServicesVoidCalled: Bool {
+        return removeAllServicesVoidCallsCount > 0
     }
-    open var removeAllServicesClosure: (() -> Void)?
+    public var removeAllServicesVoidClosure: (() -> Void)?
 
-    open func removeAllServices() {
-        removeAllServicesCallsCount += 1
-        removeAllServicesClosure?()
+    public func removeAllServices() {
+        removeAllServicesVoidCallsCount += 1
+        removeAllServicesVoidClosure?()
     }
 
     //MARK: - respond
 
-    open var respondToWithResultCallsCount = 0
-    open var respondToWithResultCalled: Bool {
-        return respondToWithResultCallsCount > 0
+    public var respondToRequestATTRequestWithResultResultCBATTErrorCodeResultVoidBluetoothErrorCallsCount = 0
+    public var respondToRequestATTRequestWithResultResultCBATTErrorCodeResultVoidBluetoothErrorCalled: Bool {
+        return respondToRequestATTRequestWithResultResultCBATTErrorCodeResultVoidBluetoothErrorCallsCount > 0
     }
-    open var respondToWithResultReceivedArguments: (request: ATTRequest, result: CBATTError.Code)?
-    open var respondToWithResultReturnValue: Result<Void, BluetoothError>!
-    open var respondToWithResultClosure: ((ATTRequest, CBATTError.Code) -> Result<Void, BluetoothError>)?
+    public var respondToRequestATTRequestWithResultResultCBATTErrorCodeResultVoidBluetoothErrorReceivedArguments: (request: ATTRequest, result: CBATTError.Code)?
+    public var respondToRequestATTRequestWithResultResultCBATTErrorCodeResultVoidBluetoothErrorReceivedInvocations: [(request: ATTRequest, result: CBATTError.Code)] = []
+    public var respondToRequestATTRequestWithResultResultCBATTErrorCodeResultVoidBluetoothErrorReturnValue: Result<Void, BluetoothError>!
+    public var respondToRequestATTRequestWithResultResultCBATTErrorCodeResultVoidBluetoothErrorClosure: ((ATTRequest, CBATTError.Code) -> Result<Void, BluetoothError>)?
 
-    open func respond(to request: ATTRequest, withResult result: CBATTError.Code) -> Result<Void, BluetoothError> {
-        respondToWithResultCallsCount += 1
-        respondToWithResultReceivedArguments = (request: request, result: result)
-        return respondToWithResultClosure.map({ $0(request, result) }) ?? respondToWithResultReturnValue
+    public func respond(to request: ATTRequest, withResult result: CBATTError.Code) -> Result<Void, BluetoothError> {
+        respondToRequestATTRequestWithResultResultCBATTErrorCodeResultVoidBluetoothErrorCallsCount += 1
+        respondToRequestATTRequestWithResultResultCBATTErrorCodeResultVoidBluetoothErrorReceivedArguments = (request: request, result: result)
+        respondToRequestATTRequestWithResultResultCBATTErrorCodeResultVoidBluetoothErrorReceivedInvocations.append((request: request, result: result))
+        if let respondToRequestATTRequestWithResultResultCBATTErrorCodeResultVoidBluetoothErrorClosure = respondToRequestATTRequestWithResultResultCBATTErrorCodeResultVoidBluetoothErrorClosure {
+            return respondToRequestATTRequestWithResultResultCBATTErrorCodeResultVoidBluetoothErrorClosure(request, result)
+        } else {
+            return respondToRequestATTRequestWithResultResultCBATTErrorCodeResultVoidBluetoothErrorReturnValue
+        }
     }
 
     //MARK: - updateValue
 
-    open var updateValueForOnSubscribedCentralsCallsCount = 0
-    open var updateValueForOnSubscribedCentralsCalled: Bool {
-        return updateValueForOnSubscribedCentralsCallsCount > 0
+    public var updateValueValueDataForCharacteristicBluetoothCharacteristicOnSubscribedCentralsCentralsBluetoothCentralResultBoolBluetoothErrorCallsCount = 0
+    public var updateValueValueDataForCharacteristicBluetoothCharacteristicOnSubscribedCentralsCentralsBluetoothCentralResultBoolBluetoothErrorCalled: Bool {
+        return updateValueValueDataForCharacteristicBluetoothCharacteristicOnSubscribedCentralsCentralsBluetoothCentralResultBoolBluetoothErrorCallsCount > 0
     }
-    open var updateValueForOnSubscribedCentralsReceivedArguments: (value: Data, characteristic: BluetoothCharacteristic, centrals: [BluetoothCentral]?)?
-    open var updateValueForOnSubscribedCentralsReturnValue: Result<Bool, BluetoothError>!
-    open var updateValueForOnSubscribedCentralsClosure: ((Data, BluetoothCharacteristic, [BluetoothCentral]?) -> Result<Bool, BluetoothError>)?
+    public var updateValueValueDataForCharacteristicBluetoothCharacteristicOnSubscribedCentralsCentralsBluetoothCentralResultBoolBluetoothErrorReceivedArguments: (value: Data, characteristic: BluetoothCharacteristic, centrals: [BluetoothCentral]?)?
+    public var updateValueValueDataForCharacteristicBluetoothCharacteristicOnSubscribedCentralsCentralsBluetoothCentralResultBoolBluetoothErrorReceivedInvocations: [(value: Data, characteristic: BluetoothCharacteristic, centrals: [BluetoothCentral]?)] = []
+    public var updateValueValueDataForCharacteristicBluetoothCharacteristicOnSubscribedCentralsCentralsBluetoothCentralResultBoolBluetoothErrorReturnValue: Result<Bool, BluetoothError>!
+    public var updateValueValueDataForCharacteristicBluetoothCharacteristicOnSubscribedCentralsCentralsBluetoothCentralResultBoolBluetoothErrorClosure: ((Data, BluetoothCharacteristic, [BluetoothCentral]?) -> Result<Bool, BluetoothError>)?
 
-    open func updateValue(_ value: Data, for characteristic: BluetoothCharacteristic, onSubscribedCentrals centrals: [BluetoothCentral]?) -> Result<Bool, BluetoothError> {
-        updateValueForOnSubscribedCentralsCallsCount += 1
-        updateValueForOnSubscribedCentralsReceivedArguments = (value: value, characteristic: characteristic, centrals: centrals)
-        return updateValueForOnSubscribedCentralsClosure.map({ $0(value, characteristic, centrals) }) ?? updateValueForOnSubscribedCentralsReturnValue
+    public func updateValue(_ value: Data, for characteristic: BluetoothCharacteristic, onSubscribedCentrals centrals: [BluetoothCentral]?) -> Result<Bool, BluetoothError> {
+        updateValueValueDataForCharacteristicBluetoothCharacteristicOnSubscribedCentralsCentralsBluetoothCentralResultBoolBluetoothErrorCallsCount += 1
+        updateValueValueDataForCharacteristicBluetoothCharacteristicOnSubscribedCentralsCentralsBluetoothCentralResultBoolBluetoothErrorReceivedArguments = (value: value, characteristic: characteristic, centrals: centrals)
+        updateValueValueDataForCharacteristicBluetoothCharacteristicOnSubscribedCentralsCentralsBluetoothCentralResultBoolBluetoothErrorReceivedInvocations.append((value: value, characteristic: characteristic, centrals: centrals))
+        if let updateValueValueDataForCharacteristicBluetoothCharacteristicOnSubscribedCentralsCentralsBluetoothCentralResultBoolBluetoothErrorClosure = updateValueValueDataForCharacteristicBluetoothCharacteristicOnSubscribedCentralsCentralsBluetoothCentralResultBoolBluetoothErrorClosure {
+            return updateValueValueDataForCharacteristicBluetoothCharacteristicOnSubscribedCentralsCentralsBluetoothCentralResultBoolBluetoothErrorClosure(value, characteristic, centrals)
+        } else {
+            return updateValueValueDataForCharacteristicBluetoothCharacteristicOnSubscribedCentralsCentralsBluetoothCentralResultBoolBluetoothErrorReturnValue
+        }
     }
 
     //MARK: - publishL2CAPChannel
 
-    open var publishL2CAPChannelWithEncryptionCallsCount = 0
-    open var publishL2CAPChannelWithEncryptionCalled: Bool {
-        return publishL2CAPChannelWithEncryptionCallsCount > 0
+    public var publishL2CAPChannelWithEncryptionEncryptionRequiredBoolAnyPublisherCBL2CAPPSMBluetoothErrorCallsCount = 0
+    public var publishL2CAPChannelWithEncryptionEncryptionRequiredBoolAnyPublisherCBL2CAPPSMBluetoothErrorCalled: Bool {
+        return publishL2CAPChannelWithEncryptionEncryptionRequiredBoolAnyPublisherCBL2CAPPSMBluetoothErrorCallsCount > 0
     }
-    open var publishL2CAPChannelWithEncryptionReceivedEncryptionRequired: Bool?
-    open var publishL2CAPChannelWithEncryptionReturnValue: AnyPublisher<CBL2CAPPSM, BluetoothError>!
-    open var publishL2CAPChannelWithEncryptionClosure: ((Bool) -> AnyPublisher<CBL2CAPPSM, BluetoothError>)?
+    public var publishL2CAPChannelWithEncryptionEncryptionRequiredBoolAnyPublisherCBL2CAPPSMBluetoothErrorReceivedEncryptionRequired: (Bool)?
+    public var publishL2CAPChannelWithEncryptionEncryptionRequiredBoolAnyPublisherCBL2CAPPSMBluetoothErrorReceivedInvocations: [(Bool)] = []
+    public var publishL2CAPChannelWithEncryptionEncryptionRequiredBoolAnyPublisherCBL2CAPPSMBluetoothErrorReturnValue: AnyPublisher<CBL2CAPPSM, BluetoothError>!
+    public var publishL2CAPChannelWithEncryptionEncryptionRequiredBoolAnyPublisherCBL2CAPPSMBluetoothErrorClosure: ((Bool) -> AnyPublisher<CBL2CAPPSM, BluetoothError>)?
 
-    open func publishL2CAPChannel(withEncryption encryptionRequired: Bool) -> AnyPublisher<CBL2CAPPSM, BluetoothError> {
-        publishL2CAPChannelWithEncryptionCallsCount += 1
-        publishL2CAPChannelWithEncryptionReceivedEncryptionRequired = encryptionRequired
-        return publishL2CAPChannelWithEncryptionClosure.map({ $0(encryptionRequired) }) ?? publishL2CAPChannelWithEncryptionReturnValue
+    public func publishL2CAPChannel(withEncryption encryptionRequired: Bool) -> AnyPublisher<CBL2CAPPSM, BluetoothError> {
+        publishL2CAPChannelWithEncryptionEncryptionRequiredBoolAnyPublisherCBL2CAPPSMBluetoothErrorCallsCount += 1
+        publishL2CAPChannelWithEncryptionEncryptionRequiredBoolAnyPublisherCBL2CAPPSMBluetoothErrorReceivedEncryptionRequired = encryptionRequired
+        publishL2CAPChannelWithEncryptionEncryptionRequiredBoolAnyPublisherCBL2CAPPSMBluetoothErrorReceivedInvocations.append(encryptionRequired)
+        if let publishL2CAPChannelWithEncryptionEncryptionRequiredBoolAnyPublisherCBL2CAPPSMBluetoothErrorClosure = publishL2CAPChannelWithEncryptionEncryptionRequiredBoolAnyPublisherCBL2CAPPSMBluetoothErrorClosure {
+            return publishL2CAPChannelWithEncryptionEncryptionRequiredBoolAnyPublisherCBL2CAPPSMBluetoothErrorClosure(encryptionRequired)
+        } else {
+            return publishL2CAPChannelWithEncryptionEncryptionRequiredBoolAnyPublisherCBL2CAPPSMBluetoothErrorReturnValue
+        }
     }
 
     //MARK: - unpublishL2CAPChannel
 
-    open var unpublishL2CAPChannelCallsCount = 0
-    open var unpublishL2CAPChannelCalled: Bool {
-        return unpublishL2CAPChannelCallsCount > 0
+    public var unpublishL2CAPChannelPSMCBL2CAPPSMAnyPublisherCBL2CAPPSMBluetoothErrorCallsCount = 0
+    public var unpublishL2CAPChannelPSMCBL2CAPPSMAnyPublisherCBL2CAPPSMBluetoothErrorCalled: Bool {
+        return unpublishL2CAPChannelPSMCBL2CAPPSMAnyPublisherCBL2CAPPSMBluetoothErrorCallsCount > 0
     }
-    open var unpublishL2CAPChannelReceivedPSM: CBL2CAPPSM?
-    open var unpublishL2CAPChannelReturnValue: AnyPublisher<CBL2CAPPSM, BluetoothError>!
-    open var unpublishL2CAPChannelClosure: ((CBL2CAPPSM) -> AnyPublisher<CBL2CAPPSM, BluetoothError>)?
+    public var unpublishL2CAPChannelPSMCBL2CAPPSMAnyPublisherCBL2CAPPSMBluetoothErrorReceivedPSM: (CBL2CAPPSM)?
+    public var unpublishL2CAPChannelPSMCBL2CAPPSMAnyPublisherCBL2CAPPSMBluetoothErrorReceivedInvocations: [(CBL2CAPPSM)] = []
+    public var unpublishL2CAPChannelPSMCBL2CAPPSMAnyPublisherCBL2CAPPSMBluetoothErrorReturnValue: AnyPublisher<CBL2CAPPSM, BluetoothError>!
+    public var unpublishL2CAPChannelPSMCBL2CAPPSMAnyPublisherCBL2CAPPSMBluetoothErrorClosure: ((CBL2CAPPSM) -> AnyPublisher<CBL2CAPPSM, BluetoothError>)?
 
-    open func unpublishL2CAPChannel(_ PSM: CBL2CAPPSM) -> AnyPublisher<CBL2CAPPSM, BluetoothError> {
-        unpublishL2CAPChannelCallsCount += 1
-        unpublishL2CAPChannelReceivedPSM = PSM
-        return unpublishL2CAPChannelClosure.map({ $0(PSM) }) ?? unpublishL2CAPChannelReturnValue
+    public func unpublishL2CAPChannel(_ PSM: CBL2CAPPSM) -> AnyPublisher<CBL2CAPPSM, BluetoothError> {
+        unpublishL2CAPChannelPSMCBL2CAPPSMAnyPublisherCBL2CAPPSMBluetoothErrorCallsCount += 1
+        unpublishL2CAPChannelPSMCBL2CAPPSMAnyPublisherCBL2CAPPSMBluetoothErrorReceivedPSM = PSM
+        unpublishL2CAPChannelPSMCBL2CAPPSMAnyPublisherCBL2CAPPSMBluetoothErrorReceivedInvocations.append(PSM)
+        if let unpublishL2CAPChannelPSMCBL2CAPPSMAnyPublisherCBL2CAPPSMBluetoothErrorClosure = unpublishL2CAPChannelPSMCBL2CAPPSMAnyPublisherCBL2CAPPSMBluetoothErrorClosure {
+            return unpublishL2CAPChannelPSMCBL2CAPPSMAnyPublisherCBL2CAPPSMBluetoothErrorClosure(PSM)
+        } else {
+            return unpublishL2CAPChannelPSMCBL2CAPPSMAnyPublisherCBL2CAPPSMBluetoothErrorReturnValue
+        }
     }
+
 
 }

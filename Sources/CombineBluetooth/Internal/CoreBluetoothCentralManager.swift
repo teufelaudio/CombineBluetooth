@@ -18,18 +18,20 @@ class CoreBluetoothCentralManager: NSObject {
     private var _didDisconnectPeripheral: PassthroughSubject<(peripheral: CBPeripheral, error: Error?), Never> = .init()
     
     // MARK: Init
-    required public init(centralManager: CBCentralManager) {
+    required init(centralManager: CBCentralManager, skipDelegateObservation: Bool = false) {
         self.centralManager = centralManager
         super.init()
-        restoreDelegation()
+        restoreDelegation(skipDelegateObservation)
     }
 
     // MARK: Private funcs
-    private func restoreDelegation() {
+    private func restoreDelegation(_ skipDelegateObservation: Bool) {
         _state = .init(centralManager.state)
         _stateRestoration = .init()
         _scanPublisher = .init()
         centralManager.delegate = self
+        
+        guard !skipDelegateObservation else { return }
         
         kvoDelegate = centralManager
             .publisher(for: \.delegate)

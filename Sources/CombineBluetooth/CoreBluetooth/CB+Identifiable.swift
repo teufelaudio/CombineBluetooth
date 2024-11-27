@@ -1,17 +1,17 @@
 import CoreBluetooth
 
-extension CBPeer: Identifiable {
+extension CBPeer: @retroactive Identifiable {
     public var id: UUID { identifier }
 }
 
-extension CBService: Identifiable {
+extension CBService: @retroactive Identifiable {
     public var id: CBUUID { uuid }
 }
 
-extension CBCharacteristic: Identifiable {
+extension CBCharacteristic: @retroactive Identifiable {
     public var id: CBUUID { uuid }
 }
 
-extension CBDescriptor: Identifiable {
+extension CBDescriptor: @retroactive Identifiable {
     public var id: CBUUID { uuid }
 }

@@ -10,4 +10,6 @@ public protocol BluetoothCharacteristic {
     var isNotifying: Bool { get }
     var permissions: CBAttributePermissions? { get }
     var subscribedCentrals: [BluetoothCentral]? { get }
+    
+    init(characteristic: CBCharacteristic)
 }

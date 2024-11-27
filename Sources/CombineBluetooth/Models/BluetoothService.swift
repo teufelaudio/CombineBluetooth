@@ -7,4 +7,6 @@ public protocol BluetoothService {
     var isPrimary: Bool { get }
     var includedServices: [BluetoothService]? { get }
     var characteristics: [BluetoothCharacteristic]? { get }
+    
+    init(service: CBService)
 }

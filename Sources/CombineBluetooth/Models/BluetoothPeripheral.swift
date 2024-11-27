@@ -17,14 +17,32 @@ public protocol BluetoothPeripheral: BluetoothPeer {
     
     func readRSSI() -> AnyPublisher<NSNumber, BluetoothError>
     func discoverServices(_ serviceUUIDs: [CBUUID]?) -> AnyPublisher<BluetoothService, BluetoothError>
+    
     func discoverIncludedServices(_ includedServiceUUIDs: [CBUUID]?, for service: BluetoothService) -> AnyPublisher<BluetoothService, BluetoothError>
+    func discoverIncludedServices(_ includedServiceUUIDs: [CBUUID]?, for service: CBService) -> AnyPublisher<BluetoothService, BluetoothError>
+    
     func discoverCharacteristics(_ characteristicUUIDs: [CBUUID]?, for service: BluetoothService) -> AnyPublisher<BluetoothCharacteristic, BluetoothError>
+    func discoverCharacteristics(_ characteristicUUIDs: [CBUUID]?, for service: CBService) -> AnyPublisher<BluetoothCharacteristic, BluetoothError>
+    
     func readCharacteristicValue(_ characteristic: BluetoothCharacteristic) -> AnyPublisher<BluetoothCharacteristic, BluetoothError>
+    func readCharacteristicValue(_ characteristic: CBCharacteristic) -> AnyPublisher<BluetoothCharacteristic, BluetoothError>
+    
     func maximumWriteValueLength(for type: CBCharacteristicWriteType) -> Int
+    
     func writeValue(_ data: Data, for characteristic: BluetoothCharacteristic, type: CBCharacteristicWriteType) -> AnyPublisher<BluetoothCharacteristic, BluetoothError>
+    func writeValue(_ data: Data, for characteristic: CBCharacteristic, type: CBCharacteristicWriteType) -> AnyPublisher<BluetoothCharacteristic, BluetoothError>
+    
     func notifyValue(for characteristic: BluetoothCharacteristic) -> AnyPublisher<BluetoothCharacteristic, BluetoothError>
+    func notifyValue(for characteristic: CBCharacteristic) -> AnyPublisher<BluetoothCharacteristic, BluetoothError>
+    
     func discoverDescriptors(for characteristic: BluetoothCharacteristic) -> AnyPublisher<BluetoothDescriptor, BluetoothError>
+    func discoverDescriptors(for characteristic: CBCharacteristic) -> AnyPublisher<BluetoothDescriptor, BluetoothError>
+    
     func readDescriptorValue(_ descriptor: BluetoothDescriptor) -> AnyPublisher<BluetoothDescriptor, BluetoothError>
+    func readDescriptorValue(_ descriptor: CBDescriptor) -> AnyPublisher<BluetoothDescriptor, BluetoothError>
+    
     func writeValue(_ data: Data, for descriptor: BluetoothDescriptor) -> AnyPublisher<BluetoothDescriptor, BluetoothError>
+    func writeValue(_ data: Data, for descriptor: CBDescriptor) -> AnyPublisher<BluetoothDescriptor, BluetoothError>
+    
     func openL2CAPChannel(PSM: CBL2CAPPSM) -> AnyPublisher<L2CAPChannel, BluetoothError>
 }

@@ -262,6 +262,28 @@ public class BluetoothPeripheralMock: BluetoothPeripheral {
         }
     }
 
+    //MARK: - discoverIncludedServices
+
+    public var discoverIncludedServicesIncludedServiceUUIDsCBUUIDForServiceCBServiceAnyPublisherBluetoothServiceBluetoothErrorCallsCount = 0
+    public var discoverIncludedServicesIncludedServiceUUIDsCBUUIDForServiceCBServiceAnyPublisherBluetoothServiceBluetoothErrorCalled: Bool {
+        return discoverIncludedServicesIncludedServiceUUIDsCBUUIDForServiceCBServiceAnyPublisherBluetoothServiceBluetoothErrorCallsCount > 0
+    }
+    public var discoverIncludedServicesIncludedServiceUUIDsCBUUIDForServiceCBServiceAnyPublisherBluetoothServiceBluetoothErrorReceivedArguments: (includedServiceUUIDs: [CBUUID]?, service: CBService)?
+    public var discoverIncludedServicesIncludedServiceUUIDsCBUUIDForServiceCBServiceAnyPublisherBluetoothServiceBluetoothErrorReceivedInvocations: [(includedServiceUUIDs: [CBUUID]?, service: CBService)] = []
+    public var discoverIncludedServicesIncludedServiceUUIDsCBUUIDForServiceCBServiceAnyPublisherBluetoothServiceBluetoothErrorReturnValue: AnyPublisher<BluetoothService, BluetoothError>!
+    public var discoverIncludedServicesIncludedServiceUUIDsCBUUIDForServiceCBServiceAnyPublisherBluetoothServiceBluetoothErrorClosure: (([CBUUID]?, CBService) -> AnyPublisher<BluetoothService, BluetoothError>)?
+
+    public func discoverIncludedServices(_ includedServiceUUIDs: [CBUUID]?, for service: CBService) -> AnyPublisher<BluetoothService, BluetoothError> {
+        discoverIncludedServicesIncludedServiceUUIDsCBUUIDForServiceCBServiceAnyPublisherBluetoothServiceBluetoothErrorCallsCount += 1
+        discoverIncludedServicesIncludedServiceUUIDsCBUUIDForServiceCBServiceAnyPublisherBluetoothServiceBluetoothErrorReceivedArguments = (includedServiceUUIDs: includedServiceUUIDs, service: service)
+        discoverIncludedServicesIncludedServiceUUIDsCBUUIDForServiceCBServiceAnyPublisherBluetoothServiceBluetoothErrorReceivedInvocations.append((includedServiceUUIDs: includedServiceUUIDs, service: service))
+        if let discoverIncludedServicesIncludedServiceUUIDsCBUUIDForServiceCBServiceAnyPublisherBluetoothServiceBluetoothErrorClosure = discoverIncludedServicesIncludedServiceUUIDsCBUUIDForServiceCBServiceAnyPublisherBluetoothServiceBluetoothErrorClosure {
+            return discoverIncludedServicesIncludedServiceUUIDsCBUUIDForServiceCBServiceAnyPublisherBluetoothServiceBluetoothErrorClosure(includedServiceUUIDs, service)
+        } else {
+            return discoverIncludedServicesIncludedServiceUUIDsCBUUIDForServiceCBServiceAnyPublisherBluetoothServiceBluetoothErrorReturnValue
+        }
+    }
+
     //MARK: - discoverCharacteristics
 
     public var discoverCharacteristicsCharacteristicUUIDsCBUUIDForServiceBluetoothServiceAnyPublisherBluetoothCharacteristicBluetoothErrorCallsCount = 0
@@ -284,6 +306,28 @@ public class BluetoothPeripheralMock: BluetoothPeripheral {
         }
     }
 
+    //MARK: - discoverCharacteristics
+
+    public var discoverCharacteristicsCharacteristicUUIDsCBUUIDForServiceCBServiceAnyPublisherBluetoothCharacteristicBluetoothErrorCallsCount = 0
+    public var discoverCharacteristicsCharacteristicUUIDsCBUUIDForServiceCBServiceAnyPublisherBluetoothCharacteristicBluetoothErrorCalled: Bool {
+        return discoverCharacteristicsCharacteristicUUIDsCBUUIDForServiceCBServiceAnyPublisherBluetoothCharacteristicBluetoothErrorCallsCount > 0
+    }
+    public var discoverCharacteristicsCharacteristicUUIDsCBUUIDForServiceCBServiceAnyPublisherBluetoothCharacteristicBluetoothErrorReceivedArguments: (characteristicUUIDs: [CBUUID]?, service: CBService)?
+    public var discoverCharacteristicsCharacteristicUUIDsCBUUIDForServiceCBServiceAnyPublisherBluetoothCharacteristicBluetoothErrorReceivedInvocations: [(characteristicUUIDs: [CBUUID]?, service: CBService)] = []
+    public var discoverCharacteristicsCharacteristicUUIDsCBUUIDForServiceCBServiceAnyPublisherBluetoothCharacteristicBluetoothErrorReturnValue: AnyPublisher<BluetoothCharacteristic, BluetoothError>!
+    public var discoverCharacteristicsCharacteristicUUIDsCBUUIDForServiceCBServiceAnyPublisherBluetoothCharacteristicBluetoothErrorClosure: (([CBUUID]?, CBService) -> AnyPublisher<BluetoothCharacteristic, BluetoothError>)?
+
+    public func discoverCharacteristics(_ characteristicUUIDs: [CBUUID]?, for service: CBService) -> AnyPublisher<BluetoothCharacteristic, BluetoothError> {
+        discoverCharacteristicsCharacteristicUUIDsCBUUIDForServiceCBServiceAnyPublisherBluetoothCharacteristicBluetoothErrorCallsCount += 1
+        discoverCharacteristicsCharacteristicUUIDsCBUUIDForServiceCBServiceAnyPublisherBluetoothCharacteristicBluetoothErrorReceivedArguments = (characteristicUUIDs: characteristicUUIDs, service: service)
+        discoverCharacteristicsCharacteristicUUIDsCBUUIDForServiceCBServiceAnyPublisherBluetoothCharacteristicBluetoothErrorReceivedInvocations.append((characteristicUUIDs: characteristicUUIDs, service: service))
+        if let discoverCharacteristicsCharacteristicUUIDsCBUUIDForServiceCBServiceAnyPublisherBluetoothCharacteristicBluetoothErrorClosure = discoverCharacteristicsCharacteristicUUIDsCBUUIDForServiceCBServiceAnyPublisherBluetoothCharacteristicBluetoothErrorClosure {
+            return discoverCharacteristicsCharacteristicUUIDsCBUUIDForServiceCBServiceAnyPublisherBluetoothCharacteristicBluetoothErrorClosure(characteristicUUIDs, service)
+        } else {
+            return discoverCharacteristicsCharacteristicUUIDsCBUUIDForServiceCBServiceAnyPublisherBluetoothCharacteristicBluetoothErrorReturnValue
+        }
+    }
+
     //MARK: - readCharacteristicValue
 
     public var readCharacteristicValueCharacteristicBluetoothCharacteristicAnyPublisherBluetoothCharacteristicBluetoothErrorCallsCount = 0
@@ -303,6 +347,28 @@ public class BluetoothPeripheralMock: BluetoothPeripheral {
             return readCharacteristicValueCharacteristicBluetoothCharacteristicAnyPublisherBluetoothCharacteristicBluetoothErrorClosure(characteristic)
         } else {
             return readCharacteristicValueCharacteristicBluetoothCharacteristicAnyPublisherBluetoothCharacteristicBluetoothErrorReturnValue
+        }
+    }
+
+    //MARK: - readCharacteristicValue
+
+    public var readCharacteristicValueCharacteristicCBCharacteristicAnyPublisherBluetoothCharacteristicBluetoothErrorCallsCount = 0
+    public var readCharacteristicValueCharacteristicCBCharacteristicAnyPublisherBluetoothCharacteristicBluetoothErrorCalled: Bool {
+        return readCharacteristicValueCharacteristicCBCharacteristicAnyPublisherBluetoothCharacteristicBluetoothErrorCallsCount > 0
+    }
+    public var readCharacteristicValueCharacteristicCBCharacteristicAnyPublisherBluetoothCharacteristicBluetoothErrorReceivedCharacteristic: (CBCharacteristic)?
+    public var readCharacteristicValueCharacteristicCBCharacteristicAnyPublisherBluetoothCharacteristicBluetoothErrorReceivedInvocations: [(CBCharacteristic)] = []
+    public var readCharacteristicValueCharacteristicCBCharacteristicAnyPublisherBluetoothCharacteristicBluetoothErrorReturnValue: AnyPublisher<BluetoothCharacteristic, BluetoothError>!
+    public var readCharacteristicValueCharacteristicCBCharacteristicAnyPublisherBluetoothCharacteristicBluetoothErrorClosure: ((CBCharacteristic) -> AnyPublisher<BluetoothCharacteristic, BluetoothError>)?
+
+    public func readCharacteristicValue(_ characteristic: CBCharacteristic) -> AnyPublisher<BluetoothCharacteristic, BluetoothError> {
+        readCharacteristicValueCharacteristicCBCharacteristicAnyPublisherBluetoothCharacteristicBluetoothErrorCallsCount += 1
+        readCharacteristicValueCharacteristicCBCharacteristicAnyPublisherBluetoothCharacteristicBluetoothErrorReceivedCharacteristic = characteristic
+        readCharacteristicValueCharacteristicCBCharacteristicAnyPublisherBluetoothCharacteristicBluetoothErrorReceivedInvocations.append(characteristic)
+        if let readCharacteristicValueCharacteristicCBCharacteristicAnyPublisherBluetoothCharacteristicBluetoothErrorClosure = readCharacteristicValueCharacteristicCBCharacteristicAnyPublisherBluetoothCharacteristicBluetoothErrorClosure {
+            return readCharacteristicValueCharacteristicCBCharacteristicAnyPublisherBluetoothCharacteristicBluetoothErrorClosure(characteristic)
+        } else {
+            return readCharacteristicValueCharacteristicCBCharacteristicAnyPublisherBluetoothCharacteristicBluetoothErrorReturnValue
         }
     }
 
@@ -350,6 +416,28 @@ public class BluetoothPeripheralMock: BluetoothPeripheral {
         }
     }
 
+    //MARK: - writeValue
+
+    public var writeValueDataDataForCharacteristicCBCharacteristicTypeCBCharacteristicWriteTypeAnyPublisherBluetoothCharacteristicBluetoothErrorCallsCount = 0
+    public var writeValueDataDataForCharacteristicCBCharacteristicTypeCBCharacteristicWriteTypeAnyPublisherBluetoothCharacteristicBluetoothErrorCalled: Bool {
+        return writeValueDataDataForCharacteristicCBCharacteristicTypeCBCharacteristicWriteTypeAnyPublisherBluetoothCharacteristicBluetoothErrorCallsCount > 0
+    }
+    public var writeValueDataDataForCharacteristicCBCharacteristicTypeCBCharacteristicWriteTypeAnyPublisherBluetoothCharacteristicBluetoothErrorReceivedArguments: (data: Data, characteristic: CBCharacteristic, type: CBCharacteristicWriteType)?
+    public var writeValueDataDataForCharacteristicCBCharacteristicTypeCBCharacteristicWriteTypeAnyPublisherBluetoothCharacteristicBluetoothErrorReceivedInvocations: [(data: Data, characteristic: CBCharacteristic, type: CBCharacteristicWriteType)] = []
+    public var writeValueDataDataForCharacteristicCBCharacteristicTypeCBCharacteristicWriteTypeAnyPublisherBluetoothCharacteristicBluetoothErrorReturnValue: AnyPublisher<BluetoothCharacteristic, BluetoothError>!
+    public var writeValueDataDataForCharacteristicCBCharacteristicTypeCBCharacteristicWriteTypeAnyPublisherBluetoothCharacteristicBluetoothErrorClosure: ((Data, CBCharacteristic, CBCharacteristicWriteType) -> AnyPublisher<BluetoothCharacteristic, BluetoothError>)?
+
+    public func writeValue(_ data: Data, for characteristic: CBCharacteristic, type: CBCharacteristicWriteType) -> AnyPublisher<BluetoothCharacteristic, BluetoothError> {
+        writeValueDataDataForCharacteristicCBCharacteristicTypeCBCharacteristicWriteTypeAnyPublisherBluetoothCharacteristicBluetoothErrorCallsCount += 1
+        writeValueDataDataForCharacteristicCBCharacteristicTypeCBCharacteristicWriteTypeAnyPublisherBluetoothCharacteristicBluetoothErrorReceivedArguments = (data: data, characteristic: characteristic, type: type)
+        writeValueDataDataForCharacteristicCBCharacteristicTypeCBCharacteristicWriteTypeAnyPublisherBluetoothCharacteristicBluetoothErrorReceivedInvocations.append((data: data, characteristic: characteristic, type: type))
+        if let writeValueDataDataForCharacteristicCBCharacteristicTypeCBCharacteristicWriteTypeAnyPublisherBluetoothCharacteristicBluetoothErrorClosure = writeValueDataDataForCharacteristicCBCharacteristicTypeCBCharacteristicWriteTypeAnyPublisherBluetoothCharacteristicBluetoothErrorClosure {
+            return writeValueDataDataForCharacteristicCBCharacteristicTypeCBCharacteristicWriteTypeAnyPublisherBluetoothCharacteristicBluetoothErrorClosure(data, characteristic, type)
+        } else {
+            return writeValueDataDataForCharacteristicCBCharacteristicTypeCBCharacteristicWriteTypeAnyPublisherBluetoothCharacteristicBluetoothErrorReturnValue
+        }
+    }
+
     //MARK: - notifyValue
 
     public var notifyValueForCharacteristicBluetoothCharacteristicAnyPublisherBluetoothCharacteristicBluetoothErrorCallsCount = 0
@@ -369,6 +457,28 @@ public class BluetoothPeripheralMock: BluetoothPeripheral {
             return notifyValueForCharacteristicBluetoothCharacteristicAnyPublisherBluetoothCharacteristicBluetoothErrorClosure(characteristic)
         } else {
             return notifyValueForCharacteristicBluetoothCharacteristicAnyPublisherBluetoothCharacteristicBluetoothErrorReturnValue
+        }
+    }
+
+    //MARK: - notifyValue
+
+    public var notifyValueForCharacteristicCBCharacteristicAnyPublisherBluetoothCharacteristicBluetoothErrorCallsCount = 0
+    public var notifyValueForCharacteristicCBCharacteristicAnyPublisherBluetoothCharacteristicBluetoothErrorCalled: Bool {
+        return notifyValueForCharacteristicCBCharacteristicAnyPublisherBluetoothCharacteristicBluetoothErrorCallsCount > 0
+    }
+    public var notifyValueForCharacteristicCBCharacteristicAnyPublisherBluetoothCharacteristicBluetoothErrorReceivedCharacteristic: (CBCharacteristic)?
+    public var notifyValueForCharacteristicCBCharacteristicAnyPublisherBluetoothCharacteristicBluetoothErrorReceivedInvocations: [(CBCharacteristic)] = []
+    public var notifyValueForCharacteristicCBCharacteristicAnyPublisherBluetoothCharacteristicBluetoothErrorReturnValue: AnyPublisher<BluetoothCharacteristic, BluetoothError>!
+    public var notifyValueForCharacteristicCBCharacteristicAnyPublisherBluetoothCharacteristicBluetoothErrorClosure: ((CBCharacteristic) -> AnyPublisher<BluetoothCharacteristic, BluetoothError>)?
+
+    public func notifyValue(for characteristic: CBCharacteristic) -> AnyPublisher<BluetoothCharacteristic, BluetoothError> {
+        notifyValueForCharacteristicCBCharacteristicAnyPublisherBluetoothCharacteristicBluetoothErrorCallsCount += 1
+        notifyValueForCharacteristicCBCharacteristicAnyPublisherBluetoothCharacteristicBluetoothErrorReceivedCharacteristic = characteristic
+        notifyValueForCharacteristicCBCharacteristicAnyPublisherBluetoothCharacteristicBluetoothErrorReceivedInvocations.append(characteristic)
+        if let notifyValueForCharacteristicCBCharacteristicAnyPublisherBluetoothCharacteristicBluetoothErrorClosure = notifyValueForCharacteristicCBCharacteristicAnyPublisherBluetoothCharacteristicBluetoothErrorClosure {
+            return notifyValueForCharacteristicCBCharacteristicAnyPublisherBluetoothCharacteristicBluetoothErrorClosure(characteristic)
+        } else {
+            return notifyValueForCharacteristicCBCharacteristicAnyPublisherBluetoothCharacteristicBluetoothErrorReturnValue
         }
     }
 
@@ -394,6 +504,28 @@ public class BluetoothPeripheralMock: BluetoothPeripheral {
         }
     }
 
+    //MARK: - discoverDescriptors
+
+    public var discoverDescriptorsForCharacteristicCBCharacteristicAnyPublisherBluetoothDescriptorBluetoothErrorCallsCount = 0
+    public var discoverDescriptorsForCharacteristicCBCharacteristicAnyPublisherBluetoothDescriptorBluetoothErrorCalled: Bool {
+        return discoverDescriptorsForCharacteristicCBCharacteristicAnyPublisherBluetoothDescriptorBluetoothErrorCallsCount > 0
+    }
+    public var discoverDescriptorsForCharacteristicCBCharacteristicAnyPublisherBluetoothDescriptorBluetoothErrorReceivedCharacteristic: (CBCharacteristic)?
+    public var discoverDescriptorsForCharacteristicCBCharacteristicAnyPublisherBluetoothDescriptorBluetoothErrorReceivedInvocations: [(CBCharacteristic)] = []
+    public var discoverDescriptorsForCharacteristicCBCharacteristicAnyPublisherBluetoothDescriptorBluetoothErrorReturnValue: AnyPublisher<BluetoothDescriptor, BluetoothError>!
+    public var discoverDescriptorsForCharacteristicCBCharacteristicAnyPublisherBluetoothDescriptorBluetoothErrorClosure: ((CBCharacteristic) -> AnyPublisher<BluetoothDescriptor, BluetoothError>)?
+
+    public func discoverDescriptors(for characteristic: CBCharacteristic) -> AnyPublisher<BluetoothDescriptor, BluetoothError> {
+        discoverDescriptorsForCharacteristicCBCharacteristicAnyPublisherBluetoothDescriptorBluetoothErrorCallsCount += 1
+        discoverDescriptorsForCharacteristicCBCharacteristicAnyPublisherBluetoothDescriptorBluetoothErrorReceivedCharacteristic = characteristic
+        discoverDescriptorsForCharacteristicCBCharacteristicAnyPublisherBluetoothDescriptorBluetoothErrorReceivedInvocations.append(characteristic)
+        if let discoverDescriptorsForCharacteristicCBCharacteristicAnyPublisherBluetoothDescriptorBluetoothErrorClosure = discoverDescriptorsForCharacteristicCBCharacteristicAnyPublisherBluetoothDescriptorBluetoothErrorClosure {
+            return discoverDescriptorsForCharacteristicCBCharacteristicAnyPublisherBluetoothDescriptorBluetoothErrorClosure(characteristic)
+        } else {
+            return discoverDescriptorsForCharacteristicCBCharacteristicAnyPublisherBluetoothDescriptorBluetoothErrorReturnValue
+        }
+    }
+
     //MARK: - readDescriptorValue
 
     public var readDescriptorValueDescriptorBluetoothDescriptorAnyPublisherBluetoothDescriptorBluetoothErrorCallsCount = 0
@@ -416,6 +548,28 @@ public class BluetoothPeripheralMock: BluetoothPeripheral {
         }
     }
 
+    //MARK: - readDescriptorValue
+
+    public var readDescriptorValueDescriptorCBDescriptorAnyPublisherBluetoothDescriptorBluetoothErrorCallsCount = 0
+    public var readDescriptorValueDescriptorCBDescriptorAnyPublisherBluetoothDescriptorBluetoothErrorCalled: Bool {
+        return readDescriptorValueDescriptorCBDescriptorAnyPublisherBluetoothDescriptorBluetoothErrorCallsCount > 0
+    }
+    public var readDescriptorValueDescriptorCBDescriptorAnyPublisherBluetoothDescriptorBluetoothErrorReceivedDescriptor: (CBDescriptor)?
+    public var readDescriptorValueDescriptorCBDescriptorAnyPublisherBluetoothDescriptorBluetoothErrorReceivedInvocations: [(CBDescriptor)] = []
+    public var readDescriptorValueDescriptorCBDescriptorAnyPublisherBluetoothDescriptorBluetoothErrorReturnValue: AnyPublisher<BluetoothDescriptor, BluetoothError>!
+    public var readDescriptorValueDescriptorCBDescriptorAnyPublisherBluetoothDescriptorBluetoothErrorClosure: ((CBDescriptor) -> AnyPublisher<BluetoothDescriptor, BluetoothError>)?
+
+    public func readDescriptorValue(_ descriptor: CBDescriptor) -> AnyPublisher<BluetoothDescriptor, BluetoothError> {
+        readDescriptorValueDescriptorCBDescriptorAnyPublisherBluetoothDescriptorBluetoothErrorCallsCount += 1
+        readDescriptorValueDescriptorCBDescriptorAnyPublisherBluetoothDescriptorBluetoothErrorReceivedDescriptor = descriptor
+        readDescriptorValueDescriptorCBDescriptorAnyPublisherBluetoothDescriptorBluetoothErrorReceivedInvocations.append(descriptor)
+        if let readDescriptorValueDescriptorCBDescriptorAnyPublisherBluetoothDescriptorBluetoothErrorClosure = readDescriptorValueDescriptorCBDescriptorAnyPublisherBluetoothDescriptorBluetoothErrorClosure {
+            return readDescriptorValueDescriptorCBDescriptorAnyPublisherBluetoothDescriptorBluetoothErrorClosure(descriptor)
+        } else {
+            return readDescriptorValueDescriptorCBDescriptorAnyPublisherBluetoothDescriptorBluetoothErrorReturnValue
+        }
+    }
+
     //MARK: - writeValue
 
     public var writeValueDataDataForDescriptorBluetoothDescriptorAnyPublisherBluetoothDescriptorBluetoothErrorCallsCount = 0
@@ -435,6 +589,28 @@ public class BluetoothPeripheralMock: BluetoothPeripheral {
             return writeValueDataDataForDescriptorBluetoothDescriptorAnyPublisherBluetoothDescriptorBluetoothErrorClosure(data, descriptor)
         } else {
             return writeValueDataDataForDescriptorBluetoothDescriptorAnyPublisherBluetoothDescriptorBluetoothErrorReturnValue
+        }
+    }
+
+    //MARK: - writeValue
+
+    public var writeValueDataDataForDescriptorCBDescriptorAnyPublisherBluetoothDescriptorBluetoothErrorCallsCount = 0
+    public var writeValueDataDataForDescriptorCBDescriptorAnyPublisherBluetoothDescriptorBluetoothErrorCalled: Bool {
+        return writeValueDataDataForDescriptorCBDescriptorAnyPublisherBluetoothDescriptorBluetoothErrorCallsCount > 0
+    }
+    public var writeValueDataDataForDescriptorCBDescriptorAnyPublisherBluetoothDescriptorBluetoothErrorReceivedArguments: (data: Data, descriptor: CBDescriptor)?
+    public var writeValueDataDataForDescriptorCBDescriptorAnyPublisherBluetoothDescriptorBluetoothErrorReceivedInvocations: [(data: Data, descriptor: CBDescriptor)] = []
+    public var writeValueDataDataForDescriptorCBDescriptorAnyPublisherBluetoothDescriptorBluetoothErrorReturnValue: AnyPublisher<BluetoothDescriptor, BluetoothError>!
+    public var writeValueDataDataForDescriptorCBDescriptorAnyPublisherBluetoothDescriptorBluetoothErrorClosure: ((Data, CBDescriptor) -> AnyPublisher<BluetoothDescriptor, BluetoothError>)?
+
+    public func writeValue(_ data: Data, for descriptor: CBDescriptor) -> AnyPublisher<BluetoothDescriptor, BluetoothError> {
+        writeValueDataDataForDescriptorCBDescriptorAnyPublisherBluetoothDescriptorBluetoothErrorCallsCount += 1
+        writeValueDataDataForDescriptorCBDescriptorAnyPublisherBluetoothDescriptorBluetoothErrorReceivedArguments = (data: data, descriptor: descriptor)
+        writeValueDataDataForDescriptorCBDescriptorAnyPublisherBluetoothDescriptorBluetoothErrorReceivedInvocations.append((data: data, descriptor: descriptor))
+        if let writeValueDataDataForDescriptorCBDescriptorAnyPublisherBluetoothDescriptorBluetoothErrorClosure = writeValueDataDataForDescriptorCBDescriptorAnyPublisherBluetoothDescriptorBluetoothErrorClosure {
+            return writeValueDataDataForDescriptorCBDescriptorAnyPublisherBluetoothDescriptorBluetoothErrorClosure(data, descriptor)
+        } else {
+            return writeValueDataDataForDescriptorCBDescriptorAnyPublisherBluetoothDescriptorBluetoothErrorReturnValue
         }
     }
 

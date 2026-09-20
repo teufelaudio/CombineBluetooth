@@ -138,12 +138,13 @@ extension CoreBluetoothPeripheral: BluetoothPeripheral {
         let peripheral = self.peripheral
         return didDiscoverServices
             .tryMap { try $0.get() }
-            .flatMap { services in
+            .flatMap { services -> AnyPublisher<BluetoothService, Error> in
                 services
                     .filter { serviceUUIDs?.contains($0.id) ?? true }
-                    .map(CoreBluetoothService.init)
+                    .map { CoreBluetoothService(service: $0) as BluetoothService }
                     .publisher
                     .mapError(absurd)
+                    .eraseToAnyPublisher()
             }
             .mapError {
                 BluetoothError.onDiscoverServices(
@@ -164,13 +165,14 @@ extension CoreBluetoothPeripheral: BluetoothPeripheral {
         return didDiscoverIncludedServices
             .tryMap { try $0.get() }
             .filter { $0.parent.id == coreBluetoothService.service.id }
-            .flatMap { service in
+            .flatMap { service -> AnyPublisher<BluetoothService, Error> in
                 service
                     .included
                     .filter { includedServiceUUIDs?.contains($0.id) ?? true }
-                    .map(CoreBluetoothService.init)
+                    .map { CoreBluetoothService(service: $0) as BluetoothService }
                     .publisher
                     .mapError(absurd)
+                    .eraseToAnyPublisher()
             }
             .mapError {
                 BluetoothError.onDiscoverIncludedServices(
@@ -196,13 +198,14 @@ extension CoreBluetoothPeripheral: BluetoothPeripheral {
         return didDiscoverCharacteristics
             .tryMap { try $0.get() }
             .filter { $0.service.id == coreBluetoothService.service.id }
-            .flatMap { service in
+            .flatMap { service -> AnyPublisher<BluetoothCharacteristic, Error> in
                 service
                     .characteristics
                     .filter { characteristicUUIDs?.contains($0.id) ?? true }
-                    .map(CoreBluetoothCharacteristic.init)
+                    .map { CoreBluetoothCharacteristic(characteristic: $0) as BluetoothCharacteristic }
                     .publisher
                     .mapError(absurd)
+                    .eraseToAnyPublisher()
             }
             .mapError {
                 BluetoothError.onDiscoverCharacteristics(
@@ -300,19 +303,20 @@ extension CoreBluetoothPeripheral: BluetoothPeripheral {
                 .eraseToAnyPublisher()
 
         return ensureIsNotifying
-            .mapError(absurd)
+            .setFailureType(to: BluetoothError.self)
             .first(where: { $0 })
-            .map { _ in
+            .map { _ -> AnyPublisher<BluetoothCharacteristic, BluetoothError> in
                 readValueForCharacteristic
                     .tryMap { try $0.get() }
                     .filter { $0.id == coreBluetoothCharacteristic.characteristic.id }
-                    .map(CoreBluetoothCharacteristic.init)
+                    .map { CoreBluetoothCharacteristic(characteristic: $0) as BluetoothCharacteristic }
                     .mapError {
                         BluetoothError.onReadValueForCharacteristic(
                             characteristic: characteristic,
                             details: $0
                         )
                     }
+                    .eraseToAnyPublisher()
             }
             .switchToLatest()
             .handleEvents(
@@ -335,12 +339,13 @@ extension CoreBluetoothPeripheral: BluetoothPeripheral {
         return didDiscoverDescriptors
             .tryMap { try $0.get() }
             .filter { $0.characteristic.id == coreBluetoothCharacteristic.characteristic.id }
-            .flatMap { characteristic in
+            .flatMap { characteristic -> AnyPublisher<BluetoothDescriptor, Error> in
                 characteristic
                     .descriptors
-                    .map(CoreBluetoothDescriptor.init)
+                    .map { CoreBluetoothDescriptor(descriptor: $0) as BluetoothDescriptor }
                     .publisher
                     .mapError(absurd)
+                    .eraseToAnyPublisher()
             }
             .mapError {
                 BluetoothError.onDiscoverDescriptors(
